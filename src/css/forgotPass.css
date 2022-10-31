@@ -1,0 +1,91 @@
+.wrapperForgotPass{
+    width: 100%;
+    display: flex;
+}
+.forgotPassImg{
+    width: 50%;
+}
+.forgotPassForm{
+    width: 50%;
+    margin-left: 10%;
+    margin-top: 10%;
+}
+.resetPassForm{
+    width: 50%;
+    margin-left: 10%;
+    margin-top: 8%;
+}
+.content{
+    width: 50%;
+}
+.forgotPassImage{
+/*     
+    background-size: 100% 100%;
+    height: 100vh;
+    background-repeat: no-repeat; */
+}
+.forgotPassLabel{
+    text-align: left;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    margin-top: 5%;
+}
+.forgotPassHeader{
+    width: '50%';
+    text-align: left;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+}
+.EmailInputForgotPass{
+    margin-top: 20px;
+    text-align: left;
+    width: 120%;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.07);
+    border-radius: 10px;
+    padding: 10px;
+    border: #FFFFFF
+}
+.enterNewPasswordInput{
+    margin-top: 20px;
+    text-align: left;
+    width: 120%;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.07);
+    border-radius: 10px;
+    padding: 10px;
+    border: #FFFFFF
+}
+.reEnterNewPasswordInput{
+    margin-top: 20px;
+    text-align: left;
+    width: 120%;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.07);
+    border-radius: 10px;
+    padding: 10px;
+    border: #FFFFFF
+}
+.forgotPassSubmit{
+    margin-top: 45px;
+    width: 121%;
+    background: #051134;
+    border-radius: 10px;
+    color: white;
+    padding: 10px
+}
+.errmsgForgotPass {
+    background-color: lightpink;
+    color: firebrick;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    width: 60%;
+    border-radius: 10px;
+}
+.offscreenForgotPass {
+    position: absolute;
+    left: -9999px;
+}

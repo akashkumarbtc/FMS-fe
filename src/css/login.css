@@ -1,0 +1,94 @@
+.bg {
+    height: 100%;
+    width: 100%;
+}
+
+.loginWrapper {
+    background-image:
+        url("../assets/loginBackground.png");
+    background-size: 100% 100%;
+    height: 100vh;
+    background-repeat: no-repeat;
+    display: flex;
+}
+
+.loginForm {
+    width: 45%;
+    display: flex;
+}
+
+.loginGraph {
+    width: 55%;
+    text-align: center;
+}
+
+.loginHeader {
+    text-align: left;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600 !important;
+    font-size: 27px;
+}
+
+.loginForgotPass {
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    color: #051134;
+    text-align: center;
+    width: 84%;
+}
+
+section {
+    width: 70%;
+    min-height: 400px;
+    margin-left: 20%;
+    margin-top: 12%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.LoginInput {
+    margin-top: 20px;
+    text-align: left;
+    width: 78%;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.07);
+    border-radius: 10px;
+    padding: 10px;
+    border: #FFFFFF
+}
+
+.loginLabel {
+    margin-top: 15px;
+    text-align: left;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    Size: 28px
+}
+
+.submitButton {
+    margin-top: 35px;
+    width: 84%;
+    background: #051134;
+    border-radius: 10px;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+}
+.errmsg {
+    background-color: lightpink;
+    color: firebrick;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    width: 78%;
+    border-radius: 10px;
+}
+.offscreen {
+    position: absolute;
+    left: -9999px;
+}
