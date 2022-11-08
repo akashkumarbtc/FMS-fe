@@ -1,0 +1,43 @@
+/* // @import '../../node_modules/react-pro-sidebar/dist/scss/styles.scss' */
+
+.sidebar-header-content{
+    text-align: center;
+    padding: 12px;
+    display: flex;
+    padding-left: 55px
+}
+h2{
+    font-size: 19px !important;
+    text-align: left !important;
+}
+.sidebar-content{
+     text-align: center;
+}
+.sidebar-footer-content{
+      cursor: pointer;
+      text-align: center;
+      padding: 21px;
+      border: none !important;
+}
+.pro-sidebar > .pro-sidebar-inner{
+    background: #051134 !important;
+}
+.pro-sidebar .pro-menu{
+    padding-top: 70px !important;
+}
+.dashboard-menu{
+    width: 80%;
+    margin-left: 25px;
+    padding: 8px;
+    background: linear-gradient(270deg, #FD566E 0%, #6C63FF 94.3%);
+    border: 1px solid #051134;
+    border-radius: 10px
+}
+.pro-sidebar .pro-menu .pro-menu-item > .pro-inner-item > .pro-item-content{
+    text-align: left !important;
+}
+.dashboard-menu-not-selected{
+    width: 80%;
+    margin-left: 25px;
+    padding: 8px;
+}

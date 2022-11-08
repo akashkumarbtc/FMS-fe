@@ -1,0 +1,141 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:weight@100;200;300;400;500;600;700;800&display=swap");
+
+.admin-header{
+    display: flex;
+    width: 50%;
+}
+.waving{
+    text-align: left;
+    width: 30px;
+    height: 28px;
+    margin-top: 17px;
+    margin-left: 10px;
+}
+.userSetting{
+    width: 50%;
+    display: flex;
+    margin-left: 67%;
+}
+.main-header{
+    display: flex;
+}
+.account-name{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    margin-bottom: 1px;
+}
+.account-role{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: left;
+    color: #797979
+}
+.user-image{
+    margin-right: 15px;
+    margin-top: 2px;
+    width: 48px;
+    height: 46px
+}
+.welcome-name{
+    text-align: left;    
+    margin-bottom: 1px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400 !important;
+    font-size: 20px !important;
+}
+.welcome-text{
+    text-align:"left";
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+}
+.total-clients{
+    display: flex;
+    width: 20%; 
+    background-color: #ffffff; 
+    color: 'black';
+    border-radius: 6px;
+    border:1px solid #D7D7D7;
+    text-align: left;
+    padding-top:13px
+}
+.active-clients{
+    display: flex;
+    width: 22%;
+    background-color: #ffffff;
+    color: 'black'; 
+    border-radius: 6px; 
+    margin-left: 25px; 
+    border:1px solid #D7D7D7;
+    text-align: left;
+    padding-top: 13px;
+}
+.total-clients-text{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17px;
+    color: #6C6C6C;
+    margin-bottom: 0px
+}
+.total-clients-no{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 36px;
+    color: #000000;
+    margin-bottom: 0px
+}
+.total-clients-image{
+    width: 54px;
+    height: 54px;
+    margin-right: 10px
+}
+.clients-list{
+    display: flex;
+}
+.clients-list-text{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    margin-bottom: 0px;
+}
+.client-search-container{
+    text-align: left;
+    width: 89%;
+}
+.client-search-field{
+    width: 98%;    
+}
+
+.client-search{
+    display: flex;
+    width: 100%;
+}
+.ms-n5 {
+    margin-left: -40px;
+}
+.search .fa-search{
+    position: absolute;
+    top: 20px;
+    left: 16px;
+}
+   .add-new-client{
+    background: #051134;
+    border-color: #051134;
+    color: white;
+    border-radius: 6px;
+}
+.add-new-icon{
+    height: 23px;
+    width: 23px;
+    margin-right: 7px;
+    margin-bottom: 3px;
+}

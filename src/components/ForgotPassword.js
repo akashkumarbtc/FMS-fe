@@ -26,7 +26,7 @@ const ForgotPassword = () => {
     try {
       const response = await axios.post(
         forgotPassUrl,
-        JSON.stringify({ emial: email }),
+        JSON.stringify({ email: email }),
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,

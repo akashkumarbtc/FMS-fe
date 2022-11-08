@@ -1,14 +1,20 @@
 import React from "react";
-import { useRef, useState, useEffect, useContext } from "react";
-import AuthContext from "../context/AuthProvider";
+import { useRef, useState, useEffect } from "react";
+import useAuth from "../hooks/useAuth";
 import loginImageFront from "../assets/loginImageFront.png";
-import { useNavigate, Link } from "react-router-dom";
+// import { useNavigate, Link } from "react-router-dom";
 import axios from "../api/axios";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+
 // import Url from "../api/Url";
 import "../css/login.css";
 
 const Login = () => {
-  const { setAuth } = useContext(AuthContext);
+  const { setAuth } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+  // const from = location.state.from.pathname || "/login";
+
   const userRef = useRef();
   const errRef = useRef();
 
@@ -34,16 +40,30 @@ const Login = () => {
         JSON.stringify({ username: user, password: pwd }),
         {
           headers: { "Content-Type": "application/json" },
-          // withCredentials: true,
+          withCredentials: true,
         }
       );
-      console.log(JSON.stringify(response?.data));
-      //console.log(JSON.stringify(response));
-      // const accessToken = response?.data?.accessToken;
-      // const roles = response?.data?.roles;
-      // setAuth({ user, pwd, roles, accessToken });
+      const accessToken = response.data.access_token;
+      const roles = [response.data.role];
+      const userData = {
+        user: user,
+        pwd: pwd,
+        roles: roles,
+        accessToken: accessToken,
+      };
+      localStorage.setItem("auth", userData);
+      console.log(user, pwd, roles, accessToken);
+      setAuth({ user, pwd, roles, accessToken });
       setUser("");
       setPwd("");
+      if (response.data.role == "accounts") {
+        navigate("/accounts");
+      } else if (response.data.role == "admin") {
+        navigate("/admin");
+      } else if (response.data.role == "operations") {
+        navigate("/operations");
+      }
+
       // navigate(from, { replace: true });
     } catch (err) {
       if (!err?.response) {
