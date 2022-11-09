@@ -139,3 +139,14 @@
     margin-right: 7px;
     margin-bottom: 3px;
 }
+.css-11xur9t-MuiPaper-root-MuiTableContainer-root{
+    width: 97.5% !important;
+    margin-left: 13px !important;
+}
+.row > *{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+.css-11xur9t-MuiPaper-root-MuiTableContainer-root{
+    max-height: 325px !important;
+}

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from 'react';
 import "../css/accounts.css"
 import wavingHand from "../assets/wavingHand.png"
 import accountsSettings from "../assets/accountsSettings.png"
@@ -6,10 +6,44 @@ import totalClients from "../assets/totalClients.png"
 import activeClients from "../assets/activeClients.png"
 import clientsListIcon from "../assets/clientsListIcon.png"
 import addNewIcon from "../assets/addNewIcon.png"
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import { styled } from '@mui/material/styles';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: '#051134',
+    color: theme.palette.common.white,
+    padding:'0px',
+    paddingBottom:'16px',
+    paddingTop:'16px'
+    
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  }
+}));
+
+function createData(title, companyName, companyCode, streetAdress, city, postalCode, state, country, email) {
+  return { title, companyName, companyCode, streetAdress, city, postalCode, state, country, email};
+}
+
+const rows = [
+  createData('Bt Consultants', 'Bluetick Consultants', 336, 'Sbis Sarah Trail', 'Bangalore', 560012, 'Karnataka', 'India', 'ABC@gmail.com'),
+  createData('Bt Consultants', 'Bluetick Consultants', 336, 'Sbis Sarah Trail', 'Bangalore', 560012, 'Karnataka', 'India', 'ABC@gmail.com'),
+  createData('Bt Consultants', 'Bluetick Consultants', 336, 'Sbis Sarah Trail', 'Bangalore', 560012, 'Karnataka', 'India', 'ABC@gmail.com'),
+  createData('Bt Consultants', 'Bluetick Consultants', 336, 'Sbis Sarah Trail', 'Bangalore', 560012, 'Karnataka', 'India', 'ABC@gmail.com'),
+  createData('Bt Consultants', 'Bluetick Consultants', 336, 'Sbis Sarah Trail', 'Bangalore', 560012, 'Karnataka', 'India', 'ABC@gmail.com'),
+];
 
 const Accounts = () => {
-  return <div style={{ width: "100%", height: "100%" }}>
-    <div className="wrapper" style={{ padding: '17px', background: "#F5F5F5" }}>
+  return <div style={{ width: "100%", height: "100vh" }}>
+    <div className="wrapper" style={{ padding: '17px',height:'100vh', background: "#F5F5F5" }}>
       <div className="container-fluid" style={{ height: '100vh' }}>
         <div className="main-header">
           <div className="admin-header">
@@ -54,7 +88,43 @@ const Accounts = () => {
             </div>
             <button className=" add-new-client"><img className="add-new-icon" src={addNewIcon} alt="addNewIcon" />Add New</button>
         </div>
-        <div className="row mt-2"></div>
+        <div className="row mt-3">
+        <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650, maxHeight:300 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <StyledTableCell sx={{lineHeight:'20px', padding:'5px'}} align="center">Title</StyledTableCell >
+            <StyledTableCell  align="center">Company Name</StyledTableCell >
+            <StyledTableCell  align="center">Company Code&nbsp;</StyledTableCell >
+            <StyledTableCell  align="center">Street Address&nbsp;</StyledTableCell >
+            <StyledTableCell  align="center">City&nbsp;</StyledTableCell >
+            <StyledTableCell  align="center">Postal Code&nbsp;</StyledTableCell >
+            <StyledTableCell  align="center">State&nbsp;</StyledTableCell >
+            <StyledTableCell  align="center">Country&nbsp;</StyledTableCell >
+            <StyledTableCell  align="center">Email&nbsp;</StyledTableCell >
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <TableRow
+              key={row.name}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell sx={{ padding:'10px'}} align="center">{row.title}</TableCell>
+              <TableCell align="center">{row.companyName}</TableCell>
+              <TableCell align="center">{row.companyCode}</TableCell>
+              <TableCell align="center">{row.streetAdress}</TableCell>
+              <TableCell align="center">{row.city}</TableCell>
+              <TableCell align="center">{row.postalCode}</TableCell>
+              <TableCell align="center">{row.state}</TableCell>
+              <TableCell align="center">{row.country}</TableCell>
+              <TableCell align="center">{row.email}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+        </div>
       </div>
     </div>
   </div>;
