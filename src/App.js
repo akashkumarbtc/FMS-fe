@@ -12,6 +12,9 @@ import Unauthorized from "./components/Unauthorized";
 import Missing from "./components/Missing";
 import { Routes, Route } from "react-router-dom";
 import SideBar from "./components/SideBar";
+import LayoutAccounts from "./components/LayoutAccounts";
+import LayoutAdmin from "./components/LayoutAdmin";
+import LayoutAdminUser from "./components/LayoutAdminUser";
 
 function App() {
   const Roles = {
@@ -22,19 +25,23 @@ function App() {
 
   return (
  <Routes>
-      <Route path="/dash" exact   element={<Layout />}/>
+      {/* <Route path="/dashboard" exact   element={<Layout />}/> */}
 
         <Route path="/" exact element={<Login />} />
         <Route path="forgotPassword" element={<ForgotPassword />} />
-        <Route path="resetPassword" element={<ResetPassword />} />
+        <Route exact path="/resetPassword/:resetToken"  element={<ResetPassword />} />
         <Route path="unAuthorized" element={<Unauthorized />} />
         <Route path="sidebar" element={SideBar}></Route>
         {/* protected routes */}
         <Route element={<RequireAuth allowedRoles={[Roles.Admin]} />}>
-          <Route path="admin" element={<Admin />} />
+          {/* <Route path="admin" element={<Admin />} /> */}
+          <Route path="admin/dashboard" element={<LayoutAdmin />} />
+          <Route path="admin/User" element={<LayoutAdminUser />} />
       </Route>
         <Route element={<RequireAuth allowedRoles={[Roles.Accounts]} />}>
-          <Route path="accounts" element={<Accounts />} />
+          {/* <Route path="accounts" element={<Accounts />} /> */}
+          <Route path="/dashboard" exact   element={<Layout />}/>
+          <Route path="/dashboard/invoice" exact   element={<LayoutAccounts />}/>
           </Route>
         <Route element={<RequireAuth allowedRoles={[Roles.Operations]} />}>
           <Route path="operations" element={<Operations />} />

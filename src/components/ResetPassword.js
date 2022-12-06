@@ -4,23 +4,37 @@ import forgotPassword from "../assets/forgotPassword.png";
 import axios from "../api/axios";
 import "../css/forgotPass.css";
 
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
+
 const ResetPassword = () => {
+  const token = window.location.pathname.slice(15)
   const resetPassRef = useRef();
   const errRef = useRef();
   const [errMsg, setErrMsg] = useState("");
   const [resetPass, setResetPass] = useState("");
+  const[validPwd, setValidPwd] = useState(false)
+  const[pwdFocus, setPwdFocus] = useState(false)
   const [re_resetPass, SetRe_ResetPass] = useState("");
-  const resetPassUrl = "forgot-password";
+  const[validMatch, setValidMatch] = useState(false)
+  const[matchFocus, setMatchFocus] = useState(false)
+
 
   useEffect(() => {
     resetPassRef.current.focus();
   }, []);
 
   useEffect(() => {
+    setValidPwd(PWD_REGEX.test(resetPass))
+    setValidMatch(resetPass === re_resetPass)
+  }, [resetPass, re_resetPass]);
+
+  useEffect(() => {
     setErrMsg("");
   }, [resetPass, re_resetPass]);
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+    const resetPassUrl = "resetPassword/"+ token;
     try {
       const response = await axios.post(
         resetPassUrl,
@@ -29,7 +43,7 @@ const ResetPassword = () => {
           confirm_password: re_resetPass,
         }),
         {
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json"},
           withCredentials: true,
         }
       );
@@ -82,7 +96,16 @@ const ResetPassword = () => {
             }}
             value={resetPass}
             required
+            aria-invalid={validPwd ? "false" : "true"}
+            aria-describedby="pwdnote"
+            onFocus={() => setPwdFocus(true)}
+            onBlur={() => setPwdFocus(false)}
           />
+          <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>8 to 24 characters.<br />
+          Must include uppercase and lowercase letters,  a number and a special character.<br />
+          Allowed special characters:<span area-label="exclamation mark">!</span><span area-label="at symbol">@</span>
+          <span area-label="hashtag">#</span><span area-label="dollar sign">$</span><span area-label="percent">%</span>
+          </p>
           <label className="forgotPassLabel" style={{ marginTop: "20px" }}>
             Re-Enter New Password
           </label>
@@ -97,8 +120,14 @@ const ResetPassword = () => {
             }}
             value={re_resetPass}
             required
+            aria-invalid={validMatch ? "false" : "true"}
+            aria-describedby="confirmnote"
+            onFocus={() => setMatchFocus(true)}
+            onBlur={() => setMatchFocus(false)}
           />
-          <button className="forgotPassSubmit">Submit</button>
+           <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>Must match first password input field
+          </p>
+          <button disabled={!validPwd || !validMatch ? true : false} className="forgotPassSubmit">Submit</button>
         </form>
       </div>
     </div>

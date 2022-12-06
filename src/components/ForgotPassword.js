@@ -5,16 +5,24 @@ import axios from "../api/axios";
 
 import "../css/forgotPass.css";
 
+const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
 const ForgotPassword = () => {
   const emailRef = useRef();
   const errRef = useRef();
   const [errMsg, setErrMsg] = useState("");
   const [email, setEmail] = useState("");
+  const[validName, setValidName] = useState(false);
+  const[userFocus, setUserFocus] = useState(false);
   const forgotPassUrl = "forgot-password";
 
   useEffect(() => {
     emailRef.current.focus();
   }, []);
+
+  useEffect(() => {
+    setValidName(EMAIL_REGEX.test(email));
+  }, [email]);
 
   useEffect(() => {
     setErrMsg("");
@@ -82,8 +90,13 @@ const ForgotPassword = () => {
             }}
             value={email}
             required
+            aria-invalid={validName ? "false" : "true"}
+            aria-describedby="uidnote"
+            onFocus={() => setUserFocus(true)}
+            onBlur={() => setUserFocus(false)}
           />
-          <button className="forgotPassSubmit">Submit</button>
+           <p id="uidnote" className={userFocus && email && !validName ? "instructions" : "offscreen"}>Enter a valid email address</p>
+          <button  disabled={!validName ? true : false} className="forgotPassSubmit">Submit</button>
         </form>
       </div>
     </div>

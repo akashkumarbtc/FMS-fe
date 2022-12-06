@@ -3,6 +3,7 @@ import Accounts from "./Accounts";
 import Admin from "./Admin";
 import SideBar from "./SideBar";
 import { ProSidebarProvider } from "react-pro-sidebar";
+import Invoice from "./Invoice";
 
 const Layout = () => {
   return (
@@ -12,6 +13,7 @@ const Layout = () => {
       </ProSidebarProvider> */}
       <SideBar/>
        <Accounts/>
+       {/* <Invoice/> */}
       <Outlet />
     </main>
   );

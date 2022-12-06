@@ -9,6 +9,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 // import Url from "../api/Url";
 import "../css/login.css";
 
+const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+
 const Login = () => {
   const { setAuth } = useAuth();
   const navigate = useNavigate();
@@ -17,6 +19,8 @@ const Login = () => {
 
   const userRef = useRef();
   const errRef = useRef();
+  const[validName, setValidName] = useState(false);
+  const[userFocus, setUserFocus] = useState(false);
 
   const [user, setUser] = useState("");
   const [pwd, setPwd] = useState("");
@@ -25,6 +29,10 @@ const Login = () => {
   useEffect(() => {
     userRef.current.focus();
   }, []);
+  
+  useEffect(() => {
+    setValidName(EMAIL_REGEX.test(user));
+  }, [user]);
 
   useEffect(() => {
     setErrMsg("");
@@ -37,31 +45,36 @@ const Login = () => {
     try {
       const response = await axios.post(
         Login_Url,
-        JSON.stringify({ username: user, password: pwd }),
+        JSON.stringify({ email: user, password: pwd }),
         {
           headers: { "Content-Type": "application/json" },
           withCredentials: true,
         }
       );
       const accessToken = response.data.access_token;
+      const refreshToken = response.data.refresh_token;
       const roles = [response.data.role];
       const userData = {
-        user: user,
-        pwd: pwd,
-        roles: roles,
-        accessToken: accessToken,
+        'user': user,
+        'pwd': pwd,
+        'roles': roles,
+        'accessToken': accessToken,
+        'refreshToken': refreshToken
       };
-      localStorage.setItem("auth", userData);
+      console.log(userData)
+      localStorage.setItem("auth", JSON.stringify(userData));
       console.log(user, pwd, roles, accessToken);
       setAuth({ user, pwd, roles, accessToken });
       setUser("");
       setPwd("");
       if (response.data.role == "accounts") {
-        navigate("/accounts");
+        navigate("/dashboard");
       } else if (response.data.role == "admin") {
-        navigate("/admin");
+        navigate("/admin/dashboard");
       } else if (response.data.role == "operations") {
         navigate("/operations");
+      } else{
+        navigate("/unauthorized");
       }
 
       // navigate(from, { replace: true });
@@ -109,7 +122,12 @@ const Login = () => {
                 value={user}
                 placeholder="ABC@XYZ.com"
                 required
-              />
+                aria-invalid={validName ? "false" : "true"}
+                aria-describedby="uidnote"
+                onFocus={() => setUserFocus(true)}
+                onBlur={() => setUserFocus(false)}
+                />
+              <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>Enter a valid email address</p>
               <label className="loginLabel">Password</label>
               <input
                 className="LoginInput"
@@ -120,7 +138,7 @@ const Login = () => {
                 required
                 placeholder="ABC@123"
               />
-              <button className="submitButton">Submit</button>
+              <button disabled={!validName ? true : false} className="submitButton">Submit</button>
               <Link to="/forgotPassword" className="loginForgotPass mt-3">
                 Forgot Password ?
               </Link>

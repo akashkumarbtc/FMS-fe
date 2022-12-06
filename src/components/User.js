@@ -4,10 +4,8 @@ import axios from "../api/axios";
 import "../css/accounts.css";
 import wavingHand from "../assets/wavingHand.png";
 import accountsSettings from "../assets/accountsSettings.png";
-import totalClients from "../assets/totalClients.png";
-import activeClients from "../assets/activeClients.png";
-import clientsListIcon from "../assets/clientsListIcon.png";
 import addNewIcon from "../assets/addNewIcon.png";
+import adminList from "../assets/adminList.png";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
@@ -24,11 +22,14 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 var rows = [];
-const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const options = ["Update", "Delete"];
+const ITEM_HEIGHT = 48;
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -43,39 +44,28 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-function createData(name, gst_number, phone, email, project_details) {
+function createData(username, email) {
   return {
-    name,
-    gst_number,
-    phone,
+    username,
     email,
-    project_details,
   };
 }
 
-const Accounts = () => {
+const User = () => {
   const [name, setName] = useState("");
-  const [street_address, setStreetAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [state, setState] = useState("");
-  const [postal_code, setPostalCode] = useState("");
-  const [country, setCountry] = useState("");
-  const [gst_number, setGstNumber] = useState("");
-  const [phone, setPhone] = useState("");
+  const [department, setDepartment] = useState("");
+  const [designation, setDesignation] = useState("");
+  const [contact, setContact] = useState("");
   const [email, setEmail] = useState("");
-  const [landline, setLandline] = useState("");
-  const [fax, setFax] = useState("");
-  const [project_details, setProjectDetails] = useState("");
+  const [workLocation, setWorkLocation] = useState("");
+  const [pwd, setPwd] = useState("");
+  const [matchPwd, setMatchPwd] = useState("");
   const [open, setOpen] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
   const [userList, setUserList] = useState([]);
   const data = localStorage.getItem("auth");
   const token = JSON.parse(data).accessToken;
   var [myOptions, setMyOptions] = useState([]);
-  const [errMsg, setErrMsg] = useState("");
-  const[validEmail, setValidEmail] = useState(false);
-  const[selectedCompany, setSelectedCompany] = useState("");
-
 
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
@@ -84,6 +74,15 @@ const Accounts = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const openMenue = Boolean(anchorEl);
+  const handleClickMenue = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseMenue = () => {
+    setAnchorEl(null);
   };
 
   const descriptionElementRef = React.useRef(null);
@@ -99,17 +98,9 @@ const Accounts = () => {
   useEffect(() => {
     getCompanyList();
   }, []);
-  
-  useEffect(() => {
-    setValidEmail(EMAIL_REGEX.test(email));
-  }, [email]);
-
-  useEffect(() => {
-    setErrMsg("");
-  }, [email]);
 
   const getCompanyList = async () => {
-    const url = "/accounts/company-list";
+    const url = "/admin/user-list";
     try {
       const response = await axios.get(url, {
         headers: {
@@ -119,17 +110,11 @@ const Accounts = () => {
         withCredentials: true,
       });
       const companyList = response.data;
+      console.log(companyList);
+      console.log(rows);
       rows = [];
       companyList.map((items) => {
-        rows.push(
-          createData(
-            items.name,
-            items.gst_number,
-            items.phone,
-            items.email,
-            items.project_details
-          )
-        );
+        rows.push(createData(items.username, items.email));
       });
       setUserList(rows);
     } catch (err) {
@@ -138,8 +123,6 @@ const Accounts = () => {
   };
 
   const searchCompany = async (str) => {
-    // setSelectedCompany(str)
-    console.log(selectedCompany)
     const url = "/accounts/company/autocomplete";
     try {
       const response = await await axios.get(url, {
@@ -149,6 +132,7 @@ const Accounts = () => {
         },
         params: { term: str },
       });
+      console.log();
       myOptions = [];
       for (var i = 0; i < response.data.length; i++) {
         myOptions.push(response.data[i]);
@@ -159,69 +143,30 @@ const Accounts = () => {
     }
   };
 
-  const getSelctedCompany = async (value) => {
-     const url = "/accounts/company-filter";
-     try {
-      const response = await axios.post(url, 
-        JSON.stringify({
-          name: value,
-        }),
-        {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      });
-      const companyList = response.data;
-      rows = [];
-      companyList.map((items) => {
-        rows.push(
-          createData(
-            items.name,
-            items.gst_number,
-            items.phone,
-            items.email,
-            items.project_details
-          )
-        );
-      });
-      setUserList(rows);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  function handleControlSearch(fn, delay){
+  function handleControlSearch(fn, delay) {
     let timeOutId;
-    return function(...args){
-      if(timeOutId){
-        clearTimeout(timeOutId)
+    return function (...args) {
+      if (timeOutId) {
+        clearTimeout(timeOutId);
       }
-    timeOutId = setTimeout(()=>{
-        fn()
-    }, delay)
-  }
+      timeOutId = setTimeout(() => {
+        fn();
+      }, delay);
+    };
   }
 
   const handleSubmit = async (e) => {
-    const Login_Url = "/accounts/company-creation";
+    const Login_Url = "/admin/create";
     e.preventDefault();
     try {
       const response = await axios.post(
         Login_Url,
         JSON.stringify({
-          name: name,
-          street_address: street_address,
-          city: city,
-          state: state,
-          postal_code: postal_code,
-          country: country,
-          gst_number: gst_number,
-          phone: phone,
+          username: name,
+          deparatment: department,
           email: email,
-          landline: landline,
-          fax: fax,
-          project_details: project_details,
+          password: pwd,
+          designation: designation,
         }),
         {
           headers: {
@@ -232,7 +177,6 @@ const Accounts = () => {
         }
       );
       // setOpen(false);
-      toast.success("Company added successfully");
       getCompanyList();
       handleClose();
 
@@ -277,47 +221,18 @@ const Accounts = () => {
               />
               <div>
                 <h3 className="account-name">Ankur Gupta</h3>
-                <h5 className="account-role">Accounts</h5>
+                <h5 className="account-role">Admin</h5>
               </div>
             </div>
           </div>
-          <div
-            className="row mt-5"
-            style={{
-              width: "100px !important",
-              backgroundColor: "#F5F5F5",
-              height: "auto",
-              display: "flex",
-              justifyContent: "left",
-              paddingLeft: "9px",
-            }}
-          >
-            <div className="col-sm-4 total-clients">
-              <img
-                className="total-clients-image"
-                src={totalClients}
-                alt="totalClients"
-              />
-              <div>
-                <h3 className="total-clients-text">Total Clients</h3>
-                <h1 className="total-clients-no">65</h1>
-              </div>
-            </div>
-            <div className="col-sm-4 active-clients">
-              <img
-                className="total-clients-image"
-                src={activeClients}
-                alt="activeClients"
-              />
-              <div>
-                <h3 className="total-clients-text">Total Active Clients</h3>
-                <h1 className="total-clients-no">50</h1>
-              </div>
-            </div>
-          </div>
+
           <div className="mt-3 clients-list">
-            <img src={clientsListIcon} alt="clientsListIcon" />
-            <p className="clients-list-text">Client's List</p>
+            <img
+              src={adminList}
+              alt="clientsListIcon"
+              className="clientsListImage"
+            />
+            <p className="user-list-text">List of Users</p>
           </div>
           <div className="mt-4 client-search">
             <div class="client-search-container search">
@@ -328,20 +243,20 @@ const Accounts = () => {
                 onChange={(e) => searchCompany(e.target.value)}
               /> */}
               <Autocomplete
-                style={{ width: '97%' }}
+                style={{ width: "97%" }}
                 freeSolo
                 autoComplete
                 autoHighlight
                 options={myOptions}
-                onChange={(e) => getSelctedCompany(e.target.value)}
                 renderInput={(params) => (
-                  <TextField style={{padding:"5px !important"}}
+                  <TextField
+                    style={{ padding: "5px !important" }}
                     {...params}
                     label="Type somethong here!"
-                    // onChange={(e)=>handleControlSearch(
-                    //  searchCompany(e.target.value)
-                    // ,2000)}
-                    onChange={(e) => searchCompany(e.target.value)}
+                    onChange={(e) =>
+                      handleControlSearch(searchCompany(e.target.value), 2000)
+                    }
+                    // onChange={(e) => searchCompany(e.target.value)}
                     variant="outlined"
                   />
                 )}
@@ -369,15 +284,11 @@ const Accounts = () => {
                     >
                       Name
                     </StyledTableCell>
-                    <StyledTableCell align="center">Gst No</StyledTableCell>
-                    <StyledTableCell align="center">
-                      Phone&nbsp;
-                    </StyledTableCell>
                     <StyledTableCell align="center">
                       Email&nbsp;
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      Project Details&nbsp;
+                      Actions&nbsp;
                     </StyledTableCell>
                   </TableRow>
                 </TableHead>
@@ -388,13 +299,45 @@ const Accounts = () => {
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell sx={{ padding: "10px" }} align="center">
-                        {row.name}
+                        {row.username}
                       </TableCell>
-                      <TableCell align="center">{row.gst_number}</TableCell>
-                      <TableCell align="center">{row.phone}</TableCell>
                       <TableCell align="center">{row.email}</TableCell>
-                      <TableCell align="center">
-                        {row.project_details}
+                      <TableCell sx={{ padding: "10px" }} align="center">
+                        <IconButton
+                          aria-label="more"
+                          id="long-button"
+                          aria-controls={openMenue ? "long-menu" : undefined}
+                          aria-expanded={openMenue ? "true" : undefined}
+                          aria-haspopup="true"
+                          onClick={handleClickMenue}
+                        >
+                          <MoreVertIcon />
+                        </IconButton>
+                        <Menu
+                          id="long-menu"
+                          MenuListProps={{
+                            "aria-labelledby": "long-button",
+                          }}
+                          anchorEl={anchorEl}
+                          open={openMenue}
+                          onClose={handleCloseMenue}
+                          PaperProps={{
+                            style: {
+                              maxHeight: ITEM_HEIGHT * 4.5,
+                              width: "20ch",
+                            },
+                          }}
+                        >
+                          {options.map((option) => (
+                            <MenuItem
+                              key={option}
+                              selected={option === "Pyxis"}
+                              onClick={handleCloseMenue}
+                            >
+                              {option}
+                            </MenuItem>
+                          ))}
+                        </Menu>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -422,7 +365,7 @@ const Accounts = () => {
                   >
                     <form className="form-container" onSubmit={handleSubmit}>
                       <div className="item">
-                        <label className="mt-3">Company Name</label>
+                        <label className="mt-3">Name</label>
                         <input
                           className="mt-3"
                           type="text"
@@ -434,6 +377,48 @@ const Accounts = () => {
                       </div>
 
                       <div className="item">
+                        <label className="mt-3">Department</label>
+                        {/* <input
+                          className="mt-3"
+                          type="text"
+                          autoComplete="off"
+                          onChange={(e) => setDepartment(e.target.value)}
+                          value={department}
+                          required
+                        /> */}
+                        <select name="department" id="department" className="department-select" onChange={(e) => setDepartment(e.target.value)} required>
+                          <option value="select">Select</option>
+                          <option value="admin">Admin</option>
+                          <option value="accounts">Accounts</option>
+                          <option value="operations">Operations</option>
+                        </select>
+                      </div>
+
+                      <div className="item">
+                        <label className="mt-3">Designation</label>
+                        <input
+                          className="mt-3"
+                          type="text"
+                          autoComplete="off"
+                          onChange={(e) => setDesignation(e.target.value)}
+                          value={designation}
+                          required
+                        />
+                      </div>
+
+                      {/* <div className="item">
+                        <label className="mt-3">Contact</label>
+                        <input
+                          className="mt-3"
+                          type="text"
+                          autoComplete="off"
+                          onChange={(e) => setContact(e.target.value)}
+                          value={contact}
+                          required
+                        />
+                      </div> */}
+
+                      <div className="item">
                         <label className="mt-3">Email</label>
                         <input
                           className="mt-3"
@@ -443,131 +428,43 @@ const Accounts = () => {
                           value={email}
                           required
                         />
-                        <p id="uidnote" className={email && !validEmail ? "instructions-email" : "offscreen-email"}>Enter a valid email address</p>
                       </div>
 
-                      <div className="item">
-                        <label className="mt-3">Country</label>
+                      {/* <div className="item">
+                        <label className="mt-3">Work Location</label>
                         <input
                           className="mt-3"
                           type="text"
                           autoComplete="off"
-                          onChange={(e) => setCountry(e.target.value)}
-                          value={country}
+                          onChange={(e) => setWorkLocation(e.target.value)}
+                          value={workLocation}
+                          required
+                        />
+                      </div> */}
+
+                      <div className="item" style={{textAlign:'left'}}>
+                        <label className="mt-3">Set New Password</label>
+                        <input
+                          className="mt-3 designation-input"
+                          type="text"
+                          autoComplete="off"
+                          onChange={(e) => setPwd(e.target.value)}
+                          value={pwd}
                           required
                         />
                       </div>
 
-                      <div className="item">
-                        <label className="mt-3">state</label>
+                      {/* <div className="item">
+                        <label className="mt-3">Re-enter Password</label>
                         <input
                           className="mt-3"
                           type="text"
                           autoComplete="off"
-                          onChange={(e) => setState(e.target.value)}
-                          value={state}
+                          onChange={(e) => setMatchPwd(e.target.value)}
+                          value={matchPwd}
                           required
                         />
-                      </div>
-
-                      <div className="item">
-                        <label className="mt-3">city</label>
-                        <input
-                          className="mt-3"
-                          type="text"
-                          autoComplete="off"
-                          onChange={(e) => setCity(e.target.value)}
-                          value={city}
-                          required
-                        />
-                      </div>
-
-                      <div className="item">
-                        <label className="mt-3">Postal</label>
-                        <input
-                          className="mt-3"
-                          type="text"
-                          autoComplete="off"
-                          onChange={(e) => setPostalCode(e.target.value)}
-                          value={postal_code}
-                          required
-                        />
-                      </div>
-
-                      <div className="item">
-                        <label className="mt-3">Street Adress</label>
-                        <input
-                          className="mt-3"
-                          type="text"
-                          autoComplete="off"
-                          onChange={(e) => setStreetAddress(e.target.value)}
-                          value={street_address}
-                          required
-                        />
-                      </div>
-
-                      <div className="item">
-                        <label className="mt-3">Gst No.</label>
-                        <input
-                          className="mt-3"
-                          type="text"
-                          autoComplete="off"
-                          onChange={(e) => setGstNumber(e.target.value)}
-                          value={gst_number}
-                          required
-                        />
-                      </div>
-
-                      <div className="item">
-                        <label className="mt-3">Phone</label>
-                        <input
-                          className="mt-3"
-                          type="text"
-                          autoComplete="off"
-                          onChange={(e) => setPhone(e.target.value)}
-                          value={phone}
-                          required
-                        />
-                      </div>
-
-                      <div className="item">
-                        <label className="mt-3">Landline</label>
-                        <input
-                          className="mt-3"
-                          type="text"
-                          autoComplete="off"
-                          onChange={(e) => setLandline(e.target.value)}
-                          value={landline}
-                          required
-                        />
-                      </div>
-
-                      <div className="item">
-                        <label className="mt-3">Fax</label>
-                        <input
-                          className="mt-3"
-                          type="text"
-                          autoComplete="off"
-                          onChange={(e) => setFax(e.target.value)}
-                          value={fax}
-                          required
-                        />
-                      </div>
-
-                      <div className="item">
-                        <label className="mt-3">Project Description</label>
-                        <textarea
-                          className="mt-3 description-text"
-                          rows="2"
-                          cols="24"
-                          name="comment"
-                          form="usrform"
-                          autoComplete="off"
-                          onChange={(e) => setProjectDetails(e.target.value)}
-                          value={project_details}
-                          required
-                        />
-                      </div>
+                      </div> */}
                       <button
                         className="submitButton"
                         id="primarybutton"
@@ -583,7 +480,6 @@ const Accounts = () => {
                     className="add-company-button"
                     id="secondarybutton"
                     onClick={secondaryClick}
-                    disabled={!validEmail ? true : false}
                   >
                     Submit
                   </Button>
@@ -593,9 +489,8 @@ const Accounts = () => {
           </div>
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 };
 
-export default Accounts;
+export default User;

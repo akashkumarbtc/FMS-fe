@@ -109,7 +109,11 @@
 }
 .client-search-container{
     text-align: left;
-    width: 89%;
+    width: 90%;
+}
+.invoice-search-container{
+    text-align: left;
+    width: 76%;
 }
 .client-search-field{
     width: 98%;    
@@ -133,6 +137,13 @@
     color: white;
     border-radius: 6px;
 }
+.add-previous-invoice{
+    background: #051134;
+    border-color: #051134;
+    color: white;
+    border-radius: 6px;
+    margin-right: 10px;
+}
 .add-new-icon{
     height: 23px;
     width: 23px;
@@ -150,3 +161,203 @@
 .css-11xur9t-MuiPaper-root-MuiTableContainer-root{
     max-height: 325px !important;
 }
+.item {
+    width: 50%;
+    text-align: center
+  }
+.form-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+.form-container > div {
+    flex: 50%;
+  }
+  label{
+    width: 100%;
+    text-align:left;
+    padding-left:27px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+  }
+  input{
+    border: 1px solid #D7D7D7;
+    border-radius: 4px;
+    padding: 8px
+  }
+  .add-company-button{
+    background: linear-gradient(91.71deg, #6C63FF 5.9%, #F55777 100%) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+  }
+  .css-hlj6pa-MuiDialogActions-root{
+    padding-right: 270px !important;
+  }
+  .description-text{
+    border: 1px solid #D7D7D7;
+    border-radius: 4px;
+  }
+  #scroll-dialog-title{
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    color: #0B67BC;
+  }
+  .add-item-button{
+    width: 79%;
+    padding: 6px;
+    border-radius: 6px;
+    border: 1px solid #ffffff;
+    color: #ffffff;
+    background: linear-gradient(91.71deg, #6C63FF 5.9%, #F55777 100%) !important;
+  }
+  .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] {
+    padding: 0px !important;
+    border-radius: 6px !important;
+}
+.MuiInputLabel-formControl {
+    top: -10px !important;
+}
+.user-list-text{
+    margin-left: 11px;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+}
+.clientsListImage{
+    height: 31px;
+    width: 31px;
+}
+.offscreen-email {
+    position: absolute;
+    left: -9999px;
+}
+.instructions-email{
+    font-size: 0.75rem;
+    color: red;
+    text-align: left;
+    margin-top: 5px;
+    padding-left: 28px;
+    margin-bottom: 0px !important;
+}
+.designation-input{
+    margin-left: 29px;
+}
+.department-select{
+    border: 1px solid #D7D7D7;
+    border-radius: 4px;
+    padding: 10px;
+    margin-top: 16px;
+    width: 79%;
+}
+.piechartwrapper{
+    width: 35%;
+    height: 35%;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    justify-content: center;
+    align-items: center;
+    background: #FFFFFF;
+    border: 1px solid #CECECE;
+    border-radius: 10px;
+}
+.piecharttext{
+    width: 61%;
+font-family: 'Poppins';
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+margin-bottom: 15px;
+}
+.linechartwrapper{
+    width: 60%;
+    height: 60%;
+    margin-left: 35px;
+    padding-top: 10px;
+    padding-bottom: 30px;
+    justify-content: center;
+    align-items: center;
+    background: #FFFFFF;
+    border: 1px solid #CECECE;
+    border-radius: 10px;
+}
+.linecharttext{
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+.pieheadercontainer{
+    display: flex;
+}
+.pielabelcontainer{
+    display: flex;
+    flex-direction: column;
+    width: 39%;
+}
+.pietechteam:before {
+    content: '';
+    display: block;
+    border: 1px solid #FDB400;
+    width: 10px;
+    height: 10px;
+    margin: 5px auto;
+    background-color: #FDB400;
+    margin-right: 10px;
+    margin-left: 36px;
+  }
+  .pieoperationteam:before {
+    content: '';
+    display: block;
+    border: 1px solid #F75775;
+    width: 10px;
+    height: 10px;
+    margin: 5px auto;
+    background-color: #F75775;
+    margin-left: 36px;
+    margin-right: 10px;
+  }
+  .pietechteam{
+    display: flex;
+  }
+  .pieoperationteam{
+    display: flex;
+  }
+  .barcharttextwrapper{
+    display: flex;
+   width: 100%;
+  }
+  .barchartwrapper{
+    width: 100%;
+    height: 100%;
+    /* margin-left: 50px; */
+    padding-top: 10px;
+    padding-bottom: 30px;
+    justify-content: center;
+    align-items: center;
+    background: #FFFFFF;
+    border: 1px solid #CECECE;
+    border-radius: 10px;
+  }
+  .barcharttext{
+    width: 33.33%;
+  }
+  .barchartselect{
+    background: #051134;
+    color: white;
+    border: 1px solid #D7D7D7;
+    border-radius: 12px;
+    padding: 2px;
+    margin-top: 0px !important;
+  }
+  .yearselectoption{
+    text-align: right;
+    padding-right: 30px;
+  }
+  #primaryinvoiceupload{
+    display: none;
+  }
