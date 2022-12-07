@@ -6,28 +6,38 @@
 .loginWrapper {
     background-image:
         url("../assets/loginBackground.png");
-    background-size: 100% 100%;
+    /* background-size: 100% 100%; */
+    background-size: cover;
     height: 100vh;
     background-repeat: no-repeat;
     display: flex;
 }
 
 .loginForm {
-    width: 45%;
+    width: 60%;
     display: flex;
 }
 
 .loginGraph {
-    width: 55%;
+    width: 40%;
     text-align: center;
 }
 
+.loginGraph img{
+    height: 60%;
+    width: 100%;
+    margin-top: 14%;
+    display: inline-block;
+}
 .loginHeader {
     text-align: left;
     font-family: 'Montserrat';
     font-style: normal;
+    font-weight: 500 !important;
+    font-size: 40px;
+}
+.loginHeader span{
     font-weight: 600 !important;
-    font-size: 27px;
 }
 
 .loginForgotPass {
@@ -51,7 +61,7 @@ section {
 }
 
 .LoginInput {
-    margin-top: 20px;
+    margin-top: 8px;
     text-align: left;
     width: 78%;
     background: #FFFFFF;
@@ -62,12 +72,12 @@ section {
 }
 
 .loginLabel {
-    margin-top: 15px;
+    margin-top: 23px;
     text-align: left;
     font-family: 'Poppins';
-    font-style: normal;
+    padding-left: 0;
     font-weight: 500;
-    Size: 28px
+    font-size: 20px
 }
 
 .submitButton {
@@ -92,10 +102,10 @@ section {
     position: absolute;
     left: -9999px;
 }
-.instructions{
-    font-size: 0.75rem;
-    border-radius: 10px;
-    background: #000;
+.login-instructions{
+    font-size: 0.8rem;
+    border-radius: 7px;
+    background: rgb(49, 48, 48);
     color: #fff;
     padding: 0.25rem;
     position: relative;

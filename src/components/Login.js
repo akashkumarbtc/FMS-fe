@@ -98,7 +98,7 @@ const Login = () => {
         <div className="loginForm">
           <section>
             <h1 className="loginHeader">
-              Welcome To <br /> Expense Management System
+              Welcome To <br /> <span>Expense Management System</span>
             </h1>
             <p
               ref={errRef}
@@ -120,14 +120,14 @@ const Login = () => {
                 autoComplete="off"
                 onChange={(e) => setUser(e.target.value)}
                 value={user}
-                placeholder="ABC@XYZ.com"
+                placeholder="abc@email.com"
                 required
                 aria-invalid={validName ? "false" : "true"}
                 aria-describedby="uidnote"
                 onFocus={() => setUserFocus(true)}
                 onBlur={() => setUserFocus(false)}
                 />
-              <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>Enter a valid email address</p>
+              <p id="uidnote" className={userFocus && user && !validName ? "login-instructions" : "offscreen"}>Enter a valid email address</p>
               <label className="loginLabel">Password</label>
               <input
                 className="LoginInput"
@@ -136,7 +136,7 @@ const Login = () => {
                 onChange={(e) => setPwd(e.target.value)}
                 value={pwd}
                 required
-                placeholder="ABC@123"
+                placeholder="Enter Password"
               />
               <button disabled={!validName ? true : false} className="submitButton">Submit</button>
               <Link to="/forgotPassword" className="loginForgotPass mt-3">
@@ -149,12 +149,6 @@ const Login = () => {
           <img
             src={loginImageFront}
             alt="loginGraph"
-            style={{
-              height: "57%",
-              width: "62%",
-              marginTop: "14%",
-              display: "inline-block",
-            }}
           />
         </div>
       </div>

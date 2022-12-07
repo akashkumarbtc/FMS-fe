@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
-import Accounts from "./Accounts";
+// import Accounts from "./Accounts";
+import Accounts from '../pages/Accounts'
 import Admin from "./Admin";
 import SideBar from "./SideBar";
 import { ProSidebarProvider } from "react-pro-sidebar";

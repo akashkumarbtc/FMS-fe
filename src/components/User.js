@@ -134,8 +134,9 @@ const User = () => {
       });
       console.log();
       myOptions = [];
-      for (var i = 0; i < response.data.length; i++) {
-        myOptions.push(response.data[i]);
+      let data = response.data.users
+      for (var i = 0; i < data.length; i++) {
+        myOptions.push(data[i]);
       }
       setMyOptions(myOptions);
     } catch (err) {

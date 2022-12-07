@@ -105,7 +105,8 @@ const Invoice = () => {
           withCredentials: true,
         }
       );
-      const invoiceList = response.data
+      console.log(response.data.invoices)
+      const invoiceList = response.data.invoices
       rows=[]
       invoiceList.map((items)=>{
          rows.push(createData(items.client, items.total_amount, items.Notes, items.terms))
@@ -154,9 +155,10 @@ const Invoice = () => {
         params: { term: str },
       });
       console.log();
+      let data = response.data.suggestions
       myOptions = [];
-      for (var i = 0; i < response.data.length; i++) {
-        myOptions.push(response.data[i]);
+      for (var i = 0; i < data.length; i++) {
+        myOptions.push(data[i]);
       }
       setMyOptions(myOptions);
     } catch (err) {
@@ -276,6 +278,7 @@ const Invoice = () => {
           }
         );
         toast.success("Invoice uploaded successfully!")
+        getCompanyList()
     } catch (err) {
       toast.error(err.response.data.detail)
   }
