@@ -44,9 +44,9 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-function createData(client, total_amount, Notes, terms) {
+function createData(client, amount, gst, total_amount, Notes, generated_at, due_date) {
   return {
-    client, total_amount, Notes, terms
+    client, amount, gst, total_amount, Notes, generated_at, due_date
   };
 }
 
@@ -70,7 +70,6 @@ const Invoice = () => {
   const token = JSON.parse(data).accessToken;
   var [myOptions, setMyOptions] = useState([]);
 
-  console.log(itemList);
 
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
@@ -109,9 +108,10 @@ const Invoice = () => {
       const invoiceList = response.data.invoices
       rows=[]
       invoiceList.map((items)=>{
-         rows.push(createData(items.client, items.total_amount, items.Notes, items.terms))
+         rows.push(createData(items.client, items.amount, items.gst, items.total_amount, items.Notes, items.generated_at, items.due_date))
       })
-      setUserList(rows)
+      setUserList(rows);
+      console.log(userList)
 
     }catch(err){
       console.log(err)
@@ -134,7 +134,7 @@ const Invoice = () => {
      const invoiceList = response.data
       rows=[]
       invoiceList.map((items)=>{
-         rows.push(createData(items.client, items.total_amount, items.Notes, items.terms))
+         rows.push(createData(items.client, items.amount, items.gst, items.total_amount, items.Notes, items.generated_at, items.due_date))
       })
       setUserList(rows)
 
@@ -374,13 +374,22 @@ const Invoice = () => {
                       Client
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      Total Amount&nbsp;
+                      Amount&nbsp;
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      GST&nbsp;
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      Total Amount (with GST)&nbsp;
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       Notes&nbsp;
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      Terms&nbsp;
+                      Generated for&nbsp;
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      Due Date&nbsp;
                     </StyledTableCell>
                   </TableRow>
                 </TableHead>
@@ -393,9 +402,12 @@ const Invoice = () => {
                       <TableCell sx={{ padding: "10px" }} align="center">
                         {row.client}
                       </TableCell>
+                      <TableCell align="center">{row.amount}</TableCell>
+                      <TableCell align="center">{row.gst}</TableCell>
                       <TableCell align="center">{row.total_amount}</TableCell>
                       <TableCell align="center">{row.Notes}</TableCell>
-                      <TableCell align="center">{row.terms}</TableCell>
+                      <TableCell align="center">{row.generated_at}</TableCell>
+                      <TableCell align="center">{row.due_date}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
