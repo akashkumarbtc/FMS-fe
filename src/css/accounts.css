@@ -144,6 +144,14 @@
     border-radius: 6px;
     margin-right: 10px;
 }
+.add-cloud-invoice{
+    background: #051134;
+    border-color: #051134;
+    color: white;
+    border-radius: 6px;
+    padding: 8px;
+    margin-left: 30px;
+}
 .add-new-icon{
     height: 23px;
     width: 23px;
@@ -253,6 +261,12 @@
     margin-top: 16px;
     width: 79%;
 }
+.employee-select{
+    width: 12%;
+    margin-left: 20px;
+    border: 1px solid #D7D7D7;
+    border-radius: 4px;
+}
 .piechartwrapper{
     width: 35%;
     height: 35%;
@@ -360,4 +374,7 @@ margin-bottom: 15px;
   }
   #primaryinvoiceupload{
     display: none;
+  }
+  .css-sghohy-MuiButtonBase-root-MuiButton-roo{
+    background-color: #051134 !important;
   }

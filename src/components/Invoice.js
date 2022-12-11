@@ -144,6 +144,7 @@ const Invoice = () => {
  }
 
   const searchCompany = async (str) => {
+    debugger
     console.log(str)
     const url = "/accounts/company/autocomplete";
     try {

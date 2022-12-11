@@ -15,6 +15,9 @@ import SideBar from "./components/SideBar";
 import LayoutAccounts from "./components/LayoutAccounts";
 import LayoutAdmin from "./components/LayoutAdmin";
 import LayoutAdminUser from "./components/LayoutAdminUser";
+import LayoutOperationsExpenditure from "./components/LayoutOperationsExpenditure";
+import LayoutOperationsEmployee from "./components/LayoutOperationsEmployee";
+import LayoutOperationsSalary from "./components/LayoutOperationsSalary";
 
 function App() {
   const Roles = {
@@ -44,7 +47,11 @@ function App() {
           <Route path="/dashboard/invoice" exact   element={<LayoutAccounts />}/>
           </Route>
         <Route element={<RequireAuth allowedRoles={[Roles.Operations]} />}>
-          <Route path="operations" element={<Operations />} />
+          {/* <Route path="operations/expenditure" element={<Operations />} /> */}
+          <Route path="operations/expenditure" element={<LayoutOperationsExpenditure />} />
+          <Route path="operations/employee" element={<LayoutOperationsEmployee />} />
+          <Route path="operations/salary" element={<LayoutOperationsSalary />} />
+
        </Route>
         {/* catch all */}
         <Route path="*" element={<Missing />} />

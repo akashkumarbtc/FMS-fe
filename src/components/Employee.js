@@ -26,9 +26,13 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import employeeListLogo from "../assets/employeeListLogo.png"
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 var rows = [];
-const options = ["Update", "Delete"];
+const options = ["Delete"];
 const ITEM_HEIGHT = 48;
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -44,23 +48,34 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-function createData(username, email) {
+function createData(department, designation, email, name, phone) {
   return {
-    username,
-    email,
+    department, designation, email, name, phone
   };
 }
 
-const User = () => {
+const Employee = () => {
   const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("")
+  // const [lastName, setLastName] = useState("")
   const [department, setDepartment] = useState("");
   const [designation, setDesignation] = useState("");
-  const [contact, setContact] = useState("");
+  const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [workLocation, setWorkLocation] = useState("");
-  const [pwd, setPwd] = useState("");
-  const [matchPwd, setMatchPwd] = useState("");
+  const [address, setAddress] = useState("")
+  const [bankName, setBankName] = useState("")
+  const [bankNo, setBankNo] = useState("")
+  const [pfNo, setPfNO] = useState("")
+  const [pfUan, setPfUan] = useState("")
+  const [esiNo, setEsiNo] = useState("")
+  const [pan, setPan] = useState("");
+  const [basic_DA, setBasicDa] = useState("")
+  const [hra, setHra] = useState("")
+  const [special_allowance, setSpecialAllowance] = useState("")
+  const [pf, setPf] = useState("")
+  const [lta, setLta] = useState("")
+  const [professional_tax, setProfessionalTax] = useState("")
+  const [earnings_total, setEarningsTotal] = useState("")
   const [open, setOpen] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
   const [userList, setUserList] = useState([]);
@@ -85,6 +100,9 @@ const User = () => {
   const handleCloseMenue = () => {
     setAnchorEl(null);
   };
+  const handleDeleteEmployee = async(e) => {
+      debugger
+  }
 
   const descriptionElementRef = React.useRef(null);
   React.useEffect(() => {
@@ -101,7 +119,7 @@ const User = () => {
   }, []);
 
   const getCompanyList = async () => {
-    const url = "/admin/user-list";
+    const url = "/operations/employee-list";
     try {
       const response = await axios.get(url, {
         headers: {
@@ -110,12 +128,12 @@ const User = () => {
         },
         withCredentials: true,
       });
-      const companyList = response.data.users;
+      const companyList = response.data.employees;
       console.log(companyList);
       console.log(rows);
       rows = [];
       companyList.map((items) => {
-        rows.push(createData(items.username, items.email));
+        rows.push(createData(items.department, items.designation, items.email, items.name, items.phone));
       });
       setUserList(rows);
     } catch (err) {
@@ -158,18 +176,31 @@ const User = () => {
   }
 
   const handleSubmit = async (e) => {
-    const Login_Url = "/admin/create";
+    const Login_Url = "/operations/employee-creation";
     e.preventDefault();
     try {
       const response = await axios.post(
         Login_Url,
         JSON.stringify({
-          first_name: name,
-          last_name: lastName,
-          role: department,
-          email: email,
-          password: pwd,
-          designation: designation,
+            name: name,
+            designation: designation,
+            department: department,
+            work_loaction: workLocation,
+            address: address,
+            bank_name: bankName,
+            phone: phone,
+            email: email,
+            pf_no: pfNo,
+            pf_uan: pfUan,
+            esi_no: esiNo,
+            pan: pan,
+            basic_DA: basic_DA,
+            hra: hra,
+            special_allowance: special_allowance,
+            lta: lta,
+            pf: pf,
+            profession_tax: professional_tax,
+            earnings_total: earnings_total
         }),
         {
           headers: {
@@ -180,11 +211,13 @@ const User = () => {
         }
       );
       // setOpen(false);
+      toast.success("Invoice created successfully!")
       getCompanyList();
       handleClose();
 
       // navigate(from, { replace: true });
     } catch (err) {
+      toast.error(err.response.data.detail)
       // if (!err?.response) {
       //   setErrMsg("No Server Response");
       // } else if (err.response?.status === 400) {
@@ -224,18 +257,18 @@ const User = () => {
               />
               <div>
                 <h3 className="account-name">Ankur Gupta</h3>
-                <h5 className="account-role">Admin</h5>
+                <h5 className="account-role">Operation</h5>
               </div>
             </div>
           </div>
 
           <div className="mt-3 clients-list">
             <img
-              src={adminList}
-              alt="clientsListIcon"
+              src={employeeListLogo}
+              alt="employeeListLogo"
               className="clientsListImage"
             />
-            <p className="user-list-text">List of Users</p>
+            <p className="user-list-text">Employee List</p>
           </div>
           <div className="mt-4 client-search">
             <div class="client-search-container search">
@@ -267,11 +300,24 @@ const User = () => {
             </div>
             <button
               className=" add-new-client"
+              style={{width:'126px'}}
               onClick={handleClickOpen("paper")}
             >
               <img className="add-new-icon" src={addNewIcon} alt="addNewIcon" />
               Add New
             </button>
+            <select
+              name="department"
+              id="department"
+              className="employee-select"
+              // onChange={(e) => setDepartment(e.target.value)}
+              required
+            >
+              <option value="select">Select</option>
+              <option value="admin">Admin</option>
+              <option value="accounts">Accounts</option>
+              <option value="operations">Operations</option>
+            </select>
           </div>
           <div className="row mt-4">
             <TableContainer component={Paper}>
@@ -291,7 +337,16 @@ const User = () => {
                       Email&nbsp;
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      Actions&nbsp;
+                      Phone&nbsp;
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      Department&nbsp;
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      Designation&nbsp;
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      Action&nbsp;
                     </StyledTableCell>
                   </TableRow>
                 </TableHead>
@@ -302,9 +357,12 @@ const User = () => {
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell sx={{ padding: "10px" }} align="center">
-                        {row.username}
+                        {row.name}
                       </TableCell>
                       <TableCell align="center">{row.email}</TableCell>
+                      <TableCell sx={{ padding: "10px" }} align="center">{row.phone}</TableCell>
+                      <TableCell sx={{ padding: "10px" }} align="center">{row.department}</TableCell>
+                      <TableCell sx={{ padding: "10px" }} align="center">{row.designation}</TableCell>
                       <TableCell sx={{ padding: "10px" }} align="center">
                         <IconButton
                           aria-label="more"
@@ -335,7 +393,7 @@ const User = () => {
                             <MenuItem
                               key={option}
                               selected={option === "Pyxis"}
-                              onClick={handleCloseMenue}
+                              onClick={(e)=>{handleDeleteEmployee(rows.name)}}
                             >
                               {option}
                             </MenuItem>
@@ -368,7 +426,7 @@ const User = () => {
                   >
                     <form className="form-container" onSubmit={handleSubmit}>
                       <div className="item">
-                        <label className="mt-3">First Name</label>
+                        <label className="mt-3">Name</label>
                         <input
                           className="mt-3"
                           type="text"
@@ -378,35 +436,16 @@ const User = () => {
                           required
                         />
                       </div>
-
                       <div className="item">
-                        <label className="mt-3">Last Name</label>
+                        <label className="mt-3">Deparment</label>
                         <input
-                          className="mt-3"
-                          type="text"
-                          autoComplete="off"
-                          onChange={(e) => setLastName(e.target.value)}
-                          value={lastName}
-                          required
-                        />
-                      </div>
-
-                      <div className="item">
-                        <label className="mt-3">Role</label>
-                        {/* <input
                           className="mt-3"
                           type="text"
                           autoComplete="off"
                           onChange={(e) => setDepartment(e.target.value)}
                           value={department}
                           required
-                        /> */}
-                        <select name="department" id="department" className="department-select" onChange={(e) => setDepartment(e.target.value)} required>
-                          <option value="select">Select</option>
-                          <option value="admin">Admin</option>
-                          <option value="accounts">Accounts</option>
-                          <option value="operations">Operations</option>
-                        </select>
+                        />
                       </div>
 
                       <div className="item">
@@ -421,18 +460,40 @@ const User = () => {
                         />
                       </div>
 
-                      {/* <div className="item">
-                        <label className="mt-3">Contact</label>
+                      <div className="item">
+                        <label className="mt-3">Work Location</label>
                         <input
                           className="mt-3"
                           type="text"
                           autoComplete="off"
-                          onChange={(e) => setContact(e.target.value)}
-                          value={contact}
+                          onChange={(e) => setWorkLocation(e.target.value)}
+                          value={workLocation}
                           required
                         />
-                      </div> */}
+                      </div>
 
+                      <div className="item">
+                        <label className="mt-3">Address</label>
+                        <input
+                          className="mt-3"
+                          type="text"
+                          autoComplete="off"
+                          onChange={(e) => setAddress(e.target.value)}
+                          value={address}
+                          required
+                        />
+                      </div>
+                      <div className="item">
+                        <label className="mt-3">Phone</label>
+                        <input
+                          className="mt-3"
+                          type="text"
+                          autoComplete="off"
+                          onChange={(e) => setPhone(e.target.value)}
+                          value={phone}
+                          required
+                        />
+                      </div>
                       <div className="item">
                         <label className="mt-3">Email</label>
                         <input
@@ -444,42 +505,151 @@ const User = () => {
                           required
                         />
                       </div>
-
-                      {/* <div className="item">
-                        <label className="mt-3">Work Location</label>
+                      <div className="item">
+                        <label className="mt-3">Bank Name</label>
                         <input
                           className="mt-3"
                           type="text"
                           autoComplete="off"
-                          onChange={(e) => setWorkLocation(e.target.value)}
-                          value={workLocation}
+                          onChange={(e) => setBankName(e.target.value)}
+                          value={bankName}
+                          required
+                        />
+                      </div>
+                      {/* <div className="item">
+                        <label className="mt-3">Bank Account Number</label>
+                        <input
+                          className="mt-3"
+                          type="text"
+                          autoComplete="off"
+                          onChange={(e) => setBankNo(e.target.value)}
+                          value={bankNo}
                           required
                         />
                       </div> */}
-
-                      <div className="item" style={{textAlign:'left'}}>
-                        <label className="mt-3">Set New Password</label>
+                      <div className="item">
+                        <label className="mt-3">Pf Number</label>
                         <input
-                          className="mt-3 designation-input"
+                          className="mt-3"
                           type="text"
                           autoComplete="off"
-                          onChange={(e) => setPwd(e.target.value)}
-                          value={pwd}
+                          onChange={(e) => setPfNO(e.target.value)}
+                          value={pfNo}
+                          required
+                        />
+                      </div>
+                      <div className="item">
+                        <label className="mt-3">Pf UAN</label>
+                        <input
+                          className="mt-3"
+                          type="text"
+                          autoComplete="off"
+                          onChange={(e) => setPfUan(e.target.value)}
+                          value={pfUan}
                           required
                         />
                       </div>
 
-                      {/* <div className="item">
-                        <label className="mt-3">Re-enter Password</label>
+                      <div className="item">
+                        <label className="mt-3">Esi Number</label>
                         <input
                           className="mt-3"
                           type="text"
                           autoComplete="off"
-                          onChange={(e) => setMatchPwd(e.target.value)}
-                          value={matchPwd}
+                          onChange={(e) => setEsiNo(e.target.value)}
+                          value={esiNo}
                           required
                         />
-                      </div> */}
+                      </div>
+                      <div className="item">
+                        <label className="mt-3">Pan</label>
+                        <input
+                          className="mt-3"
+                          type="text"
+                          autoComplete="off"
+                          onChange={(e) => setPan(e.target.value)}
+                          value={pan}
+                          required
+                        />
+                      </div>
+                      <div className="item">
+                        <label className="mt-3">Basic Da</label>
+                        <input
+                          className="mt-3"
+                          type="number"
+                          autoComplete="off"
+                          onChange={(e) => setBasicDa(e.target.value)}
+                          value={basic_DA}
+                          required
+                        />
+                      </div>
+                      <div className="item">
+                        <label className="mt-3">HRA</label>
+                        <input
+                          className="mt-3"
+                          type="number"
+                          autoComplete="off"
+                          onChange={(e) => setHra(e.target.value)}
+                          value={hra}
+                          required
+                        />
+                      </div>
+                      <div className="item">
+                        <label className="mt-3">Special Allowance</label>
+                        <input
+                          className="mt-3"
+                          type="number"
+                          autoComplete="off"
+                          onChange={(e) => setSpecialAllowance(e.target.value)}
+                          value={special_allowance}
+                          required
+                        />
+                      </div>
+                      <div className="item">
+                        <label className="mt-3">LTA</label>
+                        <input
+                          className="mt-3"
+                          type="number"
+                          autoComplete="off"
+                          onChange={(e) => setLta(e.target.value)}
+                          value={lta}
+                          required
+                        />
+                      </div>
+                      <div className="item">
+                        <label className="mt-3">Pf</label>
+                        <input
+                          className="mt-3"
+                          type="number"
+                          autoComplete="off"
+                          onChange={(e) => setPf(e.target.value)}
+                          value={pf}
+                          required
+                        />
+                      </div>
+                      <div className="item">
+                        <label className="mt-3">Professional Tax</label>
+                        <input
+                          className="mt-3"
+                          type="number"
+                          autoComplete="off"
+                          onChange={(e) => setProfessionalTax(e.target.value)}
+                          value={professional_tax}
+                          required
+                        />
+                      </div>
+                      <div className="item" style={{textAlign:'left'}}>
+                        <label className="mt-3">Total Earnings</label>
+                        <input
+                          className="mt-3"
+                          style={{marginLeft:'29px'}}
+                          type="number"
+                          autoComplete="off"
+                          onChange={(e) => setEarningsTotal(e.target.value)}
+                          value={earnings_total}
+                          required
+                        />
+                      </div>
                       <button
                         className="submitButton"
                         id="primarybutton"
@@ -504,8 +674,9 @@ const User = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
 
-export default User;
+export default Employee;

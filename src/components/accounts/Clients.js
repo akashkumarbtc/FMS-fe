@@ -29,6 +29,7 @@ const token = JSON.parse(data).accessToken;
   }
 
   const getSelctedCompany = async (value) => {
+    debugger
     console.log(value)
     const url = "/accounts/company-filter";
     try {
@@ -72,7 +73,7 @@ const searchCompany = async (str) => {
         params: { term: str },
       });
       myOptions = [];
-      let data = response.data.suggestions
+      let data = response.data
       for (var i = 0; i < data.length; i++) {
         myOptions.push(data[i]);
       }
@@ -97,7 +98,7 @@ const searchCompany = async (str) => {
         autoComplete
         autoHighlight
         options={myOptions}
-        onChange={(e) => getSelctedCompany(myOptions[e.target.value])}
+        onChange={(e) => getSelctedCompany(e.target.value)}
         renderInput={(params) => (
           <TextField style={{padding:"5px !important"}}
             {...params}

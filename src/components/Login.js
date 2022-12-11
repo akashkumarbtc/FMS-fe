@@ -72,7 +72,7 @@ const Login = () => {
       } else if (response.data.role == "admin") {
         navigate("/admin/dashboard");
       } else if (response.data.role == "operations") {
-        navigate("/operations");
+        navigate("/operations/expenditure");
       } else{
         navigate("/unauthorized");
       }
