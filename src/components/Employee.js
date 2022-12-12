@@ -106,19 +106,33 @@ const Employee = () => {
       const url = "/operations/delete-employee";
       try {
         const response = await axios.delete(
-          url,
-          JSON.stringify({
-            employee_name: e.target.id
-          }),
           {
-            headers: { "Content-Type": "application/json", 'Authorization': 'Bearer '+token },
-            withCredentials: true,
+            url,
+            // JSON.stringify({
+            //   employee_name: e.target.id
+            // }),
+            // {
+            //   headers: {
+            //     "Content-Type": "application/json",
+            //     Authorization: "Bearer " + token,
+            //   },
+             
+              
+            //   withCredentials: true,
+            // }
+            headers: {
+              Authorization:"Bearer " + token,
+            },
+            data: {
+              employee_name: e.target.id
+            }
           }
+         
         );
         // setOpen(false);
         toast.success("Invoice created successfully!")
-        getCompanyList()
-        handleClose()
+        // getCompanyList()
+        // handleClose()
     } catch (err) {
         console.log(err);
       }

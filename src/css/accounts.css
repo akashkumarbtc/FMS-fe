@@ -414,3 +414,136 @@ margin-bottom: 15px;
     border-radius: 10px;
     padding: 8px;
 }
+.breakdown-container{
+    width: 50%;
+    padding-left: 20px !important;
+}
+.reimbursement-details-container{
+    width: 48%
+}
+.breakdown-header{
+    text-align: left;
+}
+.list-header{
+    display: flex;
+}
+.salary-breakdown-container{
+    display: flex;
+}
+.item-left{
+    border: 1px solid black;
+    padding: 2px;
+    width: 45%;
+    padding-left: 15px;
+    border-radius: 4px;
+    text-align: left;
+}
+.item-right{
+    border: 1px solid black;
+    padding: 2px;
+    width: 45%;
+    padding-left: 15px;
+    border-radius: 4px;
+    text-align: left;
+    margin-left: 10px;
+}
+.basic-da-container{
+    background: #D4D1FF;
+    color: #4B5279
+}
+.hra-container{
+    background: #E3E1FF;
+    color: #4B5279
+}
+.allowance-container{
+    background: #EDBAFF;
+    color: #4B5279
+}
+.pf-container{
+    background: rgba(237, 186, 255, 0.58);
+    color: #4B5279
+}
+.profession-tax-container{
+    background: #AAF0FF;
+    color: #4B5279
+}
+.earnings-container{
+    background: #C8F4FF;
+    color: #4B5279
+}
+.reimbursement-container{
+    background: #D6FFA1;
+    color: #4B5279
+}
+.deductions-container{
+    background: #E6FFC7;
+    color: #4B5279
+}
+.total-container{
+    background: #051134;
+    color:#FFFFFF
+}
+.reimbursement-details-container{
+    background: #FFFFFF;
+    border: 1px solid #CECECE;
+    border-radius: 10px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+.reimbursement-header{
+    text-align: left;
+    padding-left: 13px;
+}
+.reimbursement-inputs{
+    display: flex;
+}
+.reimbursement-type-input{
+    width: 87%;
+    padding: 5px;
+    border-color: black
+}
+.reimbursement-amount-input{
+    width: 87%;
+    padding: 5px;
+    border-color: black
+}
+.reimbursement-type-container{
+    width: 50%;
+}
+.reimbursement-amount-container{
+    width: 50%;
+}
+.reimbursement-label{
+    padding-left: 13px;
+    color: #9095A5;
+}
+.upload-container{
+    text-align: left;
+    padding-left: 20px;
+    font-weight: 500;
+    font-size: 16px;
+    color: #9095A5;
+}
+.reimbursement-upload-logo{
+    text-align: left;
+    width: 27px;
+    height: 21px;
+    margin-right: 8px;
+}
+.div-border{
+    border-bottom: 1px solid #9095A5;
+    width: 94%;
+    margin-left: 14px;
+}
+.breakdown-add-button{
+    width: 100%;
+    background-color: #051134;;
+    color: white;
+    border: 1px solid #051134;
+    border-radius: 10px;
+    padding: 8px;
+}
+.salary-breakdown-button{
+    width: 40%;
+    padding-left: 13px;
+}
