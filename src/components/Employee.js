@@ -101,7 +101,27 @@ const Employee = () => {
     setAnchorEl(null);
   };
   const handleDeleteEmployee = async(e) => {
+    console.log(e.target.id)
       debugger
+      const url = "/operations/delete-employee";
+      try {
+        const response = await axios.delete(
+          url,
+          JSON.stringify({
+            employee_name: e.target.id
+          }),
+          {
+            headers: { "Content-Type": "application/json", 'Authorization': 'Bearer '+token },
+            withCredentials: true,
+          }
+        );
+        // setOpen(false);
+        toast.success("Invoice created successfully!")
+        getCompanyList()
+        handleClose()
+    } catch (err) {
+        console.log(err);
+      }
   }
 
   const descriptionElementRef = React.useRef(null);
@@ -363,7 +383,7 @@ const Employee = () => {
                       <TableCell sx={{ padding: "10px" }} align="center">{row.phone}</TableCell>
                       <TableCell sx={{ padding: "10px" }} align="center">{row.department}</TableCell>
                       <TableCell sx={{ padding: "10px" }} align="center">{row.designation}</TableCell>
-                      <TableCell sx={{ padding: "10px" }} align="center">
+                      <TableCell id={row.name} sx={{ padding: "10px" }} align="center">
                         <IconButton
                           aria-label="more"
                           id="long-button"
@@ -392,8 +412,9 @@ const Employee = () => {
                           {options.map((option) => (
                             <MenuItem
                               key={option}
+                              id={row.name}
                               selected={option === "Pyxis"}
-                              onClick={(e)=>{handleDeleteEmployee(rows.name)}}
+                              onClick={(e)=>{handleDeleteEmployee(e)}}
                             >
                               {option}
                             </MenuItem>

@@ -31,6 +31,7 @@ const Operations = () => {
   const [clientDetails, setClientDetails] = React.useState("");
   const [billAmount, setBillAmount] = React.useState("");
   const [invoiceFile, setInvoiceFile] = useState({})
+  const [bill_item, setBillItem] = useState("")
   const data = localStorage.getItem("auth");
   const token = JSON.parse(data).accessToken;
   let formdata = new FormData();
@@ -82,7 +83,7 @@ const Operations = () => {
 
   const searchCompany = async (str) => {
     console.log(str)
-    const url = "/accounts/company/autocomplete";
+    const url = "/operations/employee/autocomplete";
     try {
       const response = await await axios.get(url, {
         headers: {
@@ -92,7 +93,7 @@ const Operations = () => {
         params: { term: str },
       });
       console.log();
-      let data = response.data
+      let data = response.data.suggestions
       myOptions = [];
       for (var i = 0; i < data.length; i++) {
         myOptions.push(data[i]);
@@ -103,11 +104,37 @@ const Operations = () => {
     }
   };
 
+  const getSelctedInvoice = async (value) => {
+    const url = "/accounts/invoice-filter";
+    try {
+     const response = await axios.post(url, 
+       JSON.stringify({
+        client: value,
+       }),
+       {
+       headers: {
+         "Content-Type": "application/json",
+         Authorization: "Bearer " + token,
+       },
+     });
+     const invoiceList = response.data
+      // rows=[]
+      // invoiceList.map((items)=>{
+      //    rows.push(createData(items.client, items.amount, items.gst, items.total_amount, items.Notes, items.generated_at, items.due_date))
+      // })
+      // setUserList(rows)
+
+   } catch (err) {
+     console.log(err);
+   }
+ }
+
  
   const handleFileUpload = async (e) => {
     debugger;
     let file = e.target.files[0];
-    formdata1.append("files", file);
+    // formdata1.append("files", file);
+    setInvoiceFile(file)
   };
   const upload = () => {
     document.getElementById("primaryinvoiceupload").click();
@@ -126,6 +153,7 @@ const Operations = () => {
   formdata1.append('location', clientLocation)
   formdata1.append('bill_details', clientDetails)
   formdata1.append('amount', billAmount)
+  formdata1.append("files", invoiceFile);
   
 
     try {
@@ -248,22 +276,21 @@ const Operations = () => {
           </div>
           <div className="mt-3 client-search">
             <div class="invoice-search-container search">
-              <Autocomplete
-                style={{ width: "97%" }}
+            <Autocomplete
+                style={{ width: '97%' }}
                 freeSolo
                 autoComplete
                 autoHighlight
                 options={myOptions}
-                // onChange={(e) => getSelctedInvoice(e.target.value)}
+                onChange={(e) => getSelctedInvoice(e.target.value)}
                 renderInput={(params) => (
-                  <TextField
-                    style={{ padding: "5px !important" }}
+                  <TextField style={{padding:"5px !important"}}
                     {...params}
                     label="Type somethong here!"
                     // onChange={(e)=>handleControlSearch(
                     //  searchCompany(e.target.value)
                     // ,2000)}
-                    // onChange={(e) => searchCompany(e.target.value)}
+                    onChange={(e) => searchCompany(e.target.value)}
                     variant="outlined"
                   />
                 )}
@@ -454,68 +481,50 @@ const Operations = () => {
                     >
                       <div className="item">
                       <label className="mt-3">Client/Employee Name</label>
-                        <Autocomplete
-                          style={{ width: "90%", marginTop: "20px", paddingLeft:'25px' }}
-                          freeSolo
-                          autoComplete
-                          autoHighlight
-                          options={myOptions}
-                          // onChange={(e) => setCompanyClient(e.target.value)}
-                          renderInput={(params) => (
-                            <TextField
-                              style={{ padding: "5px !important" }}
-                              {...params}
-                              label="Search company here!"
-                              onChange={(e) =>
-                                handleControlSearch(
-                                  searchCompany(e.target.value),
-                                  2000
-                                )
-                              }
-                              variant="outlined"
-                            />
-                          )}
-                        />
+                        <input
+                            className="mt-3"
+                            type="text"
+                            autoComplete="off"
+                            onChange={(e) => setClient(e.target.value)}
+                            value={client}
+                            required
+                          />
+                      </div>
+                       <div className="item">
+                          <label className="mt-3">Bill Details</label>
+                          <textarea
+                            className="description-text mt-3"
+                            style={{ height: "43px" }}
+                            cols="24"
+                            name="comment"
+                            form="usrform"
+                            autoComplete="off"
+                            value={clientDetails}
+                            onChange={(e) => setClientDetails(e.target.value)}
+                            required
+                          />
+                        </div>
+                        <div className="item">
+                        <label className="mt-3">Bill Item</label>
+                        <select name="department" id="department" className="department-select" onChange={(e) => setBillItem(e.target.value)} required>
+                          <option value="select">Select</option>
+                          <option value="admin">Software Expense</option>
+                          <option value="accounts">HaedWare Expense</option>
+                          <option value="operations">Other Expense</option>
+                        </select>
                       </div>
 
-                      {/* <div className="item">
-                        <label className="mt-3">Client Location</label>
-                        <input
-                          className="mt-3"
-                          type="text"
-                          autoComplete="off"
-                          // onChange={(e) => setDesignation(e.target.value)}
-                          // value={designation}
-                          required
-                        />
-                      </div> */}
-
-                      <div className="item">
-                        <label className="mt-3">Bill Details</label>
-                        <textarea
-                          className="description-text mt-3"
-                          style={{ height: "43px" }}
-                          // rows="2"
-                          cols="24"
-                          name="comment"
-                          form="usrform"
-                          autoComplete="off"
-                          // value={notes}
-                          // onChange={(e) => setNotes(e.target.value)}
-                          required
-                        />
-                      </div>
-                      <div className="item">
-                        <label className="mt-3">Amount</label>
-                        <input
-                          className="mt-3"
-                          type="number"
-                          autoComplete="off"
-                          // onChange={(e) => setEmail(e.target.value)}
-                          // value={email}
-                          required
-                        />
-                      </div>
+                        <div className="item">
+                          <label className="mt-3">Amount</label>
+                          <input
+                            className="mt-3"
+                            type="number"
+                            autoComplete="off"
+                            onChange={(e) => setBillAmount(e.target.value)}
+                            value={billAmount}
+                            required
+                          />
+                        </div>
                       <div className="item" style={{ textAlign: "left" }}>
                         <label className="mt-3" style={{ textAlign: "left" }}>
                           Upload Invoice
