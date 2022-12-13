@@ -137,6 +137,7 @@ const Invoice = () => {
          rows.push(createData(items.client, items.amount, items.gst, items.total_amount, items.Notes, items.generated_at, items.due_date))
       })
       setUserList(rows)
+      // getCompanyList()
 
    } catch (err) {
      console.log(err);

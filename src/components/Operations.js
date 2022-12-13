@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "../api/axios";
 import wavingHand from "../assets/wavingHand.png";
 import accountsSettings from "../assets/accountsSettings.png";
@@ -9,7 +9,6 @@ import grossSalaryLogo from "../assets/grossSalaryLogo.png";
 import expenseLogo from "../assets/expenseLogo.png";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { ToastContainer, toast } from "react-toastify";
 import addNewIcon from "../assets/addNewIcon.png";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
@@ -20,6 +19,37 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import { styled } from "@mui/material/styles";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+var rows = [];
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: "#051134",
+    color: theme.palette.common.white,
+    padding: "0px",
+    paddingBottom: "16px",
+    paddingTop: "16px",
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+function createData(bill_amount, bill_invoice, expenditure_type) {
+  return {
+    bill_amount, bill_invoice, expenditure_type
+  };
+}
 
 const Operations = () => {
   var [myOptions, setMyOptions] = useState([]);
@@ -32,6 +62,7 @@ const Operations = () => {
   const [billAmount, setBillAmount] = React.useState("");
   const [invoiceFile, setInvoiceFile] = useState({})
   const [bill_item, setBillItem] = useState("")
+  const [userList, setUserList] = useState([]);
   const data = localStorage.getItem("auth");
   const token = JSON.parse(data).accessToken;
   let formdata = new FormData();
@@ -68,6 +99,34 @@ const Operations = () => {
   const handleCloseMenue = () => {
     setAnchorEl(null);
   };
+  useEffect(() => {
+    getExpenditureList();
+  }, []);
+  const getExpenditureList = async() => {
+    const url = "/operations/list-expenditre"
+    try{
+      const response = await axios.get(
+        url,
+        {
+          headers: { "Content-Type": "application/json", 'Authorization': 'Bearer '+token },
+          withCredentials: true,
+        }
+      );
+      console.log(response.data.invoices)
+      const expenditure_list = response.data.expenditure_list
+      rows=[]
+      expenditure_list.map((items)=>{
+         rows.push(createData(items.bill_amount, items.bill_invoice, items.expenditure_type))
+      })
+      setUserList(rows);
+      console.log(userList)
+
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+
 
   function handleControlSearch(fn, delay){
     let timeOutId;
@@ -142,40 +201,40 @@ const Operations = () => {
   
   const handleSubmit = async (e) => {
     debugger
-    const Login_Url = "/operations/create-cloudbill";
     e.preventDefault();
-  //   for (var key of formdata.entries()) {
-  //     console.log(key[0] + ', ' + key[1]);
-  // }
-  
-  formdata1.append('expenditure_type', billType)
-  formdata1.append('client', client)
-  formdata1.append('location', clientLocation)
-  formdata1.append('bill_details', clientDetails)
-  formdata1.append('amount', billAmount)
-  formdata1.append("files", invoiceFile);
-  
-
+    let Login_Url = ""
+  if(billType == 'cloud'){
+     Login_Url = "/operations/create-cloudbill";
+    formdata1.append('expenditure_type', billType)
+    formdata1.append('client', client)
+    formdata1.append('location', clientLocation)
+    formdata1.append('bill_details', clientDetails)
+    formdata1.append('amount', parseFloat(billAmount))
+    formdata1.append("files", invoiceFile);
+  }else{
+     Login_Url = "/operations/create-miscellaneous";
+     formdata.append('expenditure_type', billType)
+     formdata.append('employee_or_client_name ', client)
+     formdata.append('bill_details', clientDetails)
+     formdata.append('bill_item ', bill_item)
+     formdata.append('amount', parseFloat(billAmount))
+     formdata.append("files", invoiceFile);
+  }
     try {
       const response = await axios.post(
         Login_Url,
-        // {
-        //   expenditure_type: billType,
-        //   client: client,
-        //   location: clientLocation,
-        //   bill_details: clientDetails,
-        //   amount: billAmount,
-        // },
+        
         formdata1,
         {
           headers: {  'Content-type': 'multipart/form-data', 'Authorization': 'Bearer '+token },
           withCredentials: true,
         }
       );
-      // setOpen(false);
-
-      // navigate(from, { replace: true });
+      toast.success("Bill generated successfully!")
+      getExpenditureList()
+        handleClose()
     } catch (err) {
+      toast.error(err.response.data.detail)
       // if (!err?.response) {
       //   setErrMsg("No Server Response");
       // } else if (err.response?.status === 400) {
@@ -339,10 +398,48 @@ const Operations = () => {
               required
             >
               <option value="select">Select</option>
-              <option value="admin">Admin</option>
-              <option value="accounts">Accounts</option>
-              <option value="operations">Operations</option>
+              <option value="cloud">Cloud</option>
+              <option value="miscellaneous">Miscellaneous</option>
             </select>
+          </div>
+          <div className="row mt-4">
+            <TableContainer component={Paper}>
+              <Table
+                sx={{ minWidth: 650, maxHeight: 300 }}
+                aria-label="simple table"
+              >
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell
+                      sx={{ lineHeight: "20px", padding: "5px" }}
+                      align="center"
+                    >
+                      Bill Amount
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      Bill Invoice&nbsp;
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      Expenditure Type&nbsp;
+                    </StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {userList.map((row) => (
+                    <TableRow
+                      key={row.bill_invoice}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell sx={{ padding: "10px" }} align="center">
+                        {row.bill_amount}
+                      </TableCell>
+                      <TableCell align="center">{row.bill_invoice}</TableCell>
+                      <TableCell align="center">{row.expenditure_type}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </div>
           <div className="formDialog">
             <div>
@@ -477,7 +574,7 @@ const Operations = () => {
                   >
                     <form
                       className="form-container"
-                      // onSubmit={handleSubmit}
+                      onSubmit={handleSubmit}
                     >
                       <div className="item">
                       <label className="mt-3">Client/Employee Name</label>
@@ -508,9 +605,9 @@ const Operations = () => {
                         <label className="mt-3">Bill Item</label>
                         <select name="department" id="department" className="department-select" onChange={(e) => setBillItem(e.target.value)} required>
                           <option value="select">Select</option>
-                          <option value="admin">Software Expense</option>
-                          <option value="accounts">HaedWare Expense</option>
-                          <option value="operations">Other Expense</option>
+                          <option value="software_epense">Software Expense</option>
+                          <option value="hardWare_expense">HardWare Expense</option>
+                          <option value="other_expense">Other Expense</option>
                         </select>
                       </div>
 
@@ -561,7 +658,7 @@ const Operations = () => {
                   <Button
                     className="add-company-button"
                     id="secondarybutton"
-                    // onClick={secondaryClick}
+                    onClick={secondaryClick}
                   >
                     Submit
                   </Button>
@@ -572,6 +669,7 @@ const Operations = () => {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

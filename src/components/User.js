@@ -26,6 +26,7 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 var rows = [];
 const options = ["Update", "Delete"];
@@ -44,9 +45,10 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-function createData(username, email) {
+function createData(first_name, last_name, email) {
   return {
-    username,
+    first_name,
+    last_name,
     email,
   };
 }
@@ -115,7 +117,7 @@ const User = () => {
       console.log(rows);
       rows = [];
       companyList.map((items) => {
-        rows.push(createData(items.username, items.email));
+        rows.push(createData(items.first_name, items.last_name, items.email));
       });
       setUserList(rows);
     } catch (err) {
@@ -124,7 +126,7 @@ const User = () => {
   };
 
   const searchCompany = async (str) => {
-    const url = "/accounts/company/autocomplete";
+    const url = "/admin/user/autocomplete";
     try {
       const response = await await axios.get(url, {
         headers: {
@@ -199,6 +201,25 @@ const User = () => {
   };
   const secondaryClick = () => {
     document.getElementById("primarybutton").click();
+  };
+
+  const handleUserDelete = async (e) => {
+    debugger;
+    const url = "/admin/delet-user";
+    try {
+      const response = await axios.delete(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        data: {
+          email: e,
+        },
+      });
+      getCompanyList();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -285,7 +306,10 @@ const User = () => {
                       sx={{ lineHeight: "20px", padding: "5px" }}
                       align="center"
                     >
-                      Name
+                     First Name
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      Last Name&nbsp;
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       Email&nbsp;
@@ -298,50 +322,20 @@ const User = () => {
                 <TableBody>
                   {userList.map((row) => (
                     <TableRow
-                      key={row.name}
+                      key={row.first_name}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
                       <TableCell sx={{ padding: "10px" }} align="center">
-                        {row.username}
+                        {row.first_name}
                       </TableCell>
+                      <TableCell align="center">{row.last_name}</TableCell>
                       <TableCell align="center">{row.email}</TableCell>
-                      <TableCell sx={{ padding: "10px" }} align="center">
-                        <IconButton
-                          aria-label="more"
-                          id="long-button"
-                          aria-controls={openMenue ? "long-menu" : undefined}
-                          aria-expanded={openMenue ? "true" : undefined}
-                          aria-haspopup="true"
-                          onClick={handleClickMenue}
-                        >
-                          <MoreVertIcon />
-                        </IconButton>
-                        <Menu
-                          id="long-menu"
-                          MenuListProps={{
-                            "aria-labelledby": "long-button",
-                          }}
-                          anchorEl={anchorEl}
-                          open={openMenue}
-                          onClose={handleCloseMenue}
-                          PaperProps={{
-                            style: {
-                              maxHeight: ITEM_HEIGHT * 4.5,
-                              width: "20ch",
-                            },
-                          }}
-                        >
-                          {options.map((option) => (
-                            <MenuItem
-                              key={option}
-                              selected={option === "Pyxis"}
-                              onClick={handleCloseMenue}
-                            >
-                              {option}
-                            </MenuItem>
-                          ))}
-                        </Menu>
-                      </TableCell>
+                      <TableCell align="center"><DeleteIcon
+                    className="delete-icon"
+                    onClick={(e) => {
+                      handleUserDelete(row.email);
+                    }}
+                  /></TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

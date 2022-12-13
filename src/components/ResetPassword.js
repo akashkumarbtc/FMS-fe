@@ -3,6 +3,9 @@ import { useState, useRef, useEffect } from "react";
 import forgotPassword from "../assets/forgotPassword.png";
 import axios from "../api/axios";
 import "../css/forgotPass.css";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+
 
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
 
@@ -17,6 +20,8 @@ const ResetPassword = () => {
   const [re_resetPass, SetRe_ResetPass] = useState("");
   const[validMatch, setValidMatch] = useState(false)
   const[matchFocus, setMatchFocus] = useState(false)
+  const [success, setSuccess] = useState(false);
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -47,6 +52,7 @@ const ResetPassword = () => {
           withCredentials: true,
         }
       );
+      setSuccess(true)
     } catch (err) {
       if (!err?.response) {
         setErrMsg("No Server Response");
@@ -61,6 +67,9 @@ const ResetPassword = () => {
     }
   };
 
+  const handleReturn = () => {
+    navigate("/");
+  }
   return (
     <div className="wrapperForgotPass">
       <div className="forgotPassImg">
@@ -83,7 +92,8 @@ const ResetPassword = () => {
           onSubmit={handleSubmit}
           style={{ display: "flex", flexDirection: "column", width: "50%" }}
         >
-          <label className="forgotPassLabel">Enter New Password</label>
+          {!success ? <>
+            <label className="forgotPassLabel" style={{paddingLeft:'0px'}}>Enter New Password</label>
           <input
             className="enterNewPasswordInput"
             type="text"
@@ -106,7 +116,7 @@ const ResetPassword = () => {
           Allowed special characters:<span area-label="exclamation mark">!</span><span area-label="at symbol">@</span>
           <span area-label="hashtag">#</span><span area-label="dollar sign">$</span><span area-label="percent">%</span>
           </p>
-          <label className="forgotPassLabel" style={{ marginTop: "20px" }}>
+          <label className="forgotPassLabel" style={{ marginTop: "20px", paddingLeft:'0px' }}>
             Re-Enter New Password
           </label>
           <input
@@ -127,7 +137,13 @@ const ResetPassword = () => {
           />
            <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>Must match first password input field
           </p>
-          <button disabled={!validPwd || !validMatch ? true : false} className="forgotPassSubmit">Submit</button>
+          </>: <>
+            <h5 style={{color:'green'}}>Password successfully reset<CheckCircleOutlineIcon className="successIcon" style={{color:'green', marginTop:'0px'}}/></h5>
+            {/* <CheckCircleOutlineIcon className="successIcon" style={{color:'green'}}/> */}
+            </>}
+         
+          <button disabled={!validPwd || !validMatch || success ? true : false} className="forgotPassSubmit">Submit</button>
+          <span className="login-link" onClick={handleReturn}>Go back to login?</span>
         </form>
       </div>
     </div>

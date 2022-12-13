@@ -112,3 +112,9 @@ section {
     bottom: -10px;
     width: 78% !important;
 }
+.successIcon{
+    width: 121%;
+    /* text-align: center; */
+    margin-top: 11px;
+    color: green;
+}
