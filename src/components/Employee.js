@@ -28,6 +28,7 @@ import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import employeeListLogo from "../assets/employeeListLogo.png"
 import { ToastContainer, toast } from 'react-toastify';
+import DeleteIcon from "@mui/icons-material/Delete";
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -100,38 +101,47 @@ const Employee = () => {
   const handleCloseMenue = () => {
     setAnchorEl(null);
   };
-  const handleDeleteEmployee = async(e) => {
-    console.log(e.target.id)
+  const handleDeleteEmployee = async(name) => {
+    // console.log(e.target.id)
       debugger
       const url = "/operations/delete-employee";
       try {
-        const response = await axios.delete(
-          {
-            url,
-            // JSON.stringify({
-            //   employee_name: e.target.id
-            // }),
-            // {
-            //   headers: {
-            //     "Content-Type": "application/json",
-            //     Authorization: "Bearer " + token,
-            //   },
+        // const response = await axios.delete(
+        //   {
+        //     url,
+        //     // JSON.stringify({
+        //     //   employee_name: e.target.id
+        //     // }),
+        //     // {
+        //     //   headers: {
+        //     //     "Content-Type": "application/json",
+        //     //     Authorization: "Bearer " + token,
+        //     //   },
              
               
-            //   withCredentials: true,
-            // }
-            headers: {
-              Authorization:"Bearer " + token,
-            },
-            data: {
-              employee_name: e.target.id
-            }
-          }
+        //     //   withCredentials: true,
+        //     // }
+        //     // headers: {
+        //     //   Authorization:"Bearer " + token,
+        //     // },
+        //     // data: {
+        //     //   employee_name: e.target.id
+        //     // }
+        //   }
+        const response = await axios.delete(url, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          data: {
+            employee_name: name,
+          },
+        });
          
-        );
+        // );
         // setOpen(false);
-        toast.success("Invoice created successfully!")
-        // getCompanyList()
+        toast.success("employee deleted successfully!")
+        getCompanyList()
         // handleClose()
     } catch (err) {
         console.log(err);
@@ -176,7 +186,7 @@ const Employee = () => {
   };
 
   const searchCompany = async (str) => {
-    const url = "/accounts/company/autocomplete";
+    const url = "/operations/employee/autocomplete";
     try {
       const response = await await axios.get(url, {
         headers: {
@@ -187,7 +197,7 @@ const Employee = () => {
       });
       console.log();
       myOptions = [];
-      let data = response.data.users
+      let data = response.data.suggestions
       for (var i = 0; i < data.length; i++) {
         myOptions.push(data[i]);
       }
@@ -196,7 +206,39 @@ const Employee = () => {
       console.log(err);
     }
   };
-
+  const getSelctedCompany = async (value) => {
+    debugger
+    console.log(value)
+    const url = "/accounts/company-filter";
+    try {
+     const response = await axios.post(url, 
+       JSON.stringify({
+         name: value,
+       }),
+       {
+       headers: {
+         "Content-Type": "application/json",
+         Authorization: "Bearer " + token,
+       },
+     });
+     const companyList = response.data;
+     rows = [];
+     companyList.map((items) => {
+       rows.push(
+         createData(
+           items.name,
+           items.gst_number,
+           items.phone,
+           items.email,
+           items.project_details
+         )
+       );
+     });
+     setUserList(rows);
+   } catch (err) {
+     console.log(err);
+   }
+ }
   function handleControlSearch(fn, delay) {
     let timeOutId;
     return function (...args) {
@@ -318,6 +360,7 @@ const Employee = () => {
                 autoComplete
                 autoHighlight
                 options={myOptions}
+                onChange={(e) => getSelctedCompany(e.target.value)}
                 renderInput={(params) => (
                   <TextField
                     style={{ padding: "5px !important" }}
@@ -397,7 +440,15 @@ const Employee = () => {
                       <TableCell sx={{ padding: "10px" }} align="center">{row.phone}</TableCell>
                       <TableCell sx={{ padding: "10px" }} align="center">{row.department}</TableCell>
                       <TableCell sx={{ padding: "10px" }} align="center">{row.designation}</TableCell>
-                      <TableCell id={row.name} sx={{ padding: "10px" }} align="center">
+                      <TableCell align="center">
+                  <DeleteIcon
+                    className="delete-icon"
+                    onClick={(e) => {
+                      handleDeleteEmployee(row.name);
+                    }}
+                  />
+                </TableCell>
+                      {/* <TableCell id={row.name} sx={{ padding: "10px" }} align="center">
                         <IconButton
                           aria-label="more"
                           id="long-button"
@@ -434,7 +485,7 @@ const Employee = () => {
                             </MenuItem>
                           ))}
                         </Menu>
-                      </TableCell>
+                      </TableCell> */}
                     </TableRow>
                   ))}
                 </TableBody>

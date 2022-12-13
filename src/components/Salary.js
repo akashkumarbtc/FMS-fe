@@ -110,7 +110,7 @@ const Salary = () => {
     try {
       const response = await axios.post(
         Login_Url,
-        {
+        JSON.stringify({
           expenditure_type: "salary",
           employee_name: name,
           basic_DA: parseFloat(basic_DA),
@@ -127,10 +127,10 @@ const Salary = () => {
           reimbursement_note: reimbursement,
           net_pay: parseFloat(earnings_total) - parseFloat(otherDeductionsAmount) + (parseFloat(reimbursementAmount) + parseFloat(satutory_bonus)),
           generated_at: generated_at,
-        },
+        }),
         {
           headers: {
-            "Content-type": "multipart/form-data",
+            "Content-type": "application/json",
             Authorization: "Bearer " + token,
           },
           withCredentials: true,

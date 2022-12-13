@@ -27,8 +27,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 var rows = [];
 
@@ -47,7 +47,9 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 function createData(bill_amount, bill_invoice, expenditure_type) {
   return {
-    bill_amount, bill_invoice, expenditure_type
+    bill_amount,
+    bill_invoice,
+    expenditure_type,
   };
 }
 
@@ -60,14 +62,16 @@ const Operations = () => {
   const [clientLocation, setClientLocation] = React.useState("");
   const [clientDetails, setClientDetails] = React.useState("");
   const [billAmount, setBillAmount] = React.useState("");
-  const [invoiceFile, setInvoiceFile] = useState({})
-  const [bill_item, setBillItem] = useState("")
+  const [invoiceFile, setInvoiceFile] = useState({});
+  const [bill_item, setBillItem] = useState("");
   const [userList, setUserList] = useState([]);
+  const [totalCloudBill, setTotalCloudBill] = useState("")
+  const [totalExpenditure, setTotalExpenditure] = useState("")
+  const [totalMiscellaneous, setTotalMiscellaneous] = useState("")
   const data = localStorage.getItem("auth");
   const token = JSON.parse(data).accessToken;
   let formdata = new FormData();
-  let formdata1 = new FormData()
-
+  let formdata1 = new FormData();
 
   const handleClickOpen = (scrollType, type) => () => {
     debugger;
@@ -101,48 +105,104 @@ const Operations = () => {
   };
   useEffect(() => {
     getExpenditureList();
+    getCloudBill();
+    getExpenditure();
+    getMiscellaneuos();
   }, []);
-  const getExpenditureList = async() => {
-    const url = "/operations/list-expenditre"
-    try{
-      const response = await axios.get(
-        url,
-        {
-          headers: { "Content-Type": "application/json", 'Authorization': 'Bearer '+token },
-          withCredentials: true,
-        }
-      );
-      console.log(response.data.invoices)
-      const expenditure_list = response.data.expenditure_list
-      rows=[]
-      expenditure_list.map((items)=>{
-         rows.push(createData(items.bill_amount, items.bill_invoice, items.expenditure_type))
-      })
-      setUserList(rows);
-      console.log(userList)
 
-    }catch(err){
-      console.log(err)
+  const getExpenditure = async () => {
+    debugger;
+    const url = "/operations/total-expenditure";
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        withCredentials: true,
+      });
+      setTotalExpenditure(response.data.total_expenditure)
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
+  const getCloudBill = async () => {
+    debugger;
+    const url = "/operations/total-cloudbill";
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        withCredentials: true,
+      });
+      setTotalCloudBill(response.data.total_expenditure)
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  const getMiscellaneuos = async () => {
+    debugger;
+    const url = "/operations/total-miscellaneous";
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        withCredentials: true,
+      });
+      setTotalMiscellaneous(response.data.total_expenditure)
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
+  const getExpenditureList = async () => {
+    const url = "/operations/list-expenditre";
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        withCredentials: true,
+      });
+      console.log(response.data.invoices);
+      const expenditure_list = response.data.expenditure_list;
+      rows = [];
+      expenditure_list.map((items) => {
+        rows.push(
+          createData(
+            items.bill_amount,
+            items.bill_invoice,
+            items.expenditure_type
+          )
+        );
+      });
+      setUserList(rows);
+      console.log(userList);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-
-  function handleControlSearch(fn, delay){
+  function handleControlSearch(fn, delay) {
     let timeOutId;
-    return function(...args){
-      if(timeOutId){
-        clearTimeout(timeOutId)
+    return function (...args) {
+      if (timeOutId) {
+        clearTimeout(timeOutId);
       }
-    timeOutId = setTimeout(()=>{
-        fn()
-    }, delay)
-  }
+      timeOutId = setTimeout(() => {
+        fn();
+      }, delay);
+    };
   }
 
   const searchCompany = async (str) => {
-    console.log(str)
-    const url = "/operations/employee/autocomplete";
+    console.log(str);
+    const url = "/accounts/company/autocomplete";
     try {
       const response = await await axios.get(url, {
         headers: {
@@ -152,7 +212,7 @@ const Operations = () => {
         params: { term: str },
       });
       console.log();
-      let data = response.data.suggestions
+      let data = response.data.suggestions;
       myOptions = [];
       for (var i = 0; i < data.length; i++) {
         myOptions.push(data[i]);
@@ -163,78 +223,150 @@ const Operations = () => {
     }
   };
 
-  const getSelctedInvoice = async (value) => {
-    const url = "/accounts/invoice-filter";
+  const getSelctedCompany = async (value) => {
+    debugger;
+    console.log(value);
+    const url = "/accounts/company-filter";
     try {
-     const response = await axios.post(url, 
-       JSON.stringify({
-        client: value,
-       }),
-       {
-       headers: {
-         "Content-Type": "application/json",
-         Authorization: "Bearer " + token,
-       },
-     });
-     const invoiceList = response.data
-      // rows=[]
-      // invoiceList.map((items)=>{
-      //    rows.push(createData(items.client, items.amount, items.gst, items.total_amount, items.Notes, items.generated_at, items.due_date))
-      // })
-      // setUserList(rows)
+      const response = await axios.post(
+        url,
+        JSON.stringify({
+          name: value,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const companyList = response.data;
+      rows = [];
+      companyList.map((items) => {
+        rows.push(
+          createData(
+            items.name,
+            items.gst_number,
+            items.phone,
+            items.email,
+            items.project_details
+          )
+        );
+      });
+      setUserList(rows);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-   } catch (err) {
-     console.log(err);
-   }
- }
+  const searchEmployee = async (str) => {
+    console.log(str);
+    const url = "/operations/employee/autocomplete";
+    try {
+      const response = await await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        params: { term: str },
+      });
+      console.log();
+      let data = response.data.suggestions;
+      myOptions = [];
+      for (var i = 0; i < data.length; i++) {
+        myOptions.push(data[i]);
+      }
+      setMyOptions(myOptions);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
- 
+  const getSelctedEmployee = async (value) => {
+    debugger;
+    console.log(value);
+    const url = "/accounts/company-filter";
+    try {
+      const response = await axios.post(
+        url,
+        JSON.stringify({
+          name: value,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const companyList = response.data;
+      rows = [];
+      companyList.map((items) => {
+        rows.push(
+          createData(
+            items.name,
+            items.gst_number,
+            items.phone,
+            items.email,
+            items.project_details
+          )
+        );
+      });
+      setUserList(rows);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handleFileUpload = async (e) => {
     debugger;
     let file = e.target.files[0];
     // formdata1.append("files", file);
-    setInvoiceFile(file)
+    setInvoiceFile(file);
   };
   const upload = () => {
     document.getElementById("primaryinvoiceupload").click();
   };
-  
+
   const handleSubmit = async (e) => {
-    debugger
+    debugger;
     e.preventDefault();
-    let Login_Url = ""
-  if(billType == 'cloud'){
-     Login_Url = "/operations/create-cloudbill";
-    formdata1.append('expenditure_type', billType)
-    formdata1.append('client', client)
-    formdata1.append('location', clientLocation)
-    formdata1.append('bill_details', clientDetails)
-    formdata1.append('amount', parseFloat(billAmount))
-    formdata1.append("files", invoiceFile);
-  }else{
-     Login_Url = "/operations/create-miscellaneous";
-     formdata.append('expenditure_type', billType)
-     formdata.append('employee_or_client_name ', client)
-     formdata.append('bill_details', clientDetails)
-     formdata.append('bill_item ', bill_item)
-     formdata.append('amount', parseFloat(billAmount))
-     formdata.append("files", invoiceFile);
-  }
+    let Login_Url = "";
+    if (billType == "cloud") {
+      Login_Url = "/operations/create-cloudbill";
+      formdata.append("expenditure_type", billType);
+      formdata.append("client", client);
+      formdata.append("location", clientLocation);
+      formdata.append("bill_details", clientDetails);
+      formdata.append("amount", parseFloat(billAmount));
+      formdata.append("files", invoiceFile);
+    } else {
+      Login_Url = "/operations/create-miscellaneous";
+      formdata.append("expenditure_type", billType);
+      formdata.append("employee_or_client_name ", client);
+      formdata.append("bill_details", clientDetails);
+      formdata.append("bill_item ", bill_item);
+      formdata.append("amount", parseFloat(billAmount));
+      formdata.append("files", invoiceFile);
+    }
     try {
       const response = await axios.post(
         Login_Url,
-        
-        formdata1,
+
+        formdata,
         {
-          headers: {  'Content-type': 'multipart/form-data', 'Authorization': 'Bearer '+token },
+          headers: {
+            "Content-type": "multipart/form-data",
+            Authorization: "Bearer " + token,
+          },
           withCredentials: true,
         }
       );
-      toast.success("Bill generated successfully!")
-      getExpenditureList()
-        handleClose()
+      toast.success("Bill generated successfully!");
+      getExpenditureList();
+      handleClose();
     } catch (err) {
-      toast.error(err.response.data.detail)
+      toast.error(err.response.data.detail);
       // if (!err?.response) {
       //   setErrMsg("No Server Response");
       // } else if (err.response?.status === 400) {
@@ -246,7 +378,7 @@ const Operations = () => {
       // }
       // errRef.current.focus();
     }
-  }
+  };
   const secondaryClick = () => {
     document.getElementById("primarybutton").click();
   };
@@ -296,8 +428,8 @@ const Operations = () => {
                 alt="totalClients"
               />
               <div>
-                <h3 className="total-clients-text">Total Income</h3>
-                <h1 className="total-clients-no">65</h1>
+                <h3 className="total-clients-text">Total Cloud Bill</h3>
+                <h1 className="total-clients-no">{totalCloudBill}</h1>
               </div>
             </div>
             <div className="col-sm-4 active-clients">
@@ -308,7 +440,7 @@ const Operations = () => {
               />
               <div>
                 <h3 className="total-clients-text">Total Expenditure</h3>
-                <h1 className="total-clients-no">50</h1>
+                <h1 className="total-clients-no">{totalExpenditure}</h1>
               </div>
             </div>
             <div className="col-sm-4 active-clients">
@@ -318,8 +450,8 @@ const Operations = () => {
                 alt="activeClients"
               />
               <div>
-                <h3 className="total-clients-text">Gross Salary</h3>
-                <h1 className="total-clients-no">50</h1>
+                <h3 className="total-clients-text">Total Miscellaneous</h3>
+                <h1 className="total-clients-no">{totalMiscellaneous}</h1>
               </div>
             </div>
           </div>
@@ -335,15 +467,16 @@ const Operations = () => {
           </div>
           <div className="mt-3 client-search">
             <div class="invoice-search-container search">
-            <Autocomplete
-                style={{ width: '97%' }}
+              <Autocomplete
+                style={{ width: "97%" }}
                 freeSolo
                 autoComplete
                 autoHighlight
                 options={myOptions}
-                onChange={(e) => getSelctedInvoice(e.target.value)}
+                // onChange={(e) => getSelctedInvoice(e.target.value)}
                 renderInput={(params) => (
-                  <TextField style={{padding:"5px !important"}}
+                  <TextField
+                    style={{ padding: "5px !important" }}
                     {...params}
                     label="Type somethong here!"
                     // onChange={(e)=>handleControlSearch(
@@ -387,7 +520,9 @@ const Operations = () => {
                 <MenuItem onClick={handleClickOpen("paper", "cloud")}>
                   Cloud Bill
                 </MenuItem>
-                <MenuItem onClick={handleClickOpen("paper", "miscellaneous")}>Miscellaneous Bill</MenuItem>
+                <MenuItem onClick={handleClickOpen("paper", "miscellaneous")}>
+                  Miscellaneous Bill
+                </MenuItem>
               </Menu>
             </div>
             <select
@@ -434,7 +569,9 @@ const Operations = () => {
                         {row.bill_amount}
                       </TableCell>
                       <TableCell align="center">{row.bill_invoice}</TableCell>
-                      <TableCell align="center">{row.expenditure_type}</TableCell>
+                      <TableCell align="center">
+                        {row.expenditure_type}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -460,11 +597,8 @@ const Operations = () => {
                       ref={descriptionElementRef}
                       tabIndex={-1}
                     >
-                      <form
-                        className="form-container"
-                        onSubmit={handleSubmit}
-                      >
-                        <div className="item">
+                      <form className="form-container" onSubmit={handleSubmit}>
+                        {/* <div className="item">
                         <label className="mt-3">Client Name</label>
                         <input
                             className="mt-3"
@@ -473,6 +607,30 @@ const Operations = () => {
                             onChange={(e) => setClient(e.target.value)}
                             value={client}
                             required
+                          />
+                        </div> */}
+                        <div class="client-search-container search">
+                          <label className="mt-3">Client Name</label>
+                          <Autocomplete
+                            className="mt-3"
+                            style={{ width: "81%", marginLeft: "24px" }}
+                            freeSolo
+                            autoComplete
+                            autoHighlight
+                            options={myOptions}
+                            onChange={(e) => setClient(e.target.value)}
+                            renderInput={(params) => (
+                              <TextField
+                                style={{ padding: "5px !important" }}
+                                {...params}
+                                label="Type somethong here!"
+                                // onChange={(e)=>handleControlSearch(
+                                //  searchCompany(e.target.value)
+                                // ,2000)}
+                                onChange={(e) => searchCompany(e.target.value)}
+                                variant="outlined"
+                              />
+                            )}
                           />
                         </div>
 
@@ -557,28 +715,25 @@ const Operations = () => {
                 </Dialog>
               ) : (
                 <Dialog
-                open={open}
-                onClose={handleClose}
-                scroll={scroll}
-                aria-labelledby="scroll-dialog-title"
-                aria-describedby="scroll-dialog-description"
-              >
-                <DialogTitle id="scroll-dialog-title">
-                  Create Miscellaneous Bill
-                </DialogTitle>
-                <DialogContent dividers={scroll === "paper"}>
-                  <DialogContentText
-                    id="scroll-dialog-description"
-                    ref={descriptionElementRef}
-                    tabIndex={-1}
-                  >
-                    <form
-                      className="form-container"
-                      onSubmit={handleSubmit}
+                  open={open}
+                  onClose={handleClose}
+                  scroll={scroll}
+                  aria-labelledby="scroll-dialog-title"
+                  aria-describedby="scroll-dialog-description"
+                >
+                  <DialogTitle id="scroll-dialog-title">
+                    Create Miscellaneous Bill
+                  </DialogTitle>
+                  <DialogContent dividers={scroll === "paper"}>
+                    <DialogContentText
+                      id="scroll-dialog-description"
+                      ref={descriptionElementRef}
+                      tabIndex={-1}
                     >
-                      <div className="item">
-                      <label className="mt-3">Client/Employee Name</label>
-                        <input
+                      <form className="form-container" onSubmit={handleSubmit}>
+                        {/* <div className="item">
+                          <label className="mt-3">Client/Employee Name</label>
+                          <input
                             className="mt-3"
                             type="text"
                             autoComplete="off"
@@ -586,8 +741,33 @@ const Operations = () => {
                             value={client}
                             required
                           />
-                      </div>
-                       <div className="item">
+                        </div> */}
+                        <div class="client-search-container search">
+                          <label className="mt-3">Employee Name</label>
+                          <Autocomplete
+                            className="mt-3"
+                            style={{ width: "81%", marginLeft: "24px" }}
+                            freeSolo
+                            autoComplete
+                            autoHighlight
+                            options={myOptions}
+                            onChange={(e) => setClient(e.target.value)}
+                            renderInput={(params) => (
+                              <TextField
+                                style={{ padding: "5px !important" }}
+                                {...params}
+                                label="Type somethong here!"
+                                // onChange={(e)=>handleControlSearch(
+                                //  searchCompany(e.target.value)
+                                // ,2000)}
+                                onChange={(e) => searchEmployee(e.target.value)}
+                                variant="outlined"
+                              />
+                            )}
+                          />
+                        </div>
+
+                        <div className="item">
                           <label className="mt-3">Bill Details</label>
                           <textarea
                             className="description-text mt-3"
@@ -602,14 +782,24 @@ const Operations = () => {
                           />
                         </div>
                         <div className="item">
-                        <label className="mt-3">Bill Item</label>
-                        <select name="department" id="department" className="department-select" onChange={(e) => setBillItem(e.target.value)} required>
-                          <option value="select">Select</option>
-                          <option value="software_epense">Software Expense</option>
-                          <option value="hardWare_expense">HardWare Expense</option>
-                          <option value="other_expense">Other Expense</option>
-                        </select>
-                      </div>
+                          <label className="mt-3">Bill Item</label>
+                          <select
+                            name="department"
+                            id="department"
+                            className="department-select"
+                            onChange={(e) => setBillItem(e.target.value)}
+                            required
+                          >
+                            <option value="select">Select</option>
+                            <option value="software_epense">
+                              Software Expense
+                            </option>
+                            <option value="hardWare_expense">
+                              HardWare Expense
+                            </option>
+                            <option value="other_expense">Other Expense</option>
+                          </select>
+                        </div>
 
                         <div className="item">
                           <label className="mt-3">Amount</label>
@@ -622,48 +812,48 @@ const Operations = () => {
                             required
                           />
                         </div>
-                      <div className="item" style={{ textAlign: "left" }}>
-                        <label className="mt-3" style={{ textAlign: "left" }}>
-                          Upload Invoice
-                        </label>
-                        <input
-                          type="file"
-                          id="primaryinvoiceupload"
-                          onChange={(e) => handleFileUpload(e)}
-                        />
-                        <button
-                          id="secondaryinvoiceupload"
-                          className="add-cloud-invoice mt-3"
-                          onClick={upload}
-                        >
-                          <img
-                            className="add-new-icon"
-                            src={addNewIcon}
-                            alt="addNewIcon"
+                        <div className="item" style={{ textAlign: "left" }}>
+                          <label className="mt-3" style={{ textAlign: "left" }}>
+                            Upload Invoice
+                          </label>
+                          <input
+                            type="file"
+                            id="primaryinvoiceupload"
+                            onChange={(e) => handleFileUpload(e)}
                           />
-                          Upload invoice
+                          <button
+                            id="secondaryinvoiceupload"
+                            className="add-cloud-invoice mt-3"
+                            onClick={upload}
+                          >
+                            <img
+                              className="add-new-icon"
+                              src={addNewIcon}
+                              alt="addNewIcon"
+                            />
+                            Upload invoice
+                          </button>
+                        </div>
+                        <button
+                          className="submitButton"
+                          id="primarybutton"
+                          style={{ display: "none" }}
+                        >
+                          Submit
                         </button>
-                      </div>
-                      <button
-                        className="submitButton"
-                        id="primarybutton"
-                        style={{ display: "none" }}
-                      >
-                        Submit
-                      </button>
-                    </form>
-                  </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                  <Button
-                    className="add-company-button"
-                    id="secondarybutton"
-                    onClick={secondaryClick}
-                  >
-                    Submit
-                  </Button>
-                </DialogActions>
-              </Dialog>
+                      </form>
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                      className="add-company-button"
+                      id="secondarybutton"
+                      onClick={secondaryClick}
+                    >
+                      Submit
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               )}
             </div>
           </div>

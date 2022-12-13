@@ -18,13 +18,14 @@ const token = JSON.parse(data).accessToken;
     setScroll(scrollType);
   };
 
-  function createData(name, gst_number, phone, email, project_details) {
+  function createData(name, gst_number, phone, email, project_details, is_active) {
     return {
       name,
       gst_number,
       phone,
       email,
       project_details,
+      is_active
     };
   }
 
@@ -52,7 +53,8 @@ const token = JSON.parse(data).accessToken;
            items.gst_number,
            items.phone,
            items.email,
-           items.project_details
+           items.project_details,
+           items.is_active
          )
        );
      });
@@ -63,7 +65,7 @@ const token = JSON.parse(data).accessToken;
  }
 
 const searchCompany = async (str) => {
-    const url = "/accounts/company/autocomplete";
+    const url = "/accounts/company-autocomplete-invoice-filter";
     try {
       const response = await await axios.get(url, {
         headers: {
@@ -73,12 +75,24 @@ const searchCompany = async (str) => {
         params: { term: str },
       });
       myOptions = [];
-      let data = response.data
+      let data = response.data.suggestions
       for (var i = 0; i < data.length; i++) {
         myOptions.push(data[i]);
       }
       setMyOptions(myOptions);
-      console.log(myOptions)
+      rows = [];
+      const companyList = response.data.companies;
+      // companyList.map((items) => {
+      //   rows.push(
+      //     createData(
+      //       items.name,
+      //       items.gst_number,
+      //       items.phone,
+      //       items.email,
+      //       items.project_details
+      //     )
+      //   );
+      // });
     } catch (err) {
       console.log(err);
     }

@@ -1,10 +1,54 @@
 import React from 'react'
+import {useState, useEffect} from 'react'
 import wavingHand from "../../assets/wavingHand.png";
 import accountsSettings from "../../assets/accountsSettings.png";
 import totalClients from "../../assets/totalClients.png";
 import activeClients from "../../assets/activeClients.png";
+import axios from "../../api/axios"
 
 const Header = () => {
+    const [totalClientsNo, setTotalClientsNo] = useState("")
+    const [totalActiveClients, setTotalActiveClients] = useState("")
+    const data = localStorage.getItem("auth");
+    const token = JSON.parse(data).accessToken;
+
+    useEffect(()=>{
+        getClients()
+        getActiveClients()
+    },[])
+
+    const getClients = async () => {
+        debugger;
+        const url = "/accounts/total-clients";
+        try {
+          const response = await axios.get(url, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            withCredentials: true,
+          });
+          setTotalClientsNo(response.data.total_client)
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      const getActiveClients = async () => {
+        debugger;
+        const url = "/accounts/total-active-clients";
+        try {
+          const response = await axios.get(url, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            withCredentials: true,
+          });
+          setTotalActiveClients(response.data.total_active_client)
+        } catch (err) {
+          console.log(err);
+        }
+      };
   return (
     <>
         <div className="main-header">
@@ -45,7 +89,7 @@ const Header = () => {
                 />
                 <div>
                     <h3 className="total-clients-text">Total Clients</h3>
-                    <h1 className="total-clients-no">65</h1>
+                    <h1 className="total-clients-no">{totalClientsNo}</h1>
                 </div>
             </div>
             <div className="col-sm-4 active-clients">
@@ -56,7 +100,7 @@ const Header = () => {
                 />
             <div>
                 <h3 className="total-clients-text">Total Active Clients</h3>
-                <h1 className="total-clients-no">50</h1>
+                <h1 className="total-clients-no">{totalActiveClients}</h1>
             </div>
         </div>
     </div>

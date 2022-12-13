@@ -103,6 +103,9 @@ const ClientTable = ({ userList, setUserList, getCompanyList }) => {
               <StyledTableCell align="center">
                 Project Details&nbsp;
               </StyledTableCell>
+              <StyledTableCell align="center">
+                Status&nbsp;
+              </StyledTableCell>
               <StyledTableCell align="center">Action&nbsp;</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -119,6 +122,7 @@ const ClientTable = ({ userList, setUserList, getCompanyList }) => {
                 <TableCell align="center">{row.phone}</TableCell>
                 <TableCell align="center">{row.email}</TableCell>
                 <TableCell align="center">{row.project_details}</TableCell>
+                <TableCell align="center">{row.is_active}</TableCell>
                 <TableCell align="center">
                   <DeleteIcon
                     className="delete-icon"

@@ -16,13 +16,14 @@ const Accounts = () => {
     const data = localStorage.getItem("auth");
     const token = JSON.parse(data).accessToken;
 
-    function createData(name, gst_number, phone, email, project_details) {
+    function createData(name, gst_number, phone, email, project_details, is_active) {
         return {
           name,
           gst_number,
           phone,
           email,
           project_details,
+          is_active
         };
       }
       
@@ -46,7 +47,8 @@ const Accounts = () => {
                 items.gst_number,
                 items.phone,
                 items.email,
-                items.project_details
+                items.project_details,
+                items.is_active
               )
             );
           });

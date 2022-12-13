@@ -147,7 +147,7 @@ const Invoice = () => {
   const searchCompany = async (str) => {
     debugger
     console.log(str)
-    const url = "/accounts/company/autocomplete";
+    const url = "/accounts/company-autocomplete-invoice-filter";
     try {
       const response = await await axios.get(url, {
         headers: {
