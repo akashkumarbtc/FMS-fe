@@ -27,6 +27,9 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
+import DoNotDisturbOffIcon from '@mui/icons-material/DoNotDisturbOff';
+
 
 var rows = [];
 const options = ["Update", "Delete"];
@@ -46,11 +49,12 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-function createData(first_name, last_name, email) {
+function createData(first_name, last_name, email, is_active) {
   return {
     first_name,
     last_name,
     email,
+    is_active
   };
 }
 
@@ -121,7 +125,7 @@ const User = () => {
       console.log(rows);
       rows = [];
       companyList.map((items) => {
-        rows.push(createData(items.first_name, items.last_name, items.email));
+        rows.push(createData(items.first_name, items.last_name, items.email, items.is_active));
       });
       setUserList(rows);
     } catch (err) {
@@ -130,7 +134,7 @@ const User = () => {
   };
 
   const searchCompany = async (str) => {
-    const url = "/admin/user/autocomplete";
+    const url = "/admin/user-autocomplete";
     try {
       const response = await await axios.get(url, {
         headers: {
@@ -141,7 +145,7 @@ const User = () => {
       });
       console.log();
       myOptions = [];
-      let data = response.data.users
+      let data = response.data.suggestions
       for (var i = 0; i < data.length; i++) {
         myOptions.push(data[i]);
       }
@@ -162,6 +166,52 @@ const User = () => {
       }, delay);
     };
   }
+  const getSelctedInvoice = async (value) => {
+    debugger;
+    const url = "/admin/select-user";
+    try {
+      const response = await axios.post(
+        url,
+        JSON.stringify({
+          first_name: value,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const companyList = response.data.users;
+      console.log(companyList);
+      console.log(rows);
+      rows = [];
+      companyList.map((items) => {
+        rows.push(createData(items.first_name, items.last_name, items.email, items.is_active));
+      });
+      setUserList(rows);
+      // const invoiceList = response.data.invoices;
+      // rows = [];
+      // invoiceList.map((items) => {
+      //   rows.push(
+      //     createData(
+      //       items.client,
+      //       items.amount,
+      //       items.gst,
+      //       items.total_amount,
+      //       items.Notes,
+      //       items.generated_at,
+      //       items.due_date
+      //     )
+      //   );
+      // });
+      // setUserList(rows);
+      // getCompanyList()
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
 
   const handleSubmit = async (e) => {
     const Login_Url = "/admin/create";
@@ -225,6 +275,26 @@ const User = () => {
       console.log(err);
     }
   };
+  const handleUserDeactivate = async(email) => {
+    debugger
+    // console.log(value)
+    const url = "/admin/deactivate-user";
+    try {
+     const response = await axios.post(url, 
+       JSON.stringify({
+        "email": email
+       }),
+       {
+       headers: {
+         "Content-Type": "application/json",
+         Authorization: "Bearer " + token,
+       },
+     });
+     getCompanyList();
+   } catch (err) {
+     console.log(err);
+   }
+  }
 
   return (
     <div style={{ width: "100%", height: "100vh" }}>
@@ -276,6 +346,7 @@ const User = () => {
                 autoComplete
                 autoHighlight
                 options={myOptions}
+                onChange={(e) => getSelctedInvoice(e.target.value)}
                 renderInput={(params) => (
                   <TextField
                     style={{ padding: "5px !important" }}
@@ -319,6 +390,9 @@ const User = () => {
                       Email&nbsp;
                     </StyledTableCell>
                     <StyledTableCell align="center">
+                      Status&nbsp;
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
                       Actions&nbsp;
                     </StyledTableCell>
                   </TableRow>
@@ -334,10 +408,11 @@ const User = () => {
                       </TableCell>
                       <TableCell align="center">{row.last_name}</TableCell>
                       <TableCell align="center">{row.email}</TableCell>
+                      <TableCell align="center">{row.is_active == 'True' ? <DoNotDisturbOnIcon style={{color:'green'}}/>: <DoNotDisturbOffIcon/>}</TableCell>
                       <TableCell align="center"><DeleteIcon
                     className="delete-icon"
                     onClick={(e) => {
-                      handleUserDelete(row.email);
+                      handleUserDeactivate(row.email);
                     }}
                   /></TableCell>
                     </TableRow>

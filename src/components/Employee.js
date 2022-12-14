@@ -52,9 +52,9 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-function createData(department, designation, email, name, phone, Is_active) {
+function createData(department, designation, email, name, phone, is_active) {
   return {
-    department, designation, email, name, phone, Is_active
+    department, designation, email, name, phone, is_active
   };
 }
 
@@ -186,7 +186,7 @@ const Employee = () => {
       rows = [];
       console.log(rows);
       companyList.map((items) => {
-        rows.push(createData(items.department, items.designation, items.email, items.name, items.phone, items.Is_active));
+        rows.push(createData(items.department, items.designation, items.email, items.name, items.phone, items.is_active));
       });
       setUserList(rows);
       console.log(userList)
@@ -241,7 +241,7 @@ const Employee = () => {
            items.phone,
            items.email,
            items.project_details,
-           items.Is_active
+           items.is_active
          )
        );
      });
@@ -473,7 +473,7 @@ const Employee = () => {
                       <TableCell sx={{ padding: "10px" }} align="center">{row.phone}</TableCell>
                       <TableCell sx={{ padding: "10px" }} align="center">{row.department}</TableCell>
                       <TableCell sx={{ padding: "10px" }} align="center">{row.designation}</TableCell>
-                      <TableCell sx={{ padding: "10px" }} align="center">{row.Is_active == 'True' ? <DoNotDisturbOnIcon style={{color:'green'}}/>: <DoNotDisturbOffIcon/>}</TableCell>
+                      <TableCell sx={{ padding: "10px" }} align="center">{row.is_active == 'True' ? <DoNotDisturbOnIcon style={{color:'green'}}/>: <DoNotDisturbOffIcon/>}</TableCell>
                       <TableCell align="center">
                   <DeleteIcon
                     className="delete-icon"
