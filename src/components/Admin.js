@@ -116,73 +116,107 @@ const pieOptions = {
         }
     }
 }
-
-const lineData = (canvas) => {
+const pieDataClient = (canvas) => {
   const ctx = canvas.getContext("2d");
-  const gradient = ctx.createLinearGradient(0, 0, 0, 426);
-  // const gradient1 = ctx.createLinearGradient(0, 180, 180, 0);
-  gradient.addColorStop(0.8, 'rgba(108, 99, 255, 0)');
-  gradient.addColorStop(0.2, 'rgba(253, 86, 110, 0.37)');
+  const gradient = ctx.createLinearGradient(0, 180, 180, 0);
+  const gradient1 = ctx.createLinearGradient(0, 180, 180, 0);
+  gradient.addColorStop(0.5, '#FDB400');
+  gradient.addColorStop(1, '#D6A42B');
 
-  // gradient1.addColorStop(0, '#B7F8DB');
-  // gradient1.addColorStop(0.5, '#50A7C2');
-  // gradient1.addColorStop(1, '#B7F8DB');
+  gradient1.addColorStop(0.5, '#F75775');
+  gradient1.addColorStop(1, '#9E2037');
+  // gradient1.addColorStop(1, '#F75775');
 
   return {
-          labels: ['JAN', "FEB", "MAR", "APR", "MAY", "JUN", "JUL"],
-          datasets: [{
-            label: 'My First Dataset',
-            data: [20, 25, 40, 15, 30, 20, 10],
-            backgroundColor: gradient,
-            borderColor: gradient,
-            fill: true,
-          }]
+      labels: ['Tech Team', 'Operation Team', 'Accounts Team'],
+      datasets:[
+          {
+          label: 'Data',
+          data: teamChartValue,
+          backgroundColor: [gradient1, gradient],
+          borderColor: [gradient1, gradient],
+          borderWidth: 1,
+          }
+      ]
   }
 }
-const lineOptions = {
+const pieOptionsCLient = {
   responsive: true,
-  maintainAspectRatio: false,
-  tooltips: {
-      mode: 'index',
-      intersect: false,
-  },
-  hover: {
-      mode: 'nearest',
-      intersect: true
-  },
-  scales: {
-      xAxes: [{
-        gridLines: {
-          display: false
-        },
-        ticks:{
-          display: false
-        }
-      }],
-      yAxes: [{
-        min: 20,
-        max: 100,
-        ticks: {
-            // maxTicksLimit: 20,
-            minTicketLimit: 20
-        }
-      }],
-  },
   legend: {
-      display: false,
-      position: 'bottom',
-      labels: {
-          fontColor: 'rgba(242, 38, 19, 1)'
+    display: true
+ },
+  maintainAspectRatio: false,
+  pie: {
+      allowPointSelect: true,
+      cursor: 'pointer',
+      dataLabels: {
+          enabled: true,
+          format: '<b>{point.name}</b>: {point.percentage:.1f} %'
       }
-  },
-  tooltips: {
-    callbacks: {
-       label: function(tooltipItem) {
-              return tooltipItem.yLabel;
-       }
-    }
+  }
 }
-}
+
+// const lineData = (canvas) => {
+//   const ctx = canvas.getContext("2d");
+//   const gradient = ctx.createLinearGradient(0, 0, 0, 426);
+//   gradient.addColorStop(0.8, 'rgba(108, 99, 255, 0)');
+//   gradient.addColorStop(0.2, 'rgba(253, 86, 110, 0.37)');
+
+//   return {
+//           labels: ['JAN', "FEB", "MAR", "APR", "MAY", "JUN", "JUL"],
+//           datasets: [{
+//             label: 'My First Dataset',
+//             data: [20, 25, 40, 15, 30, 20, 10],
+//             backgroundColor: gradient,
+//             borderColor: gradient,
+//             fill: true,
+//           }]
+//   }
+// }
+// const lineOptions = {
+//   responsive: true,
+//   maintainAspectRatio: false,
+//   tooltips: {
+//       mode: 'index',
+//       intersect: false,
+//   },
+//   hover: {
+//       mode: 'nearest',
+//       intersect: true
+//   },
+//   scales: {
+//       xAxes: [{
+//         gridLines: {
+//           display: false
+//         },
+//         ticks:{
+//           display: false
+//         }
+//       }],
+//       yAxes: [{
+//         min: 20,
+//         max: 100,
+//         ticks: {
+//             // maxTicksLimit: 20,
+//             minTicketLimit: 20
+//         }
+//       }],
+//   },
+//   legend: {
+//       display: false,
+//       position: 'bottom',
+//       labels: {
+//           fontColor: 'rgba(242, 38, 19, 1)'
+//       }
+//   },
+//   tooltips: {
+//     callbacks: {
+//        label: function(tooltipItem) {
+//               return tooltipItem.yLabel;
+//        }
+//     }
+// }
+// }
 
 const barData = (canvas) => {
   const ctx = canvas.getContext("2d");
@@ -298,7 +332,7 @@ const barOptions = {
             </div>
             <div className="col-sm-4 linechartwrapper">
             <label className="linecharttext">Number Of Clients</label>
-            <Line data={lineData} options={lineOptions} height={200} width={200}/>
+            <Pie data={pieDataClient} options={pieOptionsCLient} height={200} width={200}/>
             </div>
         </div>
         <div className="row mt-3">

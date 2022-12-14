@@ -30,6 +30,8 @@ import employeeListLogo from "../assets/employeeListLogo.png"
 import { ToastContainer, toast } from 'react-toastify';
 import DeleteIcon from "@mui/icons-material/Delete";
 import 'react-toastify/dist/ReactToastify.css';
+import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
+import DoNotDisturbOffIcon from '@mui/icons-material/DoNotDisturbOff';
 
 
 var rows = [];
@@ -318,6 +320,26 @@ const Employee = () => {
   const secondaryClick = () => {
     document.getElementById("primarybutton").click();
   };
+  const handleEmployeeDisable = async(email) => {
+    debugger
+    // console.log(value)
+    const url = "/operations/deactivate-employee";
+    try {
+     const response = await axios.post(url, 
+       JSON.stringify({
+        "employee_email": email
+       }),
+       {
+       headers: {
+         "Content-Type": "application/json",
+         Authorization: "Bearer " + token,
+       },
+     });
+     getCompanyList();
+   } catch (err) {
+     console.log(err);
+   }
+  }
 
   return (
     <div style={{ width: "100%", height: "100vh" }}>
@@ -431,7 +453,7 @@ const Employee = () => {
                     <StyledTableCell align="center">
                       Designation&nbsp;
                     </StyledTableCell>
-                    <StyledTableCell>Status</StyledTableCell>
+                    <StyledTableCell align="center">Status</StyledTableCell>
                     <StyledTableCell align="center">
                       Action&nbsp;
                     </StyledTableCell>
@@ -442,6 +464,7 @@ const Employee = () => {
                     <TableRow
                       key={row.name}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                      // sx={row.Is_active == 'True'? {background:'grey'}:{background:'white'}}
                     >
                       <TableCell sx={{ padding: "10px" }} align="center">
                         {row.name}
@@ -450,12 +473,12 @@ const Employee = () => {
                       <TableCell sx={{ padding: "10px" }} align="center">{row.phone}</TableCell>
                       <TableCell sx={{ padding: "10px" }} align="center">{row.department}</TableCell>
                       <TableCell sx={{ padding: "10px" }} align="center">{row.designation}</TableCell>
-                      <TableCell sx={{ padding: "10px" }} align="center">{row.Is_active}</TableCell>
+                      <TableCell sx={{ padding: "10px" }} align="center">{row.Is_active == 'True' ? <DoNotDisturbOnIcon style={{color:'green'}}/>: <DoNotDisturbOffIcon/>}</TableCell>
                       <TableCell align="center">
                   <DeleteIcon
                     className="delete-icon"
                     onClick={(e) => {
-                      handleDeleteEmployee(row.name);
+                      handleEmployeeDisable(row.email);
                     }}
                   />
                 </TableCell>
