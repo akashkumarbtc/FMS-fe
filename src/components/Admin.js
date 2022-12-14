@@ -4,11 +4,79 @@ import { Pie, Line, Bar, defaults, canvas } from 'react-chartjs-2'
 import wavingHand from "../assets/wavingHand.png";
 import accountsSettings from "../assets/accountsSettings.png";
 import { height } from "@mui/system";
+import { useState, useEffect } from "react";
+import axios from "../api/axios";
+
 
 defaults.global.tooltips.enabled = true
 defaults.global.legend.position = 'bottom'
 
 const Admin = () => {
+  const data = localStorage.getItem("auth");
+  const token = JSON.parse(data).accessToken;
+  const [clientMonthlyRevue, setClientMonthlyRevenue] = useState("")
+  const [teamChartValue, setTeamChartValue] = useState("")
+
+  useEffect(()=>{
+     getTeamPieChart()
+     getClientPieChart()
+    //  getMonthlyRevenue()
+  },[])
+
+  const getTeamPieChart = async() => {
+    debugger
+    const url = "/admin/team-memeber-piegraph";
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        withCredentials: true,
+      });
+      setTeamChartValue([response.data.techteam, response.data.opperations, response.data.accounts])
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  const getClientPieChart = async() => {
+    debugger
+    const url = "/admin/client-revenue-piegraph";
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        withCredentials: true,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  const getMonthlyRevenue = async(year) => {
+    debugger
+    const url = "/admin/monthly-revenue";
+    try {
+      const response = await axios.post(url, 
+        JSON.stringify({
+          year: year
+        }),
+        {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        withCredentials: true,
+      });
+      setClientMonthlyRevenue([response.data.January, response.data.February, response.data.March, response.data.April, response.data.May, response.data.June, response.data.July, response.data.August, response.data.September, response.data.October, response.data.November, response.data.December])
+      console.log(clientMonthlyRevue)
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
   const pieData = (canvas) => {
     const ctx = canvas.getContext("2d");
     const gradient = ctx.createLinearGradient(0, 180, 180, 0);
@@ -21,11 +89,11 @@ const Admin = () => {
     // gradient1.addColorStop(1, '#F75775');
 
     return {
-        labels: ['Tech Team', 'Operation Team'],
+        labels: ['Tech Team', 'Operation Team', 'Accounts Team'],
         datasets:[
             {
             label: 'Data',
-            data: [40, 60],
+            data: teamChartValue,
             backgroundColor: [gradient1, gradient],
             borderColor: [gradient1, gradient],
             borderWidth: 1,
@@ -36,7 +104,7 @@ const Admin = () => {
 const pieOptions = {
     responsive: true,
     legend: {
-      display: false
+      display: true
    },
     maintainAspectRatio: false,
     pie: {
@@ -134,7 +202,7 @@ const barData = (canvas) => {
           labels: ['January', "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
           datasets: [{
             label: 'My First Dataset',
-            data: [34, 25, 40, 35, 30, 40, 39, 30, 29, 26, 28, 33],
+            data: clientMonthlyRevue,
             backgroundColor: gradient,
             borderColor: gradient,
             fill: true,
@@ -220,10 +288,11 @@ const barOptions = {
             <div className="col-sm-4 piechartwrapper">
               <div className="pieheadercontainer">
               <label className="piecharttext">Team Members Analytic View</label>
-              <div className="pielabelcontainer">
+              {/* <div className="pielabelcontainer">
                 <small className="pietechteam">Tech Team</small>
                 <small className="pieoperationteam">Operation Team</small>
-              </div>
+                <small className="pieoperationteam">Account Team</small>
+              </div> */}
               </div>
               <Pie data={pieData} options={pieOptions} height={200} width={200} />
             </div>
@@ -239,7 +308,7 @@ const barOptions = {
               <label className="barcharttext">Revenue Graph</label>
               <label className="barcharttext" style={{textAlign:"center"}}>Monthly Representation</label>
               <div className="barcharttext yearselectoption">
-              <select name="department" id="department" className="barchartselect barcharttext">
+              <select name="department" id="department" className="barchartselect barcharttext" onChange={(e)=>getMonthlyRevenue(e.target.value)}>
                 <option value="select">Select</option>
                 <option value="2015">2015</option>
                 <option value="2016">2016</option>

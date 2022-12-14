@@ -23,11 +23,11 @@ import DialogTitle from "@mui/material/DialogTitle";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import { ToastContainer, toast } from 'react-toastify';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import "react-toastify/dist/ReactToastify.css";
 
 var rows = [];
 
@@ -44,9 +44,23 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-function createData(client, amount, gst, total_amount, Notes, generated_at, due_date) {
+function createData(
+  client,
+  amount,
+  gst,
+  total_amount,
+  Notes,
+  generated_at,
+  due_date
+) {
   return {
-    client, amount, gst, total_amount, Notes, generated_at, due_date
+    client,
+    amount,
+    gst,
+    total_amount,
+    Notes,
+    generated_at,
+    due_date,
   };
 }
 
@@ -62,14 +76,13 @@ const Invoice = () => {
   const [dueData, setDueData] = React.useState(null);
   const [notes, setNotes] = useState("");
   const [terms, setTerms] = useState("");
-  const[invoiceFile, setInvoiceFile] = useState("");
+  const [invoiceFile, setInvoiceFile] = useState("");
   const [open, setOpen] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
   const [userList, setUserList] = useState([]);
   const data = localStorage.getItem("auth");
   const token = JSON.parse(data).accessToken;
   var [myOptions, setMyOptions] = useState([]);
-
 
   const handleClickOpen = (scrollType) => () => {
     setOpen(true);
@@ -95,58 +108,79 @@ const Invoice = () => {
   }, []);
 
   const getCompanyList = async () => {
-    const url = "/accounts/invoice-list"
-    try{
-      const response = await axios.get(
-        url,
-        {
-          headers: { "Content-Type": "application/json", 'Authorization': 'Bearer '+token },
-          withCredentials: true,
-        }
-      );
-      console.log(response.data.invoices)
-      const invoiceList = response.data.invoices
-      rows=[]
-      invoiceList.map((items)=>{
-         rows.push(createData(items.client, items.amount, items.gst, items.total_amount, items.Notes, items.generated_at, items.due_date))
-      })
+    const url = "/accounts/invoice-list";
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        withCredentials: true,
+      });
+      console.log(response.data.invoices);
+      const invoiceList = response.data.invoices;
+      rows = [];
+      invoiceList.map((items) => {
+        rows.push(
+          createData(
+            items.client,
+            items.amount,
+            items.gst,
+            items.total_amount,
+            items.Notes,
+            items.generated_at,
+            items.due_date
+          )
+        );
+      });
       setUserList(rows);
-      console.log(userList)
-
-    }catch(err){
-      console.log(err)
+      console.log(userList);
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
   const getSelctedInvoice = async (value) => {
+    debugger;
     const url = "/accounts/invoice-filter";
     try {
-     const response = await axios.post(url, 
-       JSON.stringify({
-        client: value,
-       }),
-       {
-       headers: {
-         "Content-Type": "application/json",
-         Authorization: "Bearer " + token,
-       },
-     });
-     const invoiceList = response.data
-      rows=[]
-      invoiceList.map((items)=>{
-         rows.push(createData(items.client, items.amount, items.gst, items.total_amount, items.Notes, items.generated_at, items.due_date))
-      })
-      setUserList(rows)
+      const response = await axios.post(
+        url,
+        JSON.stringify({
+          client: value,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const invoiceList = response.data.invoices;
+      rows = [];
+      invoiceList.map((items) => {
+        rows.push(
+          createData(
+            items.client,
+            items.amount,
+            items.gst,
+            items.total_amount,
+            items.Notes,
+            items.generated_at,
+            items.due_date
+          )
+        );
+      });
+      setUserList(rows);
       // getCompanyList()
-
-   } catch (err) {
-     console.log(err);
-   }
- }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const searchCompany = async (str) => {
-    debugger
-    console.log(str)
+    debugger;
+    console.log(str);
     const url = "/accounts/company-autocomplete-invoice-filter";
     try {
       const response = await await axios.get(url, {
@@ -157,7 +191,7 @@ const Invoice = () => {
         params: { term: str },
       });
       console.log();
-      let data = response.data.suggestions
+      let data = response.data.suggestions;
       myOptions = [];
       for (var i = 0; i < data.length; i++) {
         myOptions.push(data[i]);
@@ -168,49 +202,50 @@ const Invoice = () => {
     }
   };
 
-  function handleControlSearch(fn, delay){
+  function handleControlSearch(fn, delay) {
     let timeOutId;
-    return function(...args){
-      if(timeOutId){
-        clearTimeout(timeOutId)
+    return function (...args) {
+      if (timeOutId) {
+        clearTimeout(timeOutId);
       }
-    timeOutId = setTimeout(()=>{
-        fn()
-    }, delay)
+      timeOutId = setTimeout(() => {
+        fn();
+      }, delay);
+    };
   }
-  }
-
 
   const handleSubmit = async (e) => {
     const Login_Url = "/accounts/invoice-creation";
     e.preventDefault();
     try {
-        const response = await axios.post(
-          Login_Url,
-          JSON.stringify({
-            "client": companyClient,
-            "item_list": itemList,
-            "value": parseFloat(value),
-            "gst": parseFloat(gst),
-            "total_value": parseFloat(totalValue),
-            "due_date": dueData,
-            "balance_due": parseFloat(balance_due),
-            "notes": notes,
-            "terms": terms
-          }),
-          {
-            headers: { "Content-Type": "application/json", 'Authorization': 'Bearer '+token },
-            withCredentials: true,
-          }
-        );
-        // setOpen(false);
-        toast.success("Invoice created successfully!")
-        getCompanyList()
-        handleClose()
+      const response = await axios.post(
+        Login_Url,
+        JSON.stringify({
+          client: companyClient,
+          item_list: itemList,
+          value: parseFloat(value),
+          gst: parseFloat(gst),
+          total_value: parseFloat(totalValue),
+          due_date: dueData,
+          balance_due: parseFloat(balance_due),
+          notes: notes,
+          terms: terms,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          withCredentials: true,
+        }
+      );
+      // setOpen(false);
+      toast.success("Invoice created successfully!");
+      getCompanyList();
+      handleClose();
     } catch (err) {
-      
       // handleClose()
-      toast.error(err.response.data.detail)
+      toast.error(err.response.data.detail);
       // if (!err?.response) {
       //   setErrMsg("No Server Response");
       // } else if (err.response?.status === 400) {
@@ -240,20 +275,21 @@ const Invoice = () => {
   const handleItemChange = (e, index) => {
     const { name, value } = e.target;
     const list = [...itemList];
-    if(name == 'rate' || name == 'amount'){
-        list[index][name] = parseFloat(value);
-    }else if(name == 'quantity'){
-        list[index][name] = parseInt(value);
-    }else{
-        list[index][name] = value;
+    if (name == "rate" || name == "amount") {
+      list[index][name] = parseFloat(value);
+    } else if (name == "quantity") {
+      list[index][name] = parseInt(value);
+    } else {
+      list[index][name] = value;
     }
     setItemList(list);
   };
 
   const handleFileUpload = async (e) => {
-    debugger
+    debugger;
     let file = e.target.files[0];
     let formdata = new FormData();
+    setInvoiceFile(file)
     formdata.append("files", file);
 
     // setInvoiceFile(file);
@@ -263,31 +299,34 @@ const Invoice = () => {
     //   setInvoiceFile(reader.result);
     // };
     for (var key of formdata.entries()) {
-      console.log(key[0] + ', ' + key[1]);
-  }
+      console.log(key[0] + ", " + key[1]);
+    }
     const Login_Url = "/accounts/parse-past-invoices";
     e.preventDefault();
     try {
-        const response = await axios.post(
-          Login_Url,
-          formdata,
-          // JSON.stringify({
-          //    files: formdata
-          // }),
-          {
-            headers: {  'Content-type': 'multipart/form-data', 'Authorization': 'Bearer '+token },
-            withCredentials: true,
-          }
-        );
-        toast.success("Invoice uploaded successfully!")
-        getCompanyList()
+      const response = await axios.post(
+        Login_Url,
+        formdata,
+        // JSON.stringify({
+        //    files: formdata
+        // }),
+        {
+          headers: {
+            "Content-type": "multipart/form-data",
+            Authorization: "Bearer " + token,
+          },
+          withCredentials: true,
+        }
+      );
+      toast.success("Invoice uploaded successfully!");
+      getCompanyList();
     } catch (err) {
-      toast.error(err.response.data.detail)
-  }
-}
+      toast.error(err.response.data.detail);
+    }
+  };
   const upload = () => {
     document.getElementById("primaryinvoiceupload").click();
-  }
+  };
 
   return (
     <div style={{ width: "100%", height: "100vh" }}>
@@ -324,15 +363,16 @@ const Invoice = () => {
           </div>
           <div className="mt-3 client-search">
             <div class="invoice-search-container search">
-               <Autocomplete
-                style={{ width: '97%' }}
+              <Autocomplete
+                style={{ width: "97%" }}
                 freeSolo
                 autoComplete
                 autoHighlight
                 options={myOptions}
                 onChange={(e) => getSelctedInvoice(e.target.value)}
                 renderInput={(params) => (
-                  <TextField style={{padding:"5px !important"}}
+                  <TextField
+                    style={{ padding: "5px !important" }}
                     {...params}
                     label="Type somethong here!"
                     // onChange={(e)=>handleControlSearch(
@@ -344,14 +384,18 @@ const Invoice = () => {
                 )}
               />
             </div>
-            <input type="file" id='primaryinvoiceupload' onChange={(e)=>handleFileUpload(e)}/>
+            <input
+              type="file"
+              id="primaryinvoiceupload"
+              onChange={(e) => handleFileUpload(e)}
+            />
             <button
-              id='secondaryinvoiceupload'
+              id="secondaryinvoiceupload"
               className=" add-previous-invoice"
               onClick={upload}
             >
               <img className="add-new-icon" src={addNewIcon} alt="addNewIcon" />
-              Upload invoice
+              {invoiceFile.name ? invoiceFile.name : 'upload invoice'}
             </button>
             <button
               className=" add-new-client"
@@ -378,9 +422,7 @@ const Invoice = () => {
                     <StyledTableCell align="center">
                       Amount&nbsp;
                     </StyledTableCell>
-                    <StyledTableCell align="center">
-                      GST&nbsp;
-                    </StyledTableCell>
+                    <StyledTableCell align="center">GST&nbsp;</StyledTableCell>
                     <StyledTableCell align="center">
                       Total Amount (with GST)&nbsp;
                     </StyledTableCell>
@@ -437,34 +479,28 @@ const Invoice = () => {
                     <form onSubmit={handleSubmit}>
                       <div style={{ display: "flex", width: "100%" }}>
                         <div style={{ width: "50%", textAlign: "left" }}>
-                          {/* <label style={{ paddingLeft: "0px" }}>
-                            Company/Client
-                          </label> */}
-                          {/* <input
-                            style={{ width: "105%" }}
-                            type="text"
-                            value={companyClient}
+                          <Autocomplete
+                            style={{ width: "97%", marginTop: "24px" }}
+                            freeSolo
+                            autoComplete
+                            autoHighlight
+                            options={myOptions}
                             onChange={(e) => setCompanyClient(e.target.value)}
-                            required
-                          /> */}
-                           <Autocomplete
-                style={{ width: '97%', marginTop:"24px"}}
-                freeSolo
-                autoComplete
-                autoHighlight
-                options={myOptions}
-                onChange={(e) => setCompanyClient(e.target.value)}
-                renderInput={(params) => (
-                  <TextField style={{padding:"5px !important"}}
-                    {...params}
-                    label="Search company here!"
-                    onChange={(e)=>handleControlSearch(
-                     searchCompany(e.target.value)
-                    ,2000)}
-                    variant="outlined"
-                  />
-                )}
-              />
+                            renderInput={(params) => (
+                              <TextField
+                                style={{ padding: "5px !important" }}
+                                {...params}
+                                label="Search company here!"
+                                onChange={(e) =>
+                                  handleControlSearch(
+                                    searchCompany(e.target.value),
+                                    2000
+                                  )
+                                }
+                                variant="outlined"
+                              />
+                            )}
+                          />
                         </div>
                         <div style={{ width: "50%", textAlign: "right" }}>
                           <label style={{ paddingLeft: "64px" }}>Items</label>
@@ -554,9 +590,12 @@ const Invoice = () => {
                             style={{ width: "90%" }}
                             value={value}
                             onChange={(e) => {
-                              setValue(e.target.value)
-                              setGst((18/100)*e.target.value)
-                              setTotalValue(parseFloat(e.target.value) + parseFloat((18/100)*e.target.value))
+                              setValue(e.target.value);
+                              setGst((18 / 100) * e.target.value);
+                              setTotalValue(
+                                parseFloat(e.target.value) +
+                                  parseFloat((18 / 100) * e.target.value)
+                              );
                             }}
                             required
                           />
@@ -586,9 +625,12 @@ const Invoice = () => {
                           />
                         </div>
                       </div>
-                      <div className="mt-3" style={{display:'flex', width:'100%'}}>
+                      <div
+                        className="mt-3"
+                        style={{ display: "flex", width: "100%" }}
+                      >
                         <div style={{ width: "50%", textAlign: "left" }}>
-                        <label style={{ paddingLeft: "0px" }}>
+                          <label style={{ paddingLeft: "0px" }}>
                             Balance Due
                           </label>
                           <input
@@ -598,26 +640,43 @@ const Invoice = () => {
                             onChange={(e) => setBalance_due(e.target.value)}
                             required
                           />
-                          </div>
-                          <div style={{ width: "50%", textAlign: "right", paddingTop:'15px' }}>
+                        </div>
+                        <div
+                          style={{
+                            width: "50%",
+                            textAlign: "right",
+                            paddingTop: "15px",
+                          }}
+                        >
                           {/* <label style={{ paddingLeft: "20px" }}>
                             Balance Due
                           </label> */}
-                          <LocalizationProvider dateAdapter={AdapterDayjs} style={{ width: '92% !important' }}>
+                          <LocalizationProvider
+                            dateAdapter={AdapterDayjs}
+                            style={{ width: "92% !important" }}
+                          >
                             <DatePicker
-                            style={{ width: '92% !important' }}
+                              style={{ width: "92% !important" }}
                               label="Set DueDate"
                               value={dueData}
                               views={["year", "month", "day"]}
                               format="DD-MM-YYYY"
                               onChange={(newValue) => {
-                                debugger
-                                setDueData(newValue.$d.getFullYear() + '-' + newValue.$d.getMonth() + '-' + newValue.$d.getDate());
+                                debugger;
+                                setDueData(
+                                  newValue.$d.getFullYear() +
+                                    "-" +
+                                    newValue.$d.getMonth() +
+                                    "-" +
+                                    newValue.$d.getDate()
+                                );
                               }}
-                              renderInput={(params) => <TextField {...params} />}
+                              renderInput={(params) => (
+                                <TextField {...params} />
+                              )}
                             />
                           </LocalizationProvider>
-                          </div>
+                        </div>
                       </div>
                       <div
                         className="mt-3"
@@ -652,7 +711,13 @@ const Invoice = () => {
                           />
                         </div>
                       </div>
-                      <button className="submitButton" id ="primarybutton" style={{display:'none'}}>Submit</button>
+                      <button
+                        className="submitButton"
+                        id="primarybutton"
+                        style={{ display: "none" }}
+                      >
+                        Submit
+                      </button>
                     </form>
                   </DialogContentText>
                 </DialogContent>

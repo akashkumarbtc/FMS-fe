@@ -31,6 +31,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 var rows = [];
 const options = ["Update", "Delete"];
 const ITEM_HEIGHT = 48;
+const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -68,6 +69,7 @@ const User = () => {
   const [userList, setUserList] = useState([]);
   const data = localStorage.getItem("auth");
   const token = JSON.parse(data).accessToken;
+  const[validEmail, setValidEmail] = useState(false);
   var [myOptions, setMyOptions] = useState([]);
 
   const handleClickOpen = (scrollType) => () => {
@@ -78,7 +80,9 @@ const User = () => {
   const handleClose = () => {
     setOpen(false);
   };
-
+  useEffect(() => {
+    setValidEmail(EMAIL_REGEX.test(email));
+    }, [email]);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenue = Boolean(anchorEl);
   const handleClickMenue = (event) => {
@@ -437,6 +441,7 @@ const User = () => {
                           value={email}
                           required
                         />
+                          <p id="uidnote" className={email && !validEmail ? "instructions-email" : "offscreen-email"}>Enter a valid email address</p>
                       </div>
 
                       {/* <div className="item">

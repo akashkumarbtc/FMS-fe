@@ -35,6 +35,7 @@ import 'react-toastify/dist/ReactToastify.css';
 var rows = [];
 const options = ["Delete"];
 const ITEM_HEIGHT = 48;
+const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -49,9 +50,9 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
 }));
 
-function createData(department, designation, email, name, phone) {
+function createData(department, designation, email, name, phone, Is_active) {
   return {
-    department, designation, email, name, phone
+    department, designation, email, name, phone, Is_active
   };
 }
 
@@ -82,6 +83,7 @@ const Employee = () => {
   const [userList, setUserList] = useState([]);
   const data = localStorage.getItem("auth");
   const token = JSON.parse(data).accessToken;
+  const[validEmail, setValidEmail] = useState(false);
   var [myOptions, setMyOptions] = useState([]);
 
   const handleClickOpen = (scrollType) => () => {
@@ -92,6 +94,9 @@ const Employee = () => {
   const handleClose = () => {
     setOpen(false);
   };
+  useEffect(() => {
+    setValidEmail(EMAIL_REGEX.test(email));
+    }, [email]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenue = Boolean(anchorEl);
@@ -163,6 +168,7 @@ const Employee = () => {
   }, []);
 
   const getCompanyList = async () => {
+    debugger
     const url = "/operations/employee-list";
     try {
       const response = await axios.get(url, {
@@ -176,10 +182,12 @@ const Employee = () => {
       console.log(companyList);
       console.log(rows);
       rows = [];
+      console.log(rows);
       companyList.map((items) => {
-        rows.push(createData(items.department, items.designation, items.email, items.name, items.phone));
+        rows.push(createData(items.department, items.designation, items.email, items.name, items.phone, items.Is_active));
       });
       setUserList(rows);
+      console.log(userList)
     } catch (err) {
       console.log(err);
     }
@@ -199,7 +207,7 @@ const Employee = () => {
       myOptions = [];
       let data = response.data.suggestions
       for (var i = 0; i < data.length; i++) {
-        myOptions.push(data[i]);
+        myOptions.push(data[i].name + ',' + data[i].email);
       }
       setMyOptions(myOptions);
     } catch (err) {
@@ -230,7 +238,8 @@ const Employee = () => {
            items.gst_number,
            items.phone,
            items.email,
-           items.project_details
+           items.project_details,
+           items.Is_active
          )
        );
      });
@@ -383,7 +392,7 @@ const Employee = () => {
               <img className="add-new-icon" src={addNewIcon} alt="addNewIcon" />
               Add New
             </button>
-            <select
+            {/* <select
               name="department"
               id="department"
               className="employee-select"
@@ -394,7 +403,7 @@ const Employee = () => {
               <option value="admin">Admin</option>
               <option value="accounts">Accounts</option>
               <option value="operations">Operations</option>
-            </select>
+            </select> */}
           </div>
           <div className="row mt-4">
             <TableContainer component={Paper}>
@@ -422,6 +431,7 @@ const Employee = () => {
                     <StyledTableCell align="center">
                       Designation&nbsp;
                     </StyledTableCell>
+                    <StyledTableCell>Status</StyledTableCell>
                     <StyledTableCell align="center">
                       Action&nbsp;
                     </StyledTableCell>
@@ -440,6 +450,7 @@ const Employee = () => {
                       <TableCell sx={{ padding: "10px" }} align="center">{row.phone}</TableCell>
                       <TableCell sx={{ padding: "10px" }} align="center">{row.department}</TableCell>
                       <TableCell sx={{ padding: "10px" }} align="center">{row.designation}</TableCell>
+                      <TableCell sx={{ padding: "10px" }} align="center">{row.Is_active}</TableCell>
                       <TableCell align="center">
                   <DeleteIcon
                     className="delete-icon"
@@ -590,6 +601,7 @@ const Employee = () => {
                           value={email}
                           required
                         />
+                        <p id="uidnote" className={email && !validEmail ? "instructions-email" : "offscreen-email"}>Enter a valid email address</p>
                       </div>
                       <div className="item">
                         <label className="mt-3">Bank Name</label>

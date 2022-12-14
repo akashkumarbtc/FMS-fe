@@ -38,11 +38,11 @@ const Salary = () => {
   const [otherDeductionsAmount, setOtherDeductionsAmount] = useState("");
   const [satutory_bonus, setSatutory_bonus] = useState("");
   const [netPay, setNetPay] = useState("");
-  const [generated_at, setGenerated_at] = useState("");
+  const [generated_at, setGenerated_at] = useState(new Date());
 
   const searchCompany = async (str) => {
     console.log(str);
-    const url = "/operations/employee/autocomplete";
+    const url = "/operations/employee/autocomplete-salary-report";
     try {
       const response = await await axios.get(url, {
         headers: {
@@ -55,7 +55,7 @@ const Salary = () => {
       let data = response.data.suggestions;
       myOptions = [];
       for (var i = 0; i < data.length; i++) {
-        myOptions.push(data[i]);
+        myOptions.push(data[i].name + ',' + data[i].email);
       }
       setMyOptions(myOptions);
     } catch (err) {
@@ -81,7 +81,7 @@ const Salary = () => {
       const response = await axios.post(
         url,
         JSON.stringify({
-          employee_name: value,
+          employee_email: value,
         }),
         {
           headers: {
@@ -112,7 +112,7 @@ const Salary = () => {
         Login_Url,
         JSON.stringify({
           expenditure_type: "salary",
-          employee_name: name,
+          employee_email: name,
           basic_DA: parseFloat(basic_DA),
           hra: parseFloat(hra),
           special_allowance: parseFloat(special_allowance),
@@ -136,6 +136,21 @@ const Salary = () => {
           withCredentials: true,
         }
       );
+      setName("")
+      setBasic_DA("")
+      setHra("")
+      setSpecial_allowance("")
+      setLta("")
+      setPf("")
+      setProfession_tax("")
+      setEarnings_total("")
+      setSatutory_bonus("")
+      setOtherDeductions("")
+      setOtherDeductionsAmount("")
+      setReimbursement("")
+      setReimbursementAmout("")
+      setNetPay("")
+      setGenerated_at("")
       toast.success("sallary created successfully!")
     } catch (err) {
       toast.error(err.response.data.detail)
@@ -186,7 +201,7 @@ const Salary = () => {
                 autoComplete
                 autoHighlight
                 options={myOptions}
-                onChange={(e) => getSelctedInvoice(e.target.value)}
+                onChange={(e) => getSelctedInvoice(e.target.value.split(',')[1])}
                 renderInput={(params) => (
                   <TextField
                     style={{ padding: "5px !important" }}
