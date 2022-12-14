@@ -74,7 +74,7 @@ const Operations = () => {
   let formdata = new FormData();
 
   const handleClickOpen = (scrollType, type) => () => {
-    debugger;
+    ;
     setBillType(type);
     handleCloseMenue();
     setOpen(true);
@@ -111,7 +111,7 @@ const Operations = () => {
   }, []);
 
   const getExpenditure = async () => {
-    debugger;
+    ;
     const url = "/operations/total-expenditure";
     try {
       const response = await axios.get(url, {
@@ -127,7 +127,7 @@ const Operations = () => {
     }
   };
   const getCloudBill = async () => {
-    debugger;
+    ;
     const url = "/operations/total-cloudbill";
     try {
       const response = await axios.get(url, {
@@ -143,7 +143,7 @@ const Operations = () => {
     }
   };
   const getMiscellaneuos = async () => {
-    debugger;
+    ;
     const url = "/operations/total-miscellaneous";
     try {
       const response = await axios.get(url, {
@@ -191,7 +191,7 @@ const Operations = () => {
   };
 
   const getFilteredExpentureList = async(type) => {
-    debugger
+    
     const url = "/operations/filter-expenditure";
     try {
       const response = await axios.post(url, 
@@ -261,7 +261,7 @@ const Operations = () => {
   };
 
   const searchEmployee = async (str) => {
-    debugger
+    
     console.log(str);
     const url = "/operations/employee/autocomplete";
     try {
@@ -284,7 +284,7 @@ const Operations = () => {
     }
   };
   const handleFileUpload = async (e) => {
-    debugger;
+    ;
     let file = e.target.files[0];
     setInvoiceFile(file);
   };
@@ -294,7 +294,7 @@ const Operations = () => {
   };
 
   const handleSubmit = async (e) => {
-    debugger;
+    ;
     e.preventDefault();
     let Login_Url = "";
     if (billType == "cloud") {

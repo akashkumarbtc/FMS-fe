@@ -74,7 +74,7 @@ const Salary = () => {
     };
   }
   const getSelctedInvoice = async (value) => {
-    debugger;
+    ;
     const url = "/operations/select-salary";
     setName(value)
     try {
@@ -103,7 +103,7 @@ const Salary = () => {
   };
 
   const handleSubmit = async (e) => {
-    debugger;
+    ;
     const Login_Url = "/operations/create-salary-report";
     setNetPay(parseFloat(earnings_total) - parseFloat(otherDeductionsAmount) + (parseFloat(reimbursementAmount) + parseFloat(satutory_bonus)))
     e.preventDefault();
@@ -223,7 +223,7 @@ const Salary = () => {
                   label="Select date"
                   value={generated_at}
                   onChange={(newValue) => {
-                    debugger;
+                    ;
                     setGenerated_at(
                       newValue.$d.getFullYear() +
                         "-" +

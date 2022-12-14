@@ -76,6 +76,8 @@ const Accounts = () => {
   const [userList, setUserList] = useState([]);
   const data = localStorage.getItem("auth");
   const token = JSON.parse(data).accessToken;
+  const firstName = JSON.parse(data).firstName;
+  const lastName = JSON.parse(data).lasktName;
   var [myOptions, setMyOptions] = useState([]);
   const [clientUpdate, setClientUpdate] = useState(false)
   const [errMsg, setErrMsg] = useState("");
@@ -86,12 +88,26 @@ const Accounts = () => {
 
 
   const handleClickOpen = (scrollType) => () => {
-    debugger
+    
+    // setClientUpdate(true)
     setOpen(true);
     setScroll(scrollType);
   };
 
   const handleClose = () => {
+    setName("")
+      setStreetAddress("")
+      setCity("")
+      setState("")
+      setPostalCode("")
+      setCountry("")
+      setGstNumber("")
+      setPhone("")
+      setEmail("")
+      setLandline("")
+      setFax("")
+      setProjectDetails("")
+    setClientUpdate(false)
     setOpen(false);
   };
 
@@ -121,7 +137,7 @@ const Accounts = () => {
   }, [email]);
 
   const getClients = async () => {
-    debugger;
+    ;
     const url = "/accounts/total-clients";
     try {
       const response = await axios.get(url, {
@@ -137,7 +153,7 @@ const Accounts = () => {
     }
   };
   const getActiveClients = async () => {
-    debugger;
+    ;
     const url = "/accounts/total-active-clients";
     try {
       const response = await axios.get(url, {
@@ -208,7 +224,7 @@ const Accounts = () => {
   };
 
   const getSelctedCompany = async (value) => {
-    debugger
+    
      const url = "/accounts/company-filter";
      try {
       const response = await axios.post(url, 
@@ -287,6 +303,18 @@ const Accounts = () => {
           withCredentials: true,
         }
       );
+      setName("")
+      setStreetAddress("")
+      setCity("")
+      setState("")
+      setPostalCode("")
+      setCountry("")
+      setGstNumber("")
+      setPhone("")
+      setEmail("")
+      setLandline("")
+      setFax("")
+      setProjectDetails("")
       setClientUpdate(false)
       // setOpen(false);
       toast.success("Company added successfully");
@@ -312,7 +340,7 @@ const Accounts = () => {
   }; 
 
   const handleClientEdit = async(name) => {
-    debugger
+    
     setClientUpdate(true)
     const Login_Url = "/accounts/company-select";
     // e.preventDefault();
@@ -364,7 +392,7 @@ const Accounts = () => {
     }
   }
   const handleClientDeactivate = async(name) => {
-    debugger
+    
     // console.log(value)
     const url = "/accounts/Company-deactivate";
     try {
@@ -560,7 +588,7 @@ const Accounts = () => {
                 aria-describedby="scroll-dialog-description"
               >
                 <DialogTitle id="scroll-dialog-title">
-                  Add New Client
+                  {clientUpdate == true ? "Update Client" : "Add New Client"}
                 </DialogTitle>
                 <DialogContent dividers={scroll === "paper"}>
                   <DialogContentText

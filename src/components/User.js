@@ -167,7 +167,7 @@ const User = () => {
     };
   }
   const getSelctedInvoice = async (value) => {
-    debugger;
+    ;
     const url = "/admin/select-user";
     try {
       const response = await axios.post(
@@ -235,6 +235,12 @@ const User = () => {
           withCredentials: true,
         }
       );
+      setName("")
+      setLastName("")
+      setDepartment("")
+      setEmail("")
+      setPwd("")
+      setDesignation("")
       // setOpen(false);
       getCompanyList();
       handleClose();
@@ -258,7 +264,7 @@ const User = () => {
   };
 
   const handleUserDelete = async (e) => {
-    debugger;
+    ;
     const url = "/admin/delet-user";
     try {
       const response = await axios.delete(url, {
@@ -276,7 +282,7 @@ const User = () => {
     }
   };
   const handleUserDeactivate = async(email) => {
-    debugger
+    
     // console.log(value)
     const url = "/admin/deactivate-user";
     try {
@@ -431,7 +437,7 @@ const User = () => {
                 aria-describedby="scroll-dialog-description"
               >
                 <DialogTitle id="scroll-dialog-title">
-                  Add New Client
+                  Add New User
                 </DialogTitle>
                 <DialogContent dividers={scroll === "paper"}>
                   <DialogContentText

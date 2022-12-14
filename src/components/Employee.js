@@ -32,6 +32,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import 'react-toastify/dist/ReactToastify.css';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 import DoNotDisturbOffIcon from '@mui/icons-material/DoNotDisturbOff';
+import ToggleOffIcon from '@mui/icons-material/ToggleOff';
+import ToggleOnIcon from '@mui/icons-material/ToggleOn';
 
 
 var rows = [];
@@ -110,7 +112,7 @@ const Employee = () => {
   };
   const handleDeleteEmployee = async(name) => {
     // console.log(e.target.id)
-      debugger
+      
       const url = "/operations/delete-employee";
       try {
         // const response = await axios.delete(
@@ -170,7 +172,7 @@ const Employee = () => {
   }, []);
 
   const getCompanyList = async () => {
-    debugger
+    
     const url = "/operations/employee-list";
     try {
       const response = await axios.get(url, {
@@ -217,7 +219,7 @@ const Employee = () => {
     }
   };
   const getSelctedCompany = async (value) => {
-    debugger
+    
     console.log(value)
     const url = "/accounts/company-filter";
     try {
@@ -297,6 +299,25 @@ const Employee = () => {
           withCredentials: true,
         }
       );
+      setName("")
+      setDepartment("")
+      setDesignation("")
+      setWorkLocation("")
+      setAddress("")
+      setBankName("")
+      setPhone("")
+      setEmail("")
+      setPfNO("")
+      setPan("")
+      setPf("")
+      setEsiNo("")
+      setBasicDa("")
+      setHra("")
+      setSpecialAllowance("")
+      setLta("")
+      setProfessionalTax("")
+      setEarningsTotal("")
+      setPfUan("")
       // setOpen(false);
       toast.success("Invoice created successfully!")
       getCompanyList();
@@ -321,7 +342,7 @@ const Employee = () => {
     document.getElementById("primarybutton").click();
   };
   const handleEmployeeDisable = async(email) => {
-    debugger
+    
     // console.log(value)
     const url = "/operations/deactivate-employee";
     try {
@@ -536,7 +557,7 @@ const Employee = () => {
                 aria-describedby="scroll-dialog-description"
               >
                 <DialogTitle id="scroll-dialog-title">
-                  Add New Client
+                  Add New Employee
                 </DialogTitle>
                 <DialogContent dividers={scroll === "paper"}>
                   <DialogContentText

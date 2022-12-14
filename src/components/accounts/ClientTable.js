@@ -48,7 +48,7 @@ const ClientTable = ({ userList, setUserList, getCompanyList }) => {
   }, []);
 
   const handleCompanyDelete = async (e) => {
-    debugger;
+    ;
     const url = "/accounts/Company-delete";
     try {
       const response = await axios.delete(url, {
@@ -67,7 +67,7 @@ const ClientTable = ({ userList, setUserList, getCompanyList }) => {
   };
 
   const handleCompanySelect = async (name) => {
-    debugger;
+    ;
     const url = "/accounts/company-select";
     try {
       const response = await axios.post(url, 

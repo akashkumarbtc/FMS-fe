@@ -24,7 +24,7 @@ const Admin = () => {
   },[])
 
   const getTeamPieChart = async() => {
-    debugger
+    
     const url = "/admin/team-memeber-piegraph";
     try {
       const response = await axios.get(url, {
@@ -40,7 +40,7 @@ const Admin = () => {
     }
   }
   const getClientPieChart = async() => {
-    debugger
+    
     const url = "/admin/client-revenue-piegraph";
     try {
       const response = await axios.get(url, {
@@ -55,7 +55,7 @@ const Admin = () => {
     }
   }
   const getMonthlyRevenue = async(year) => {
-    debugger
+    
     const url = "/admin/monthly-revenue";
     try {
       const response = await axios.post(url, 
@@ -128,11 +128,11 @@ const pieDataClient = (canvas) => {
   // gradient1.addColorStop(1, '#F75775');
 
   return {
-      labels: ['Tech Team', 'Operation Team', 'Accounts Team'],
+      labels: ['Bluetick', 'Optym', 'Reliance'],
       datasets:[
           {
           label: 'Data',
-          data: teamChartValue,
+          data: [500000, 400000, 1200000],
           backgroundColor: [gradient1, gradient],
           borderColor: [gradient1, gradient],
           borderWidth: 1,
@@ -331,7 +331,7 @@ const barOptions = {
               <Pie data={pieData} options={pieOptions} height={200} width={200} />
             </div>
             <div className="col-sm-4 linechartwrapper">
-            <label className="linecharttext">Number Of Clients</label>
+            <label className="linecharttext">Clients Revenue</label>
             <Pie data={pieDataClient} options={pieOptionsCLient} height={200} width={200}/>
             </div>
         </div>

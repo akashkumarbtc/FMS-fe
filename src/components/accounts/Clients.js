@@ -30,7 +30,7 @@ const token = JSON.parse(data).accessToken;
   }
 
   const getSelctedCompany = async (value) => {
-    debugger
+    
     console.log(value)
     const url = "/accounts/company-filter";
     try {

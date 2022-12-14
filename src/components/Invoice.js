@@ -141,7 +141,7 @@ const Invoice = () => {
   };
 
   const getSelctedInvoice = async (value) => {
-    debugger;
+    ;
     const url = "/accounts/invoice-filter";
     try {
       const response = await axios.post(
@@ -179,7 +179,7 @@ const Invoice = () => {
   };
 
   const searchCompany = async (str) => {
-    debugger;
+    ;
     console.log(str);
     const url = "/accounts/company-autocomplete-invoice-filter";
     try {
@@ -239,6 +239,16 @@ const Invoice = () => {
           withCredentials: true,
         }
       );
+      // setCompanyClient("")
+      // setItemList("")
+      // setValue("")
+      // setGst("")
+      // setTotalValue("")
+      // setDueData("")
+      // setBalance_due("")
+      // setNotes("")
+      // setTerms("")
+
       // setOpen(false);
       toast.success("Invoice created successfully!");
       getCompanyList();
@@ -286,7 +296,7 @@ const Invoice = () => {
   };
 
   const handleFileUpload = async (e) => {
-    debugger;
+    ;
     let file = e.target.files[0];
     let formdata = new FormData();
     setInvoiceFile(file)
@@ -662,7 +672,7 @@ const Invoice = () => {
                               views={["year", "month", "day"]}
                               format="DD-MM-YYYY"
                               onChange={(newValue) => {
-                                debugger;
+                                ;
                                 setDueData(
                                   newValue.$d.getFullYear() +
                                     "-" +

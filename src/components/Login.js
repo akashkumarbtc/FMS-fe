@@ -53,13 +53,17 @@ const Login = () => {
       );
       const accessToken = response.data.access_token;
       const refreshToken = response.data.refresh_token;
+      const firstName = response.data.first_name;
+      const lastName = response.data.last_name
       const roles = [response.data.role];
       const userData = {
         'user': user,
         'pwd': pwd,
         'roles': roles,
         'accessToken': accessToken,
-        'refreshToken': refreshToken
+        'refreshToken': refreshToken,
+        'firstName': firstName,
+        'lastName': lastName
       };
       console.log(userData)
       localStorage.setItem("auth", JSON.stringify(userData));

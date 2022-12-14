@@ -18,7 +18,7 @@ const Header = () => {
     },[])
 
     const getClients = async () => {
-        debugger;
+        ;
         const url = "/accounts/total-clients";
         try {
           const response = await axios.get(url, {
@@ -34,7 +34,7 @@ const Header = () => {
         }
       };
       const getActiveClients = async () => {
-        debugger;
+        ;
         const url = "/accounts/total-active-clients";
         try {
           const response = await axios.get(url, {

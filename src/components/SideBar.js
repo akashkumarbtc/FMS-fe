@@ -38,7 +38,7 @@ const SideBar = () => {
   }, []);
 
   const onItemClick = (item) => {
-    debugger;
+    ;
     if (item =='employee') {
       setOperationStatus(item);
       navigate("/operations/employee");
