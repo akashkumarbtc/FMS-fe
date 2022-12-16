@@ -385,14 +385,13 @@ const Operations = () => {
             </div>
           </div>
           <div
-            className="row mt-5"
+            className="mt-5"
             style={{
               width: "100px !important",
               backgroundColor: "#F5F5F5",
               height: "auto",
               display: "flex",
               justifyContent: "left",
-              paddingLeft: "9px",
             }}
           >
             <div className="col-sm-4 total-clients">
@@ -401,7 +400,7 @@ const Operations = () => {
                 src={totalIncomeLogo}
                 alt="totalClients"
               />
-              <div>
+              <div className="total-clients-inner">
                 <h3 className="total-clients-text">Total Cloud Bill</h3>
                 <h1 className="total-clients-no">{totalCloudBill}</h1>
               </div>
@@ -412,7 +411,7 @@ const Operations = () => {
                 src={totalExpenditureLogo}
                 alt="activeClients"
               />
-              <div>
+              <div className="total-clients-inner">
                 <h3 className="total-clients-text">Total Expenditure</h3>
                 <h1 className="total-clients-no">{totalExpenditure}</h1>
               </div>
@@ -423,7 +422,7 @@ const Operations = () => {
                 src={grossSalaryLogo}
                 alt="activeClients"
               />
-              <div>
+              <div className="total-clients-inner">
                 <h3 className="total-clients-text">Total Miscellaneous</h3>
                 <h1 className="total-clients-no">{totalMiscellaneous}</h1>
               </div>
@@ -465,10 +464,15 @@ const Operations = () => {
             <div>
               <Button
                 id="basic-button"
+                className="add-new-expenditure"
                 style={{
                   backgroundColor: "#051134",
                   fontSize: "11px",
                   color: "white",
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  fontFamily: 'Montserrat',
+                  fontStyle: 'normal'
                 }}
                 aria-controls={openMenue ? "basic-menu" : undefined}
                 aria-haspopup="true"

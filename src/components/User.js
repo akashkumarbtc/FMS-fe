@@ -338,7 +338,7 @@ const User = () => {
             />
             <p className="user-list-text">List of Users</p>
           </div>
-          <div className="mt-4 client-search">
+          <div className="mt-3 client-search">
             <div class="client-search-container search">
               {/* <input
                 className="client-search-field form-control"

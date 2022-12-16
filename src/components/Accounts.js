@@ -439,14 +439,13 @@ const Accounts = () => {
             </div>
           </div>
           <div
-            className="row mt-5"
+            className="mt-5"
             style={{
               width: "100px !important",
               backgroundColor: "#F5F5F5",
               height: "auto",
               display: "flex",
               justifyContent: "left",
-              paddingLeft: "9px",
             }}
           >
             <div className="col-sm-4 total-clients">
@@ -455,7 +454,7 @@ const Accounts = () => {
                 src={totalClients}
                 alt="totalClients"
               />
-              <div>
+              <div className="total-clients-inner">
                 <h3 className="total-clients-text">Total Clients</h3>
                 <h1 className="total-clients-no">{totalClientsNo}</h1>
               </div>
@@ -466,7 +465,7 @@ const Accounts = () => {
                 src={activeClients}
                 alt="activeClients"
               />
-              <div>
+              <div className="active-clients-inner">
                 <h3 className="total-clients-text">Total Active Clients</h3>
                 <h1 className="total-clients-no">{totalActiveClients}</h1>
               </div>

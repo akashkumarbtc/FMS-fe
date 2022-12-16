@@ -4,6 +4,7 @@ import axios from "../api/axios";
 import "../css/accounts.css";
 import wavingHand from "../assets/wavingHand.png";
 import accountsSettings from "../assets/accountsSettings.png";
+import generateSalaryLogo from "../assets/generateSalaryLogo.png"
 import uploadFileLogo from "../assets/uploadFileLogo.png";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
@@ -243,6 +244,11 @@ const Salary = () => {
             </div> */}
               <div className="salary-button">
               <button className="generate-salary-button" onClick={handleSubmit}>
+              <img
+                className="generate-salary-image"
+                src={generateSalaryLogo}
+                alt="generateSalaryLogo"
+              />
                 Generate Salary
               </button>
             </div>

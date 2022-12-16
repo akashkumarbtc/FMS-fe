@@ -401,11 +401,11 @@ const Invoice = () => {
             />
             <button
               id="secondaryinvoiceupload"
-              className=" add-previous-invoice"
+              className="add-previous-invoice"
               onClick={upload}
             >
               <img className="add-new-icon" src={addNewIcon} alt="addNewIcon" />
-              {invoiceFile.name ? invoiceFile.name : 'upload invoice'}
+              {invoiceFile.name ? invoiceFile.name : 'Upload Invoice'}
             </button>
             <button
               className=" add-new-client"
