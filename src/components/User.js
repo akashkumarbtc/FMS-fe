@@ -29,6 +29,8 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 import DoNotDisturbOffIcon from '@mui/icons-material/DoNotDisturbOff';
+import toggleActive from "../assets/toggleActive.png"
+import toggleInActive from "../assets/toggleInActive.png"
 
 
 var rows = [];
@@ -372,7 +374,7 @@ const User = () => {
               onClick={handleClickOpen("paper")}
             >
               <img className="add-new-icon" src={addNewIcon} alt="addNewIcon" />
-              Add New
+              Add new
             </button>
           </div>
           <div className="row mt-4">
@@ -415,12 +417,9 @@ const User = () => {
                       <TableCell align="center">{row.last_name}</TableCell>
                       <TableCell align="center">{row.email}</TableCell>
                       <TableCell align="center">{row.is_active == 'True' ? <DoNotDisturbOnIcon style={{color:'green'}}/>: <DoNotDisturbOffIcon/>}</TableCell>
-                      <TableCell align="center"><DeleteIcon
-                    className="delete-icon"
-                    onClick={(e) => {
-                      handleUserDeactivate(row.email);
-                    }}
-                  /></TableCell>
+                      <TableCell align="center">
+                    {row.is_active == 'True' ? <img className="toggleActiveDeactive" src={toggleActive} alt="toggleActive" onClick={(e)=>{handleUserDeactivate(row.email);}}/>: <img className="toggleActiveDeactive" src={toggleInActive} alt="toggleInActive"/>}
+                  </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

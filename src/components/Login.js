@@ -144,7 +144,7 @@ const Login = () => {
               />
               <button disabled={!validName ? true : false} className="submitButton">Submit</button>
               <Link to="/forgotPassword" className="loginForgotPass mt-3">
-                Forgot Password ?
+                Forgot password?
               </Link>
             </form>
           </section>

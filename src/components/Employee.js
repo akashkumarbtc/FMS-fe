@@ -34,6 +34,8 @@ import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 import DoNotDisturbOffIcon from '@mui/icons-material/DoNotDisturbOff';
 import ToggleOffIcon from '@mui/icons-material/ToggleOff';
 import ToggleOnIcon from '@mui/icons-material/ToggleOn';
+import toggleActive from "../assets/toggleActive.png"
+import toggleInActive from "../assets/toggleInActive.png"
 
 
 var rows = [];
@@ -433,7 +435,7 @@ const Employee = () => {
               onClick={handleClickOpen("paper")}
             >
               <img className="add-new-icon" src={addNewIcon} alt="addNewIcon" />
-              Add New
+              Add new
             </button>
             {/* <select
               name="department"
@@ -496,51 +498,8 @@ const Employee = () => {
                       <TableCell sx={{ padding: "10px" }} align="center">{row.designation}</TableCell>
                       <TableCell sx={{ padding: "10px" }} align="center">{row.is_active == 'True' ? <DoNotDisturbOnIcon style={{color:'green'}}/>: <DoNotDisturbOffIcon/>}</TableCell>
                       <TableCell align="center">
-                  <DeleteIcon
-                    className="delete-icon"
-                    onClick={(e) => {
-                      handleEmployeeDisable(row.email);
-                    }}
-                  />
+                  {row.is_active == 'True' ? <img className="toggleActiveDeactive" src={toggleActive} alt="toggleActive" onClick={(e)=>{handleEmployeeDisable(row.email);}}/>: <img className="toggleActiveDeactive" src={toggleInActive} alt="toggleInActive"/>}
                 </TableCell>
-                      {/* <TableCell id={row.name} sx={{ padding: "10px" }} align="center">
-                        <IconButton
-                          aria-label="more"
-                          id="long-button"
-                          aria-controls={openMenue ? "long-menu" : undefined}
-                          aria-expanded={openMenue ? "true" : undefined}
-                          aria-haspopup="true"
-                          onClick={handleClickMenue}
-                        >
-                          <MoreVertIcon />
-                        </IconButton>
-                        <Menu
-                          id="long-menu"
-                          MenuListProps={{
-                            "aria-labelledby": "long-button",
-                          }}
-                          anchorEl={anchorEl}
-                          open={openMenue}
-                          onClose={handleCloseMenue}
-                          PaperProps={{
-                            style: {
-                              maxHeight: ITEM_HEIGHT * 4.5,
-                              width: "20ch",
-                            },
-                          }}
-                        >
-                          {options.map((option) => (
-                            <MenuItem
-                              key={option}
-                              id={row.name}
-                              selected={option === "Pyxis"}
-                              onClick={(e)=>{handleDeleteEmployee(e)}}
-                            >
-                              {option}
-                            </MenuItem>
-                          ))}
-                        </Menu>
-                      </TableCell> */}
                     </TableRow>
                   ))}
                 </TableBody>

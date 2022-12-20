@@ -484,7 +484,7 @@ const Operations = () => {
                   src={addNewIcon}
                   alt="addNewIcon"
                 />
-                Add New
+                Add new
               </Button>
               <Menu
                 id="basic-menu"

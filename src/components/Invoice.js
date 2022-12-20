@@ -405,14 +405,14 @@ const Invoice = () => {
               onClick={upload}
             >
               <img className="add-new-icon" src={addNewIcon} alt="addNewIcon" />
-              {invoiceFile.name ? invoiceFile.name : 'Upload Invoice'}
+              {invoiceFile.name ? invoiceFile.name : 'Upload invoice'}
             </button>
             <button
               className=" add-new-client"
               onClick={handleClickOpen("paper")}
             >
               <img className="add-new-icon" src={addNewIcon} alt="addNewIcon" />
-              Add New
+              Add new
             </button>
           </div>
           <div className="row mt-4">

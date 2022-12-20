@@ -44,10 +44,11 @@
     font-family: 'Poppins';
     font-style: normal;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 28px;
     color: #051134;
     text-align: center;
     width: 84%;
+    text-decoration: none;
 }
 
 section {

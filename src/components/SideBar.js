@@ -227,7 +227,7 @@ const SideBar = () => {
                   style={{ marginRight: "10px" }}
                 />
               )}
-              Salary Geneeration
+              Salary Generation
             </MenuItem>}
             {userData.roles[0] == "operations" && <MenuItem
               id="employee"

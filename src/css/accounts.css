@@ -599,3 +599,9 @@ margin-bottom: 15px;
     font-size: 20px;
     color: #ffffff;
 }
+.toggleActiveDeactive{
+    width: 45px;
+    height: 24px;
+    margin-right: 10px;
+    cursor: pointer;
+}

@@ -30,6 +30,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
 import DoNotDisturbOffIcon from '@mui/icons-material/DoNotDisturbOff';
+import toggleActive from "../assets/toggleActive.png"
+import toggleInActive from "../assets/toggleInActive.png"
 
 var rows = [];
 const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -508,7 +510,7 @@ const Accounts = () => {
               onClick={handleClickOpen("paper")}
             >
               <img className="add-new-icon" id='add-new'src={addNewIcon} alt="addNewIcon" />
-              Add New
+              Add new
             </button>
           </div>
           <div className="row mt-4">
@@ -558,13 +560,9 @@ const Accounts = () => {
                       </TableCell>
                       <TableCell align="center">{row.is_active == 'True' ? <DoNotDisturbOnIcon style={{color:'green'}}/>: <DoNotDisturbOffIcon/>}</TableCell>
                 <TableCell align="center">
-                  <DeleteIcon
-                    className="delete-icon"
-                    onClick={(e) => {
-                        handleClientDeactivate(row.name);
-                    }}
-                  />
+                  {row.is_active == 'True' ? <img className="toggleActiveDeactive" src={toggleActive} alt="toggleActive" onClick={(e)=>{handleClientDeactivate(row.name);}}/>: <img className="toggleActiveDeactive" src={toggleInActive} alt="toggleInActive"/>}
                   <BorderColorIcon
+                  style={{marginLeft:'10px'}}
                     className="edit-icon"
                     onClick={(e) => {
                         handleClientEdit(row.name);

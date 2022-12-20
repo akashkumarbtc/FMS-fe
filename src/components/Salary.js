@@ -249,7 +249,7 @@ const Salary = () => {
                 src={generateSalaryLogo}
                 alt="generateSalaryLogo"
               />
-                Generate Salary
+                Generate salary
               </button>
             </div>
           </div>
