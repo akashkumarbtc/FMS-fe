@@ -558,9 +558,15 @@ const Accounts = () => {
                       <TableCell align="center">
                         {row.project_details}
                       </TableCell>
-                      <TableCell align="center">{row.is_active == 'True' ? <DoNotDisturbOnIcon style={{color:'green'}}/>: <DoNotDisturbOffIcon/>}</TableCell>
+                      <TableCell align="center">{row.is_active == 'True' ? 
+                      // <DoNotDisturbOnIcon style={{color:'green'}}/>
+                      <span className="activeCell">ACTIVE</span>
+                      : 
+                      <span className="deactiveCell">INACTIVE</span>
+                      // <DoNotDisturbOffIcon/>
+                      }</TableCell>
                 <TableCell align="center">
-                  {row.is_active == 'True' ? <img className="toggleActiveDeactive" src={toggleActive} alt="toggleActive" onClick={(e)=>{handleClientDeactivate(row.name);}}/>: <img className="toggleActiveDeactive" src={toggleInActive} alt="toggleInActive"/>}
+                  {row.is_active == 'True' ? <img className="toggleActiveDeactive" src={toggleActive} alt="toggleActive" onClick={(e)=>{handleClientDeactivate(row.name);}}/>: <img className="toggleActiveDeactive" src={toggleInActive} alt="toggleInActive" onClick={(e)=>{handleClientDeactivate(row.name);}}/>}
                   <BorderColorIcon
                   style={{marginLeft:'10px'}}
                     className="edit-icon"

@@ -498,7 +498,7 @@ const Employee = () => {
                       <TableCell sx={{ padding: "10px" }} align="center">{row.designation}</TableCell>
                       <TableCell sx={{ padding: "10px" }} align="center">{row.is_active == 'True' ? <DoNotDisturbOnIcon style={{color:'green'}}/>: <DoNotDisturbOffIcon/>}</TableCell>
                       <TableCell align="center">
-                  {row.is_active == 'True' ? <img className="toggleActiveDeactive" src={toggleActive} alt="toggleActive" onClick={(e)=>{handleEmployeeDisable(row.email);}}/>: <img className="toggleActiveDeactive" src={toggleInActive} alt="toggleInActive"/>}
+                  {row.is_active == 'True' ? <img className="toggleActiveDeactive" src={toggleActive} alt="toggleActive" onClick={(e)=>{handleEmployeeDisable(row.email);}}/>: <img className="toggleActiveDeactive" src={toggleInActive} alt="toggleInActive" onClick={(e)=>{handleEmployeeDisable(row.email);}}/>}
                 </TableCell>
                     </TableRow>
                   ))}

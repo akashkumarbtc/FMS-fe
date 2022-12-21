@@ -605,3 +605,29 @@ margin-bottom: 15px;
     margin-right: 10px;
     cursor: pointer;
 }
+.activeCell{
+    border: 1px solid #D3FFC4;
+    padding: 6px;
+    color: #2DA900;
+    border-radius: 20px;
+    background-color: rgb(211, 255, 196);
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 10px;
+    padding-left: 13px;
+    padding-right: 13px;
+}
+.deactiveCell{
+    border: 1px solid #D3FFC4;
+    padding: 6px;
+    color: #2DA900;
+    border-radius: 20px;
+    background-color: rgb(211, 255, 196);
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 10px;
+    padding-left: 13px;
+    padding-right: 13px;
+}
