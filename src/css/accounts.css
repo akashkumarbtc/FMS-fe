@@ -621,9 +621,9 @@ margin-bottom: 15px;
 .deactiveCell{
     border: 1px solid #D3FFC4;
     padding: 6px;
-    color: #2DA900;
+    color: #B60000;
     border-radius: 20px;
-    background-color: rgb(211, 255, 196);
+    background-color: #FFBABA;
     font-family: 'Montserrat';
     font-style: normal;
     font-weight: 600;

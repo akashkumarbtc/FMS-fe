@@ -26,22 +26,22 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import employeeListLogo from "../assets/employeeListLogo.png"
-import { ToastContainer, toast } from 'react-toastify';
+import employeeListLogo from "../assets/employeeListLogo.png";
+import { ToastContainer, toast } from "react-toastify";
 import DeleteIcon from "@mui/icons-material/Delete";
-import 'react-toastify/dist/ReactToastify.css';
-import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
-import DoNotDisturbOffIcon from '@mui/icons-material/DoNotDisturbOff';
-import ToggleOffIcon from '@mui/icons-material/ToggleOff';
-import ToggleOnIcon from '@mui/icons-material/ToggleOn';
-import toggleActive from "../assets/toggleActive.png"
-import toggleInActive from "../assets/toggleInActive.png"
-
+import "react-toastify/dist/ReactToastify.css";
+import DoNotDisturbOnIcon from "@mui/icons-material/DoNotDisturbOn";
+import DoNotDisturbOffIcon from "@mui/icons-material/DoNotDisturbOff";
+import ToggleOffIcon from "@mui/icons-material/ToggleOff";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import toggleActive from "../assets/toggleActive.png";
+import toggleInActive from "../assets/toggleInActive.png";
 
 var rows = [];
 const options = ["Delete"];
 const ITEM_HEIGHT = 48;
-const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const EMAIL_REGEX =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -58,7 +58,12 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 function createData(department, designation, email, name, phone, is_active) {
   return {
-    department, designation, email, name, phone, is_active
+    department,
+    designation,
+    email,
+    name,
+    phone,
+    is_active,
   };
 }
 
@@ -70,26 +75,26 @@ const Employee = () => {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [workLocation, setWorkLocation] = useState("");
-  const [address, setAddress] = useState("")
-  const [bankName, setBankName] = useState("")
-  const [bankNo, setBankNo] = useState("")
-  const [pfNo, setPfNO] = useState("")
-  const [pfUan, setPfUan] = useState("")
-  const [esiNo, setEsiNo] = useState("")
+  const [address, setAddress] = useState("");
+  const [bankName, setBankName] = useState("");
+  const [bankNo, setBankNo] = useState("");
+  const [pfNo, setPfNO] = useState("");
+  const [pfUan, setPfUan] = useState("");
+  const [esiNo, setEsiNo] = useState("");
   const [pan, setPan] = useState("");
-  const [basic_DA, setBasicDa] = useState("")
-  const [hra, setHra] = useState("")
-  const [special_allowance, setSpecialAllowance] = useState("")
-  const [pf, setPf] = useState("")
-  const [lta, setLta] = useState("")
-  const [professional_tax, setProfessionalTax] = useState("")
-  const [earnings_total, setEarningsTotal] = useState("")
+  const [basic_DA, setBasicDa] = useState("");
+  const [hra, setHra] = useState("");
+  const [special_allowance, setSpecialAllowance] = useState("");
+  const [pf, setPf] = useState("");
+  const [lta, setLta] = useState("");
+  const [professional_tax, setProfessionalTax] = useState("");
+  const [earnings_total, setEarningsTotal] = useState("");
   const [open, setOpen] = React.useState(false);
   const [scroll, setScroll] = React.useState("paper");
   const [userList, setUserList] = useState([]);
   const data = localStorage.getItem("auth");
   const token = JSON.parse(data).accessToken;
-  const[validEmail, setValidEmail] = useState(false);
+  const [validEmail, setValidEmail] = useState(false);
   var [myOptions, setMyOptions] = useState([]);
 
   const handleClickOpen = (scrollType) => () => {
@@ -102,7 +107,7 @@ const Employee = () => {
   };
   useEffect(() => {
     setValidEmail(EMAIL_REGEX.test(email));
-    }, [email]);
+  }, [email]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenue = Boolean(anchorEl);
@@ -112,52 +117,51 @@ const Employee = () => {
   const handleCloseMenue = () => {
     setAnchorEl(null);
   };
-  const handleDeleteEmployee = async(name) => {
+  const handleDeleteEmployee = async (name) => {
     // console.log(e.target.id)
-      
-      const url = "/operations/delete-employee";
-      try {
-        // const response = await axios.delete(
-        //   {
-        //     url,
-        //     // JSON.stringify({
-        //     //   employee_name: e.target.id
-        //     // }),
-        //     // {
-        //     //   headers: {
-        //     //     "Content-Type": "application/json",
-        //     //     Authorization: "Bearer " + token,
-        //     //   },
-             
-              
-        //     //   withCredentials: true,
-        //     // }
-        //     // headers: {
-        //     //   Authorization:"Bearer " + token,
-        //     // },
-        //     // data: {
-        //     //   employee_name: e.target.id
-        //     // }
-        //   }
-        const response = await axios.delete(url, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-          data: {
-            employee_name: name,
-          },
-        });
-         
-        // );
-        // setOpen(false);
-        toast.success("employee deleted successfully!")
-        getCompanyList()
-        // handleClose()
+
+    const url = "/operations/delete-employee";
+    try {
+      // const response = await axios.delete(
+      //   {
+      //     url,
+      //     // JSON.stringify({
+      //     //   employee_name: e.target.id
+      //     // }),
+      //     // {
+      //     //   headers: {
+      //     //     "Content-Type": "application/json",
+      //     //     Authorization: "Bearer " + token,
+      //     //   },
+
+      //     //   withCredentials: true,
+      //     // }
+      //     // headers: {
+      //     //   Authorization:"Bearer " + token,
+      //     // },
+      //     // data: {
+      //     //   employee_name: e.target.id
+      //     // }
+      //   }
+      const response = await axios.delete(url, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+        data: {
+          employee_name: name,
+        },
+      });
+
+      // );
+      // setOpen(false);
+      toast.success("employee deleted successfully!");
+      getCompanyList();
+      // handleClose()
     } catch (err) {
-        console.log(err);
-      }
-  }
+      console.log(err);
+    }
+  };
 
   const descriptionElementRef = React.useRef(null);
   React.useEffect(() => {
@@ -174,7 +178,6 @@ const Employee = () => {
   }, []);
 
   const getCompanyList = async () => {
-    
     const url = "/operations/employee-list";
     try {
       const response = await axios.get(url, {
@@ -190,10 +193,19 @@ const Employee = () => {
       rows = [];
       console.log(rows);
       companyList.map((items) => {
-        rows.push(createData(items.department, items.designation, items.email, items.name, items.phone, items.is_active));
+        rows.push(
+          createData(
+            items.department,
+            items.designation,
+            items.email,
+            items.name,
+            items.phone,
+            items.is_active
+          )
+        );
       });
       setUserList(rows);
-      console.log(userList)
+      console.log(userList);
     } catch (err) {
       console.log(err);
     }
@@ -211,9 +223,9 @@ const Employee = () => {
       });
       console.log();
       myOptions = [];
-      let data = response.data.suggestions
+      let data = response.data.suggestions;
       for (var i = 0; i < data.length; i++) {
-        myOptions.push(data[i].name + ',' + data[i].email);
+        myOptions.push(data[i].name + "," + data[i].email);
       }
       setMyOptions(myOptions);
     } catch (err) {
@@ -221,39 +233,40 @@ const Employee = () => {
     }
   };
   const getSelctedCompany = async (value) => {
-    
-    console.log(value)
+    console.log(value);
     const url = "/accounts/company-filter";
     try {
-     const response = await axios.post(url, 
-       JSON.stringify({
-         name: value,
-       }),
-       {
-       headers: {
-         "Content-Type": "application/json",
-         Authorization: "Bearer " + token,
-       },
-     });
-     const companyList = response.data;
-     rows = [];
-     companyList.map((items) => {
-       rows.push(
-         createData(
-           items.name,
-           items.gst_number,
-           items.phone,
-           items.email,
-           items.project_details,
-           items.is_active
-         )
-       );
-     });
-     setUserList(rows);
-   } catch (err) {
-     console.log(err);
-   }
- }
+      const response = await axios.post(
+        url,
+        JSON.stringify({
+          name: value,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      const companyList = response.data;
+      rows = [];
+      companyList.map((items) => {
+        rows.push(
+          createData(
+            items.name,
+            items.gst_number,
+            items.phone,
+            items.email,
+            items.project_details,
+            items.is_active
+          )
+        );
+      });
+      setUserList(rows);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   function handleControlSearch(fn, delay) {
     let timeOutId;
     return function (...args) {
@@ -273,25 +286,25 @@ const Employee = () => {
       const response = await axios.post(
         Login_Url,
         JSON.stringify({
-            name: name,
-            designation: designation,
-            department: department,
-            work_loaction: workLocation,
-            address: address,
-            bank_name: bankName,
-            phone: phone,
-            email: email,
-            pf_no: pfNo,
-            pf_uan: pfUan,
-            esi_no: esiNo,
-            pan: pan,
-            basic_DA: basic_DA,
-            hra: hra,
-            special_allowance: special_allowance,
-            lta: lta,
-            pf: pf,
-            profession_tax: professional_tax,
-            earnings_total: earnings_total
+          name: name,
+          designation: designation,
+          department: department,
+          work_loaction: workLocation,
+          address: address,
+          bank_name: bankName,
+          phone: phone,
+          email: email,
+          pf_no: pfNo,
+          pf_uan: pfUan,
+          esi_no: esiNo,
+          pan: pan,
+          basic_DA: basic_DA,
+          hra: hra,
+          special_allowance: special_allowance,
+          lta: lta,
+          pf: pf,
+          profession_tax: professional_tax,
+          earnings_total: earnings_total,
         }),
         {
           headers: {
@@ -301,33 +314,33 @@ const Employee = () => {
           withCredentials: true,
         }
       );
-      setName("")
-      setDepartment("")
-      setDesignation("")
-      setWorkLocation("")
-      setAddress("")
-      setBankName("")
-      setPhone("")
-      setEmail("")
-      setPfNO("")
-      setPan("")
-      setPf("")
-      setEsiNo("")
-      setBasicDa("")
-      setHra("")
-      setSpecialAllowance("")
-      setLta("")
-      setProfessionalTax("")
-      setEarningsTotal("")
-      setPfUan("")
+      setName("");
+      setDepartment("");
+      setDesignation("");
+      setWorkLocation("");
+      setAddress("");
+      setBankName("");
+      setPhone("");
+      setEmail("");
+      setPfNO("");
+      setPan("");
+      setPf("");
+      setEsiNo("");
+      setBasicDa("");
+      setHra("");
+      setSpecialAllowance("");
+      setLta("");
+      setProfessionalTax("");
+      setEarningsTotal("");
+      setPfUan("");
       // setOpen(false);
-      toast.success("Invoice created successfully!")
+      toast.success("Invoice created successfully!");
       getCompanyList();
       handleClose();
 
       // navigate(from, { replace: true });
     } catch (err) {
-      toast.error(err.response.data.detail)
+      toast.error(err.response.data.detail);
       // if (!err?.response) {
       //   setErrMsg("No Server Response");
       // } else if (err.response?.status === 400) {
@@ -343,26 +356,27 @@ const Employee = () => {
   const secondaryClick = () => {
     document.getElementById("primarybutton").click();
   };
-  const handleEmployeeDisable = async(email) => {
-    
+  const handleEmployeeDisable = async (email) => {
     // console.log(value)
     const url = "/operations/deactivate-employee";
     try {
-     const response = await axios.post(url, 
-       JSON.stringify({
-        "employee_email": email
-       }),
-       {
-       headers: {
-         "Content-Type": "application/json",
-         Authorization: "Bearer " + token,
-       },
-     });
-     getCompanyList();
-   } catch (err) {
-     console.log(err);
-   }
-  }
+      const response = await axios.post(
+        url,
+        JSON.stringify({
+          employee_email: email,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      getCompanyList();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div style={{ width: "100%", height: "100vh" }}>
@@ -431,7 +445,7 @@ const Employee = () => {
             </div>
             <button
               className=" add-new-client"
-              style={{width:'126px'}}
+              style={{ width: "126px" }}
               onClick={handleClickOpen("paper")}
             >
               <img className="add-new-icon" src={addNewIcon} alt="addNewIcon" />
@@ -493,13 +507,40 @@ const Employee = () => {
                         {row.name}
                       </TableCell>
                       <TableCell align="center">{row.email}</TableCell>
-                      <TableCell sx={{ padding: "10px" }} align="center">{row.phone}</TableCell>
-                      <TableCell sx={{ padding: "10px" }} align="center">{row.department}</TableCell>
-                      <TableCell sx={{ padding: "10px" }} align="center">{row.designation}</TableCell>
-                      <TableCell sx={{ padding: "10px" }} align="center">{row.is_active == 'True' ? <DoNotDisturbOnIcon style={{color:'green'}}/>: <DoNotDisturbOffIcon/>}</TableCell>
+                      <TableCell sx={{ padding: "10px" }} align="center">
+                        {row.phone}
+                      </TableCell>
+                      <TableCell sx={{ padding: "10px" }} align="center">
+                        {row.department}
+                      </TableCell>
+                      <TableCell sx={{ padding: "10px" }} align="center">
+                        {row.designation}
+                      </TableCell>
                       <TableCell align="center">
-                  {row.is_active == 'True' ? <img className="toggleActiveDeactive" src={toggleActive} alt="toggleActive" onClick={(e)=>{handleEmployeeDisable(row.email);}}/>: <img className="toggleActiveDeactive" src={toggleInActive} alt="toggleInActive" onClick={(e)=>{handleEmployeeDisable(row.email);}}/>}
-                </TableCell>
+                        {
+                          row.is_active == "True" ? (
+                            // <DoNotDisturbOnIcon style={{color:'green'}}/>
+                            <span className="activeCell">ACTIVE</span>
+                          ) : (
+                            <span className="deactiveCell">INACTIVE</span>
+                          )
+                          // <DoNotDisturbOffIcon/>
+                        }
+                      </TableCell>
+                      <TableCell align="center">
+                        <img
+                          className="toggleActiveDeactive"
+                          src={
+                            row.is_active == "True"
+                              ? toggleInActive
+                              : toggleActive
+                          }
+                          alt="toggleActive"
+                          onClick={(e) => {
+                            handleEmployeeDisable(row.email);
+                          }}
+                        />
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -604,7 +645,16 @@ const Employee = () => {
                           value={email}
                           required
                         />
-                        <p id="uidnote" className={email && !validEmail ? "instructions-email" : "offscreen-email"}>Enter a valid email address</p>
+                        <p
+                          id="uidnote"
+                          className={
+                            email && !validEmail
+                              ? "instructions-email"
+                              : "offscreen-email"
+                          }
+                        >
+                          Enter a valid email address
+                        </p>
                       </div>
                       <div className="item">
                         <label className="mt-3">Bank Name</label>
@@ -739,11 +789,11 @@ const Employee = () => {
                           required
                         />
                       </div>
-                      <div className="item" style={{textAlign:'left'}}>
+                      <div className="item" style={{ textAlign: "left" }}>
                         <label className="mt-3">Total Earnings</label>
                         <input
                           className="mt-3"
-                          style={{marginLeft:'29px'}}
+                          style={{ marginLeft: "29px" }}
                           type="number"
                           autoComplete="off"
                           onChange={(e) => setEarningsTotal(e.target.value)}

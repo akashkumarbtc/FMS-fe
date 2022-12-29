@@ -27,16 +27,16 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
-import DoNotDisturbOnIcon from '@mui/icons-material/DoNotDisturbOn';
-import DoNotDisturbOffIcon from '@mui/icons-material/DoNotDisturbOff';
-import toggleActive from "../assets/toggleActive.png"
-import toggleInActive from "../assets/toggleInActive.png"
-
+import DoNotDisturbOnIcon from "@mui/icons-material/DoNotDisturbOn";
+import DoNotDisturbOffIcon from "@mui/icons-material/DoNotDisturbOff";
+import toggleActive from "../assets/toggleActive.png";
+import toggleInActive from "../assets/toggleInActive.png";
 
 var rows = [];
 const options = ["Update", "Delete"];
 const ITEM_HEIGHT = 48;
-const EMAIL_REGEX = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+const EMAIL_REGEX =
+  /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -56,13 +56,13 @@ function createData(first_name, last_name, email, is_active) {
     first_name,
     last_name,
     email,
-    is_active
+    is_active,
   };
 }
 
 const User = () => {
   const [name, setName] = useState("");
-  const [lastName, setLastName] = useState("")
+  const [lastName, setLastName] = useState("");
   const [department, setDepartment] = useState("");
   const [designation, setDesignation] = useState("");
   const [contact, setContact] = useState("");
@@ -75,7 +75,7 @@ const User = () => {
   const [userList, setUserList] = useState([]);
   const data = localStorage.getItem("auth");
   const token = JSON.parse(data).accessToken;
-  const[validEmail, setValidEmail] = useState(false);
+  const [validEmail, setValidEmail] = useState(false);
   var [myOptions, setMyOptions] = useState([]);
 
   const handleClickOpen = (scrollType) => () => {
@@ -88,7 +88,7 @@ const User = () => {
   };
   useEffect(() => {
     setValidEmail(EMAIL_REGEX.test(email));
-    }, [email]);
+  }, [email]);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openMenue = Boolean(anchorEl);
   const handleClickMenue = (event) => {
@@ -127,7 +127,14 @@ const User = () => {
       console.log(rows);
       rows = [];
       companyList.map((items) => {
-        rows.push(createData(items.first_name, items.last_name, items.email, items.is_active));
+        rows.push(
+          createData(
+            items.first_name,
+            items.last_name,
+            items.email,
+            items.is_active
+          )
+        );
       });
       setUserList(rows);
     } catch (err) {
@@ -147,7 +154,7 @@ const User = () => {
       });
       console.log();
       myOptions = [];
-      let data = response.data.suggestions
+      let data = response.data.suggestions;
       for (var i = 0; i < data.length; i++) {
         myOptions.push(data[i]);
       }
@@ -169,7 +176,6 @@ const User = () => {
     };
   }
   const getSelctedInvoice = async (value) => {
-    ;
     const url = "/admin/select-user";
     try {
       const response = await axios.post(
@@ -189,7 +195,14 @@ const User = () => {
       console.log(rows);
       rows = [];
       companyList.map((items) => {
-        rows.push(createData(items.first_name, items.last_name, items.email, items.is_active));
+        rows.push(
+          createData(
+            items.first_name,
+            items.last_name,
+            items.email,
+            items.is_active
+          )
+        );
       });
       setUserList(rows);
       // const invoiceList = response.data.invoices;
@@ -214,7 +227,6 @@ const User = () => {
     }
   };
 
-
   const handleSubmit = async (e) => {
     const Login_Url = "/admin/create";
     e.preventDefault();
@@ -237,12 +249,12 @@ const User = () => {
           withCredentials: true,
         }
       );
-      setName("")
-      setLastName("")
-      setDepartment("")
-      setEmail("")
-      setPwd("")
-      setDesignation("")
+      setName("");
+      setLastName("");
+      setDepartment("");
+      setEmail("");
+      setPwd("");
+      setDesignation("");
       // setOpen(false);
       getCompanyList();
       handleClose();
@@ -266,7 +278,6 @@ const User = () => {
   };
 
   const handleUserDelete = async (e) => {
-    ;
     const url = "/admin/delet-user";
     try {
       const response = await axios.delete(url, {
@@ -283,26 +294,27 @@ const User = () => {
       console.log(err);
     }
   };
-  const handleUserDeactivate = async(email) => {
-    
+  const handleUserDeactivate = async (email) => {
     // console.log(value)
     const url = "/admin/deactivate-user";
     try {
-     const response = await axios.post(url, 
-       JSON.stringify({
-        "email": email
-       }),
-       {
-       headers: {
-         "Content-Type": "application/json",
-         Authorization: "Bearer " + token,
-       },
-     });
-     getCompanyList();
-   } catch (err) {
-     console.log(err);
-   }
-  }
+      const response = await axios.post(
+        url,
+        JSON.stringify({
+          email: email,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+      getCompanyList();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div style={{ width: "100%", height: "100vh" }}>
@@ -389,7 +401,7 @@ const User = () => {
                       sx={{ lineHeight: "20px", padding: "5px" }}
                       align="center"
                     >
-                     First Name
+                      First Name
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       Last Name&nbsp;
@@ -416,10 +428,31 @@ const User = () => {
                       </TableCell>
                       <TableCell align="center">{row.last_name}</TableCell>
                       <TableCell align="center">{row.email}</TableCell>
-                      <TableCell align="center">{row.is_active == 'True' ? <DoNotDisturbOnIcon style={{color:'green'}}/>: <DoNotDisturbOffIcon/>}</TableCell>
                       <TableCell align="center">
-                    {row.is_active == 'True' ? <img className="toggleActiveDeactive" src={toggleActive} alt="toggleActive" onClick={(e)=>{handleUserDeactivate(row.email);}}/>: <img className="toggleActiveDeactive" src={toggleInActive} alt="toggleInActive"/>}
-                  </TableCell>
+                        {
+                          row.is_active == "True" ? (
+                            // <DoNotDisturbOnIcon style={{color:'green'}}/>
+                            <span className="activeCell">ACTIVE</span>
+                          ) : (
+                            <span className="deactiveCell">INACTIVE</span>
+                          )
+                          // <DoNotDisturbOffIcon/>
+                        }
+                      </TableCell>
+                      <TableCell align="center">
+                        <img
+                          className="toggleActiveDeactive"
+                          src={
+                            row.is_active == "True"
+                              ? toggleInActive
+                              : toggleActive
+                          }
+                          alt="toggleActive"
+                          onClick={(e) => {
+                            handleUserDeactivate(row.email);
+                          }}
+                        />
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -435,9 +468,7 @@ const User = () => {
                 aria-labelledby="scroll-dialog-title"
                 aria-describedby="scroll-dialog-description"
               >
-                <DialogTitle id="scroll-dialog-title">
-                  Add New User
-                </DialogTitle>
+                <DialogTitle id="scroll-dialog-title">Add New User</DialogTitle>
                 <DialogContent dividers={scroll === "paper"}>
                   <DialogContentText
                     id="scroll-dialog-description"
@@ -479,7 +510,13 @@ const User = () => {
                           value={department}
                           required
                         /> */}
-                        <select name="department" id="department" className="department-select" onChange={(e) => setDepartment(e.target.value)} required>
+                        <select
+                          name="department"
+                          id="department"
+                          className="department-select"
+                          onChange={(e) => setDepartment(e.target.value)}
+                          required
+                        >
                           <option value="select">Select</option>
                           <option value="admin">Admin</option>
                           <option value="accounts">Accounts</option>
@@ -521,7 +558,16 @@ const User = () => {
                           value={email}
                           required
                         />
-                          <p id="uidnote" className={email && !validEmail ? "instructions-email" : "offscreen-email"}>Enter a valid email address</p>
+                        <p
+                          id="uidnote"
+                          className={
+                            email && !validEmail
+                              ? "instructions-email"
+                              : "offscreen-email"
+                          }
+                        >
+                          Enter a valid email address
+                        </p>
                       </div>
 
                       {/* <div className="item">
@@ -536,7 +582,7 @@ const User = () => {
                         />
                       </div> */}
 
-                      <div className="item" style={{textAlign:'left'}}>
+                      <div className="item" style={{ textAlign: "left" }}>
                         <label className="mt-3">Set New Password</label>
                         <input
                           className="mt-3 designation-input"

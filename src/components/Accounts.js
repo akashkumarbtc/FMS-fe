@@ -566,7 +566,7 @@ const Accounts = () => {
                       // <DoNotDisturbOffIcon/>
                       }</TableCell>
                 <TableCell align="center">
-                  {row.is_active == 'True' ? <img className="toggleActiveDeactive" src={toggleActive} alt="toggleActive" onClick={(e)=>{handleClientDeactivate(row.name);}}/>: <img className="toggleActiveDeactive" src={toggleInActive} alt="toggleInActive" onClick={(e)=>{handleClientDeactivate(row.name);}}/>}
+                <img className="toggleActiveDeactive" src={row.is_active == 'True' ? toggleInActive : toggleActive} alt="toggleActive" onClick={(e)=>{handleClientDeactivate(row.name);}}/>
                   <BorderColorIcon
                   style={{marginLeft:'10px'}}
                     className="edit-icon"
