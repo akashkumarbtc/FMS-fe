@@ -16,6 +16,8 @@ const Admin = () => {
   const token = JSON.parse(data).accessToken;
   const [clientMonthlyRevue, setClientMonthlyRevenue] = useState("")
   const [teamChartValue, setTeamChartValue] = useState("")
+  const [clientNames, setClientName] = useState("")
+  const [clientRevenue, setClientRevenue] = useState("")
 
   useEffect(()=>{
      getTeamPieChart()
@@ -40,7 +42,7 @@ const Admin = () => {
     }
   }
   const getClientPieChart = async() => {
-    
+    debugger
     const url = "/admin/client-revenue-piegraph";
     try {
       const response = await axios.get(url, {
@@ -50,6 +52,8 @@ const Admin = () => {
         },
         withCredentials: true,
       });
+      setClientName(Object.keys(response.data))
+      setClientRevenue(Object.values(response.data))
     } catch (err) {
       console.log(err);
     }
@@ -78,14 +82,26 @@ const Admin = () => {
 
 
   const pieData = (canvas) => {
-    const ctx = canvas.getContext("2d");
-    const gradient = ctx.createLinearGradient(0, 180, 180, 0);
-    const gradient1 = ctx.createLinearGradient(0, 180, 180, 0);
-    gradient.addColorStop(0.5, '#FDB400');
-    gradient.addColorStop(1, '#D6A42B');
+    var coloR = [];
 
-    gradient1.addColorStop(0.5, '#F75775');
-    gradient1.addColorStop(1, '#9E2037');
+    var dynamicColors = function() {
+       var r = Math.floor(Math.random() * 255);
+       var g = Math.floor(Math.random() * 255);
+       var b = Math.floor(Math.random() * 255);
+       return "rgb(" + r + "," + g + "," + b + ")";
+    };
+  
+    for (var i in teamChartValue) {
+       coloR.push(dynamicColors());
+    }
+    // const ctx = canvas.getContext("2d");
+    // const gradient = ctx.createLinearGradient(0, 180, 180, 0);
+    // const gradient1 = ctx.createLinearGradient(0, 180, 180, 0);
+    // gradient.addColorStop(0.5, '#FDB400');
+    // gradient.addColorStop(1, '#D6A42B');
+
+    // gradient1.addColorStop(0.5, '#F75775');
+    // gradient1.addColorStop(1, '#9E2037');
     // gradient1.addColorStop(1, '#F75775');
 
     return {
@@ -93,9 +109,10 @@ const Admin = () => {
         datasets:[
             {
             label: 'Data',
+            // data: [10,12,8],
             data: teamChartValue,
-            backgroundColor: [gradient1, gradient],
-            borderColor: [gradient1, gradient],
+            backgroundColor: coloR,
+            borderColor: coloR,
             borderWidth: 1,
             }
         ]
@@ -117,24 +134,37 @@ const pieOptions = {
     }
 }
 const pieDataClient = (canvas) => {
-  const ctx = canvas.getContext("2d");
-  const gradient = ctx.createLinearGradient(0, 180, 180, 0);
-  const gradient1 = ctx.createLinearGradient(0, 180, 180, 0);
-  gradient.addColorStop(0.5, '#FDB400');
-  gradient.addColorStop(1, '#D6A42B');
+  var coloR = [];
 
-  gradient1.addColorStop(0.5, '#F75775');
-  gradient1.addColorStop(1, '#9E2037');
+  var dynamicColors = function() {
+     var r = Math.floor(Math.random() * 255);
+     var g = Math.floor(Math.random() * 255);
+     var b = Math.floor(Math.random() * 255);
+     return "rgb(" + r + "," + g + "," + b + ")";
+  };
+
+  for (var i in clientNames) {
+     coloR.push(dynamicColors());
+  }
+
+  // const ctx = canvas.getContext("2d");
+  // const gradient = ctx.createLinearGradient(0, 180, 180, 0);
+  // const gradient1 = ctx.createLinearGradient(0, 180, 180, 0);
+  // gradient.addColorStop(0.5, '#FDB400');
+  // gradient.addColorStop(1, '#D6A42B');
+
+  // gradient1.addColorStop(0.5, '#F75775');
+  // gradient1.addColorStop(1, '#9E2037');
   // gradient1.addColorStop(1, '#F75775');
 
   return {
-      labels: ['Bluetick', 'Optym', 'Reliance'],
+      labels: clientNames,
       datasets:[
           {
           label: 'Data',
-          data: [500000, 400000, 1200000],
-          backgroundColor: [gradient1, gradient],
-          borderColor: [gradient1, gradient],
+          data: clientRevenue,
+          backgroundColor: coloR,
+          // borderColor: [gradient1, gradient],
           borderWidth: 1,
           }
       ]
@@ -156,68 +186,6 @@ const pieOptionsCLient = {
   }
 }
 
-// const lineData = (canvas) => {
-//   const ctx = canvas.getContext("2d");
-//   const gradient = ctx.createLinearGradient(0, 0, 0, 426);
-//   gradient.addColorStop(0.8, 'rgba(108, 99, 255, 0)');
-//   gradient.addColorStop(0.2, 'rgba(253, 86, 110, 0.37)');
-
-//   return {
-//           labels: ['JAN', "FEB", "MAR", "APR", "MAY", "JUN", "JUL"],
-//           datasets: [{
-//             label: 'My First Dataset',
-//             data: [20, 25, 40, 15, 30, 20, 10],
-//             backgroundColor: gradient,
-//             borderColor: gradient,
-//             fill: true,
-//           }]
-//   }
-// }
-// const lineOptions = {
-//   responsive: true,
-//   maintainAspectRatio: false,
-//   tooltips: {
-//       mode: 'index',
-//       intersect: false,
-//   },
-//   hover: {
-//       mode: 'nearest',
-//       intersect: true
-//   },
-//   scales: {
-//       xAxes: [{
-//         gridLines: {
-//           display: false
-//         },
-//         ticks:{
-//           display: false
-//         }
-//       }],
-//       yAxes: [{
-//         min: 20,
-//         max: 100,
-//         ticks: {
-//             // maxTicksLimit: 20,
-//             minTicketLimit: 20
-//         }
-//       }],
-//   },
-//   legend: {
-//       display: false,
-//       position: 'bottom',
-//       labels: {
-//           fontColor: 'rgba(242, 38, 19, 1)'
-//       }
-//   },
-//   tooltips: {
-//     callbacks: {
-//        label: function(tooltipItem) {
-//               return tooltipItem.yLabel;
-//        }
-//     }
-// }
-// }
-
 const barData = (canvas) => {
   const ctx = canvas.getContext("2d");
   const gradient = ctx.createLinearGradient(0, 0, 0, 316);
@@ -236,7 +204,8 @@ const barData = (canvas) => {
           labels: ['January', "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
           datasets: [{
             label: 'My First Dataset',
-            data: clientMonthlyRevue,
+            // data: clientMonthlyRevue,
+            data:[400000, 2500000, 3500000, 3200000, 2100000, 1500000, 1700000, 3900000, 1200000, 1800000, 2400000, 3200000],
             backgroundColor: gradient,
             borderColor: gradient,
             fill: true,
@@ -318,10 +287,10 @@ const barOptions = {
               </div>
             </div>
           </div>
-        <div className="row mt-2" style={{display:'flex'}}>
+        <div className="row" style={{display:'flex'}}>
             <div className="col-sm-4 piechartwrapper">
               <div className="pieheadercontainer">
-              <label className="piecharttext">Team Members Analytic View</label>
+              <label className="piecharttext">Employee Distribution</label>
               {/* <div className="pielabelcontainer">
                 <small className="pietechteam">Tech Team</small>
                 <small className="pieoperationteam">Operation Team</small>
@@ -335,10 +304,10 @@ const barOptions = {
             <Pie data={pieDataClient} options={pieOptionsCLient} height={200} width={200}/>
             </div>
         </div>
-        <div className="row mt-3">
+        <div className="row mt-2">
           <div className="col-sm-4 barchartwrapper">
             <div className="bartextcontainer">
-              <div className="barcharttextwrapper">
+              <div className="barcharttextwrapper" style={{marginBottom:'10px'}}>
               <label className="barcharttext">Revenue Graph</label>
               <label className="barcharttext" style={{textAlign:"center"}}>Monthly Representation</label>
               <div className="barcharttext yearselectoption">

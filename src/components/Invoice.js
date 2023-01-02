@@ -73,7 +73,7 @@ const Invoice = () => {
   const [gst, setGst] = useState("");
   const [totalValue, setTotalValue] = useState("");
   const [balance_due, setBalance_due] = useState("");
-  const [dueData, setDueData] = React.useState(null);
+  const [dueData, setDueData] = React.useState(new Date());
   const [notes, setNotes] = useState("");
   const [terms, setTerms] = useState("");
   const [invoiceFile, setInvoiceFile] = useState("");
@@ -661,16 +661,15 @@ const Invoice = () => {
                           {/* <label style={{ paddingLeft: "20px" }}>
                             Balance Due
                           </label> */}
-                          <LocalizationProvider
-                            dateAdapter={AdapterDayjs}
+                          <LocalizationProvider dateAdapter={AdapterDayjs}
                             style={{ width: "92% !important" }}
                           >
                             <DatePicker
                               style={{ width: "92% !important" }}
                               label="Set DueDate"
                               value={dueData}
-                              views={["year", "month", "day"]}
-                              format="DD-MM-YYYY"
+                              // views={["year", "month", "day"]}
+                              // format="DD-MM-YYYY"
                               onChange={(newValue) => {
                                 ;
                                 setDueData(
